@@ -1,4 +1,12 @@
-import 'package:flutter/material.dart';
+// Packages:
+import './_inner_packages.dart';
+import './_external_packages.dart';
+
+// Screens:
+import './screens/_screens.dart';
+
+// Models:
+import './models/_models.dart';
 
 void main() {
   runApp(MyApp());

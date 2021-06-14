@@ -1,21 +1,21 @@
 // Packages:
-import 'package:feeddy_flutter/_inner_packages.dart';
-import 'package:feeddy_flutter/_external_packages.dart';
+import '../_inner_packages.dart';
+import '../_external_packages.dart';
 
 // Screens:
-import 'package:feeddy_flutter/screens/_screens.dart';
+import '../screens/_screens.dart';
 
 // Models:
-import 'package:feeddy_flutter/models/_models.dart';
+import '../models/_models.dart';
 
 // Components:
-import 'package:feeddy_flutter/components/_components.dart';
+import '../components/_components.dart';
 
 // Helpers:
-import 'package:feeddy_flutter/helpers/_helpers.dart';
+import '../helpers/_helpers.dart';
 
 // Utilities:
-import 'package:feeddy_flutter/utilities/_utilities.dart';
+import '../utilities/_utilities.dart';
 
 class FoodIngredientTile extends StatelessWidget {
   // Properties:

@@ -1,26 +1,30 @@
 // Packages:
 import '../_inner_packages.dart';
 import '../_external_packages.dart';
+
 // Screens:
 import '../screens/_screens.dart';
+
 // Models:
 import '../models/_models.dart';
+
 // Components:
 import '../components/_components.dart';
+
 // Helpers:
 import '../helpers/_helpers.dart';
 // Utilities:
 
-class FoodCategoriesGrid extends StatelessWidget {
-  const FoodCategoriesGrid({Key key}) : super(key: key);
+class ProductsGrid extends StatelessWidget {
+  const ProductsGrid({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    FoodCategoriesData foodCategoriesData = Provider.of<FoodCategoriesData>(context, listen: true);
-    List<FoodCategory> foodCategories = foodCategoriesData.foodCategories;
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    List<Product> products = productsData.products;
 
-    return foodCategories.isEmpty
-        ? FeeddyEmptyWidget(
+    return products.isEmpty
+        ? CustomEmptyWidget(
             packageImage: 1,
             title: 'We are sorry',
             subTitle: 'There is no categories',
@@ -33,15 +37,15 @@ class FoodCategoriesGrid extends StatelessWidget {
               mainAxisSpacing: 10,
             ),
             padding: EdgeInsets.all(10),
-            children: buildFoodCategoryPanels(foodCategories),
+            children: buildProductPanels(products),
           );
   }
 
-  List<FoodCategoryPanel> buildFoodCategoryPanels(List<FoodCategory> foodCategories) {
-    return foodCategories
-        .map((foodCategory) => FoodCategoryPanel(
-              key: ValueKey(foodCategory.id),
-              foodCategory: foodCategory,
+  List<ProductPanel> buildProductPanels(List<Product> products) {
+    return products
+        .map((product) => ProductPanel(
+              key: ValueKey(product.id),
+              product: product,
             ))
         .toList();
   }

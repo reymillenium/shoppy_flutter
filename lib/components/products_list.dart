@@ -11,18 +11,18 @@ import './_components.dart';
 import '../helpers/_helpers.dart';
 // Utilities:
 
-class FoodCategoriesList extends StatelessWidget {
+class ProductsList extends StatelessWidget {
   // Properties:
   final _listViewScrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    FoodCategoriesData foodCategoriesData = Provider.of<FoodCategoriesData>(context, listen: true);
-    List<FoodCategory> foodCategories = foodCategoriesData.foodCategories;
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    List<Product> products = productsData.products;
 
     return Container(
-      child: foodCategories.isEmpty
-          ? FeeddyEmptyWidget(
+      child: products.isEmpty
+          ? CustomEmptyWidget(
               packageImage: 1,
               title: 'We are sorry',
               subTitle: 'There is no categories',
@@ -32,33 +32,33 @@ class FoodCategoriesList extends StatelessWidget {
               controller: _listViewScrollController,
               childrenDelegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  return FoodCategoryTile(
-                    key: ValueKey(foodCategories[index].id),
-                    id: foodCategories[index].id,
+                  return ProductTile(
+                    key: ValueKey(products[index].id),
+                    id: products[index].id,
                     index: index,
-                    foodCategory: foodCategories[index],
+                    product: products[index],
                   );
                 },
-                childCount: foodCategories.length,
+                childCount: products.length,
 
                 // This callback method is what allows to preserve the state:
-                findChildIndexCallback: (Key key) => findChildIndexCallback(key, foodCategories),
+                findChildIndexCallback: (Key key) => findChildIndexCallback(key, products),
               ),
             ),
     );
   }
 
   // This callback method is what allows to preserve the state:
-  int findChildIndexCallback(Key key, List<FoodCategory> foodCategories) {
+  int findChildIndexCallback(Key key, List<Product> products) {
     final ValueKey valueKey = key as ValueKey;
     final int id = valueKey.value;
-    // final int id = int.parse(foodCategoryWidgetID.substring(0, 12));
-    FoodCategory foodCategory;
+    // final int id = int.parse(productWidgetID.substring(0, 12));
+    Product product;
     try {
-      foodCategory = foodCategories.firstWhere((foodCategory) => id == foodCategory.id);
+      product = products.firstWhere((product) => id == product.id);
     } catch (e) {
       return null;
     }
-    return foodCategories.indexOf(foodCategory);
+    return products.indexOf(product);
   }
 }

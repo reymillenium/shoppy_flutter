@@ -1,48 +1,48 @@
 // Packages:
-import 'package:feeddy_flutter/_inner_packages.dart';
-import 'package:feeddy_flutter/_external_packages.dart';
+import '../_inner_packages.dart';
+import '../_external_packages.dart';
 
 // Screens:
-import 'package:feeddy_flutter/screens/_screens.dart';
+import '../screens/_screens.dart';
 
 // Models:
-import 'package:feeddy_flutter/models/_models.dart';
+import '../models/_models.dart';
 
 // Components:
-import 'package:feeddy_flutter/components/_components.dart';
+import '../components/_components.dart';
 
 // Helpers:
-import 'package:feeddy_flutter/helpers/_helpers.dart';
-import 'package:feeddy_flutter/screens/food_category_show_screen.dart';
+import '../helpers/_helpers.dart';
+import '../screens/product_show_screen.dart';
 // Utilities:
 
-class FoodCategoryPanel extends StatelessWidget {
+class ProductPanel extends StatelessWidget {
   // Properties:
-  final FoodCategory foodCategory;
+  final Product product;
 
-  FoodCategoryPanel({
+  ProductPanel({
     Key key,
-    this.foodCategory,
+    this.product,
   }) : super(key: key);
 
   // Runtime constants:
   final DateFormat formatter = DateFormat().add_yMMMMd();
   final currencyFormat = new NumberFormat("#,##0.00", "en_US");
 
-  void selectCategory(BuildContext context) {
+  void selectProduct(BuildContext context) {
     // Navigator.of(context).push(
     //   MaterialPageRoute(
-    //     builder: (context) => FoodCategoryShowScreen(
+    //     builder: (context) => ProductShowScreen(
     //       appTitle: 'Feeddy',
-    //       foodCategory: foodCategory,
+    //       product: product,
     //     ),
     //   ),
     // );
 
     //  Named route:
-    // Navigator.pushNamed(context, FoodCategoryShowScreen.screenId, arguments: FoodCategoryShowScreenArguments(foodCategory));
+    // Navigator.pushNamed(context, ProductShowScreen.screenId, arguments: ProductShowScreenArguments(product));
     // It can even use a Map instead:
-    Navigator.pushNamed(context, FoodCategoryShowScreen.screenId, arguments: {'foodCategory': foodCategory});
+    Navigator.pushNamed(context, ProductShowScreen.screenId, arguments: {'product': product});
   }
 
   @override
@@ -50,20 +50,20 @@ class FoodCategoryPanel extends StatelessWidget {
     AppData appData = Provider.of<AppData>(context, listen: true);
     Map currentCurrency = appData.currentCurrency;
 
-    FoodCategoriesData foodCategoriesData = Provider.of<FoodCategoriesData>(context, listen: true);
-    Function onDeleteFoodCategoryHandler = (id, context) => foodCategoriesData.deleteFoodCategoryWithConfirm(id, context);
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    Function onDeleteProductHandler = (id, context) => productsData.deleteProductWithConfirm(id, context);
 
-    final String formattedDate = formatter.format(foodCategory.createdAt);
+    final String formattedDate = formatter.format(product.createdAt);
     // final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(transaction.amount)}';
     // final double amountFontSize = (84 / amountLabel.length);
-    var foregroundColor = ColorHelper.contrastingColor(foodCategory.color);
+    var foregroundColor = ColorHelper.contrastingColor(product.color);
 
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            foodCategory.color.withOpacity(0.7),
-            foodCategory.color.withOpacity(1),
+            product.color.withOpacity(0.7),
+            product.color.withOpacity(1),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -94,8 +94,8 @@ class FoodCategoryPanel extends StatelessWidget {
                     // border: Border.all(
                     //   color: Colors.red[500],
                     // ),
-                    // color: TinyColor(foodCategory.color).lighten(20).color,
-                    color: TinyColor(foodCategory.color).darken(6).color,
+                    // color: TinyColor(product.color).lighten(20).color,
+                    color: TinyColor(product.color).darken(6).color,
                     // color: Colors.blueGrey,
                     // color: Colors.transparent,
                     // border: Border(
@@ -137,7 +137,7 @@ class FoodCategoryPanel extends StatelessWidget {
                                 color: foregroundColor,
                                 size: 20,
                               ),
-                              onPressed: () => onDeleteFoodCategoryHandler(foodCategory.id, context),
+                              onPressed: () => onDeleteProductHandler(product.id, context),
                             ),
                           ),
                           Tooltip(
@@ -153,10 +153,10 @@ class FoodCategoryPanel extends StatelessWidget {
                                   backgroundColor: Colors.transparent,
                                   isScrollControlled: true,
                                   context: context,
-                                  builder: (context) => FoodCategoryEditScreen(
-                                    id: foodCategory.id,
-                                    title: foodCategory.title,
-                                    color: foodCategory.color,
+                                  builder: (context) => ProductEditScreen(
+                                    id: product.id,
+                                    title: product.title,
+                                    color: product.color,
                                   ),
                                 );
                               },
@@ -169,7 +169,7 @@ class FoodCategoryPanel extends StatelessWidget {
                           //   child: Tooltip(
                           //     message: 'Delete',
                           //     child: GestureDetector(
-                          //       onTap: () => onDeleteFoodCategoryHandler(foodCategory.id, context),
+                          //       onTap: () => onDeleteProductHandler(product.id, context),
                           //       child: Icon(Icons.delete),
                           //     ),
                           //   ),
@@ -184,10 +184,10 @@ class FoodCategoryPanel extends StatelessWidget {
                           //             backgroundColor: Colors.transparent,
                           //             isScrollControlled: true,
                           //             context: context,
-                          //             builder: (context) => FoodCategoryEditScreen(
-                          //               id: foodCategory.id,
-                          //               title: foodCategory.title,
-                          //               color: foodCategory.color,
+                          //             builder: (context) => ProductEditScreen(
+                          //               id: product.id,
+                          //               title: product.title,
+                          //               color: product.color,
                           //             ),
                           //           );
                           //         },
@@ -200,12 +200,12 @@ class FoodCategoryPanel extends StatelessWidget {
                   ),
                 ),
 
-                // FoodCategory Title:
+                // Product Title:
                 Expanded(
                   flex: 3,
                   child: InkWell(
                     splashColor: Theme.of(context).primaryColor,
-                    onTap: () => selectCategory(context),
+                    onTap: () => selectProduct(context),
                     borderRadius: BorderRadius.only(
                       // topLeft: Radius.circular(8),
                       // topRight: Radius.circular(8),
@@ -219,7 +219,7 @@ class FoodCategoryPanel extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          foodCategory.title,
+                          product.title,
                           // style: TextStyle(
                           //   color: foregroundColor,
                           // ),

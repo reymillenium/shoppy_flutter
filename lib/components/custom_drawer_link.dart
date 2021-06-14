@@ -15,13 +15,13 @@ import './_components.dart';
 import '../helpers/_helpers.dart';
 // Utilities:
 
-class FeeddyDrawerLink extends StatelessWidget {
+class CustomDrawerLink extends StatelessWidget {
   // Properties:
   final IconData icon;
   final String title;
   final String screenId;
 
-  const FeeddyDrawerLink({
+  const CustomDrawerLink({
     Key key,
     this.icon,
     this.title,

@@ -1,7 +1,7 @@
 // Packages:
 import '../_inner_packages.dart';
 import '../_external_packages.dart';
-// import 'package:empty_widget/feeddy_empty_widget.dart';
+// import 'package:empty_widget/custom_empty_widget.dart';
 
 // Screens:
 
@@ -13,7 +13,7 @@ import '../_external_packages.dart';
 
 // Utilities:
 
-class FeeddyEmptyWidget extends StatelessWidget {
+class CustomEmptyWidget extends StatelessWidget {
   // Properties:
   final String image;
   final int packageImage;
@@ -21,7 +21,7 @@ class FeeddyEmptyWidget extends StatelessWidget {
   final String subTitle;
 
   // Constructor:
-  FeeddyEmptyWidget({
+  CustomEmptyWidget({
     this.image,
     this.packageImage,
     this.title,

@@ -17,7 +17,7 @@ import '../helpers/_helpers.dart';
 // Utilities:
 import '../utilities/_utilities.dart';
 
-class FeeddyScaffold extends StatefulWidget {
+class CustomScaffold extends StatefulWidget {
   // Properties:
   final bool _showPortraitOnly = false;
   final String appTitle;
@@ -32,7 +32,7 @@ class FeeddyScaffold extends StatefulWidget {
   final IconData appBarActionIcon;
 
   // Constructor:
-  const FeeddyScaffold({
+  const CustomScaffold({
     Key key,
     this.appTitle,
     this.onPressedFAB,
@@ -47,10 +47,10 @@ class FeeddyScaffold extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _FeeddyScaffoldState createState() => _FeeddyScaffoldState();
+  _CustomScaffoldState createState() => _CustomScaffoldState();
 }
 
-class _FeeddyScaffoldState extends State<FeeddyScaffold> {
+class _CustomScaffoldState extends State<CustomScaffold> {
   final bool _showPortraitOnly = false;
   int _activeIndex;
 
@@ -75,7 +75,7 @@ class _FeeddyScaffoldState extends State<FeeddyScaffold> {
   void onTapSelectNavigation(int index, BuildContext context) {
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, FoodCategoryIndexScreen.screenId);
+        Navigator.pushNamed(context, ProductIndexScreen.screenId);
         break;
       case 1:
         Navigator.pushNamed(context, FavoritesScreen.screenId);
@@ -101,7 +101,7 @@ class _FeeddyScaffoldState extends State<FeeddyScaffold> {
       ],
     ]);
 
-    FeeddyAppBar appBar = FeeddyAppBar(
+    CustomAppBar appBar = CustomAppBar(
       appTitle: widget.appTitle,
       onPressedAdd: widget.onPressedBarActionIcon ?? widget.onPressedFAB,
       objectName: widget.objectName,
@@ -131,7 +131,7 @@ class _FeeddyScaffoldState extends State<FeeddyScaffold> {
         }
       },
 
-      drawer: FeeddyDrawer(),
+      drawer: CustomDrawer(),
 
       body: NativeDeviceOrientationReader(
         builder: (context) {
@@ -182,11 +182,11 @@ class _FeeddyScaffoldState extends State<FeeddyScaffold> {
       //   items: [
       //     BottomNavigationBarItem(
       //       icon: Icon(
-      //         Icons.category,
+      //         Icons.product,
       //       ),
       //       label: '',
       //       activeIcon: Icon(
-      //         Icons.category,
+      //         Icons.product,
       //         color: Colors.red,
       //       ),
       //       tooltip: 'Categories',
@@ -215,11 +215,11 @@ class _FeeddyScaffoldState extends State<FeeddyScaffold> {
       //     items: [
       //       BottomNavigationBarItem(
       //         icon: Icon(
-      //           Icons.category,
+      //           Icons.product,
       //         ),
       //         label: '',
       //         activeIcon: Icon(
-      //           Icons.category,
+      //           Icons.product,
       //           color: Colors.red,
       //         ),
       //         tooltip: 'Categories',
@@ -252,7 +252,7 @@ class _FeeddyScaffoldState extends State<FeeddyScaffold> {
           children: [
             IconButton(
               color: _activeIndex == 0 ? Colors.red : contrastingColor,
-              icon: Icon(Icons.category),
+              icon: Icon(FontAwesomeIcons.productHunt),
               tooltip: 'Categories',
               onPressed: () => onTapSelectNavigation(0, context),
             ),

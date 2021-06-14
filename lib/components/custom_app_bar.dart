@@ -16,14 +16,14 @@ import '../helpers/_helpers.dart';
 // Utilities:
 import '../utilities/constants.dart';
 
-class FeeddyAppBar extends StatelessWidget with PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   // Properties:
   final String appTitle;
   final Function onPressedAdd;
   final String objectName;
   final IconData actionIcon;
 
-  const FeeddyAppBar({
+  const CustomAppBar({
     Key key,
     this.appTitle,
     this.onPressedAdd,

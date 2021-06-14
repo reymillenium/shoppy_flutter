@@ -4,7 +4,7 @@ import '../_inner_packages.dart';
 import '../_external_packages.dart';
 
 // Models:
-// import '../models/_models.dart';
+import '../models/_models.dart';
 
 // Helpers:
 
@@ -38,29 +38,29 @@ class DBHelper {
   }
 
   _onCreatePlus(Database db, int version) async {
-    // food_categories table:
-    Map<String, Object> foodCategoriesTable = FoodCategoriesData.sqliteTable;
-    await _createTable(db, 1, foodCategoriesTable);
+    // products table:
+    Map<String, Object> productsTable = ProductsData.sqliteTable;
+    await _createTable(db, 1, productsTable);
 
     // food_recipes table:
-    Map<String, Object> foodRecipesTable = FoodRecipesData.sqliteTable;
-    await _createTable(db, 1, foodRecipesTable);
+    // Map<String, Object> foodRecipesTable = FoodRecipesData.sqliteTable;
+    // await _createTable(db, 1, foodRecipesTable);
 
-    // food_categories_food_recipes table:
-    Map<String, Object> foodCategoriesFoodRecipesTable = FoodCategoriesFoodRecipesData.sqliteTable;
-    await _onCreateManyToManyTablePlus(db, 1, foodCategoriesFoodRecipesTable, foodCategoriesTable, foodRecipesTable);
+    // products_food_recipes table:
+    // Map<String, Object> productsFoodRecipesTable = ProductsFoodRecipesData.sqliteTable;
+    // await _onCreateManyToManyTablePlus(db, 1, productsFoodRecipesTable, productsTable, foodRecipesTable);
 
     // food_ingredients table:
-    Map<String, Object> foodIngredientsTable = FoodIngredientsData.sqliteTable;
-    await _createTable(db, 1, foodIngredientsTable);
+    // Map<String, Object> foodIngredientsTable = FoodIngredientsData.sqliteTable;
+    // await _createTable(db, 1, foodIngredientsTable);
 
     // recipe_steps table:
-    Map<String, Object> recipeStepsTable = RecipeStepsData.sqliteTable;
-    await _createTable(db, 1, recipeStepsTable);
+    // Map<String, Object> recipeStepsTable = RecipeStepsData.sqliteTable;
+    // await _createTable(db, 1, recipeStepsTable);
 
     // recipe_steps table:
-    Map<String, Object> favoriteFoodRecipesTable = FavoriteFoodRecipesData.sqliteTable;
-    await _createTable(db, 1, favoriteFoodRecipesTable);
+    // Map<String, Object> favoriteFoodRecipesTable = FavoriteFoodRecipesData.sqliteTable;
+    // await _createTable(db, 1, favoriteFoodRecipesTable);
   }
 
   _createTable(Database db, int version, Map<String, dynamic> table) async {

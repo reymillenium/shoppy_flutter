@@ -3,7 +3,7 @@ import '../_inner_packages.dart';
 import '../_external_packages.dart';
 
 // Screens:
-import './_screens.dart';
+import '../screens/_screens.dart';
 
 // Models:
 import '../models/_models.dart';
@@ -15,26 +15,20 @@ import '../components/_components.dart';
 import '../helpers/_helpers.dart';
 // Utilities:
 
-class UnknownScreen extends StatefulWidget {
-  static const String screenId = 'unknown_screen';
+class ProductIndexScreen extends StatefulWidget {
+  static const String screenId = 'product_index_screen';
 
   // Properties:
   final String appTitle;
 
-  const UnknownScreen({
-    Key key,
-    this.appTitle,
-  }) : super(key: key);
+  const ProductIndexScreen({Key key, this.appTitle}) : super(key: key);
 
   @override
-  _UnknownScreenState createState() => _UnknownScreenState();
+  _ProductIndexScreenState createState() => _ProductIndexScreenState();
 }
 
-class _UnknownScreenState extends State<UnknownScreen> with RouteAware, RouteObserverMixin {
-  // State Properties:
-  bool _showPortraitOnly = false;
-  String _appTitle;
-  final String _screenId = UnknownScreen.screenId;
+class _ProductIndexScreenState extends State<ProductIndexScreen> with RouteAware, RouteObserverMixin {
+  final String _screenId = ProductIndexScreen.screenId;
   int _activeTab = 0;
 
   /// Called when the top route has been popped off, and the current route
@@ -77,37 +71,34 @@ class _UnknownScreenState extends State<UnknownScreen> with RouteAware, RouteObs
   // }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _appTitle = widget.appTitle;
-  }
-
-  @override
   Widget build(BuildContext context) {
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    int amountTotalProducts = productsData.products.length;
+
     return CustomScaffold(
       activeIndex: _activeTab,
-      appTitle: _appTitle,
+      appTitle: widget.appTitle,
       innerWidgets: [
-        CustomEmptyWidget(
-          packageImage: 1,
-          title: 'We are sorry',
-          subTitle: 'That screen does not exist',
+        // Food Categories Grid:
+        Expanded(
+          flex: 5,
+          child: ProductsGrid(),
         ),
       ],
-      onPressedFAB: () => _showModalNewThing(context),
-      objectsLength: 0,
-      objectName: 'thing',
+      objectsLength: amountTotalProducts,
+      objectName: 'product',
+      onPressedFAB: () => _showModalNewProduct(context),
     );
   }
 
-  void _showModalNewThing(BuildContext context) {
+  // It shows the AddTransactionScreen widget as a modal:
+  void _showModalNewProduct(BuildContext context) {
     SoundHelper().playSmallButtonClick();
-    // showModalBottomSheet(
-    //   backgroundColor: Colors.transparent,
-    //   isScrollControlled: true,
-    //   context: context,
-    //   builder: (context) => ProductNewScreen(),
-    // );
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) => ProductNewScreen(),
+    );
   }
 }

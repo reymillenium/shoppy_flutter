@@ -1,26 +1,26 @@
 // Packages:
-import 'package:feeddy_flutter/_inner_packages.dart';
-import 'package:feeddy_flutter/_external_packages.dart';
+import '../_inner_packages.dart';
+import '../_external_packages.dart';
 // Screens:
-import 'package:feeddy_flutter/screens/_screens.dart';
+import '../screens/_screens.dart';
 // Models:
-import 'package:feeddy_flutter/models/_models.dart';
+import '../models/_models.dart';
 // Components:
-import 'package:feeddy_flutter/components/_components.dart';
+import '../components/_components.dart';
 // Helpers:
-import 'package:feeddy_flutter/helpers/_helpers.dart';
+import '../helpers/_helpers.dart';
 // Utilities:
 
-class FoodCategoryTile extends StatelessWidget {
+class ProductTile extends StatelessWidget {
   // Properties:
-  final FoodCategory foodCategory;
+  final Product product;
   final int id;
   final int index;
 
   // Constructor:
-  FoodCategoryTile({
+  ProductTile({
     Key key,
-    this.foodCategory,
+    this.product,
     this.id,
     this.index,
   }) : super(key: key);
@@ -34,10 +34,10 @@ class FoodCategoryTile extends StatelessWidget {
     AppData appData = Provider.of<AppData>(context, listen: true);
     Map currentCurrency = appData.currentCurrency;
 
-    FoodCategoriesData foodCategoriesData = Provider.of<FoodCategoriesData>(context, listen: true);
-    Function onDeleteFoodCategoryHandler = (id, context) => foodCategoriesData.deleteFoodCategoryWithConfirm(id, context);
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    Function onDeleteProductHandler = (id, context) => productsData.deleteProductWithConfirm(id, context);
 
-    final String formattedDate = formatter.format(foodCategory.createdAt);
+    final String formattedDate = formatter.format(product.createdAt);
     // final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(transaction.amount)}';
     // final double amountFontSize = (84 / amountLabel.length);
 
@@ -62,7 +62,7 @@ class FoodCategoryTile extends StatelessWidget {
         child: ListTile(
           // visualDensity: VisualDensity.standard,
           leading: CircleAvatar(
-            backgroundColor: foodCategory.color,
+            backgroundColor: product.color,
             radius: 32,
             child: FittedBox(
               child: Container(
@@ -83,7 +83,7 @@ class FoodCategoryTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                foodCategory.title,
+                product.title,
                 // style: TextStyle(
                 //   fontSize: 18,
                 //   fontWeight: FontWeight.bold,
@@ -109,7 +109,7 @@ class FoodCategoryTile extends StatelessWidget {
                     Icons.delete,
                     color: Colors.black,
                   ),
-                  onPressed: () => onDeleteFoodCategoryHandler(foodCategory.id, context),
+                  onPressed: () => onDeleteProductHandler(product.id, context),
                 ),
               ),
               Tooltip(
@@ -124,11 +124,11 @@ class FoodCategoryTile extends StatelessWidget {
                       backgroundColor: Colors.transparent,
                       isScrollControlled: true,
                       context: context,
-                      builder: (context) => FoodCategoryEditScreen(
+                      builder: (context) => ProductEditScreen(
                         id: id,
                         // index: index,
-                        title: foodCategory.title,
-                        color: foodCategory.color,
+                        title: product.title,
+                        color: product.color,
                       ),
                     );
                   },

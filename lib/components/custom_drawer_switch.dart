@@ -12,8 +12,8 @@ import '../_external_packages.dart';
 
 // Utilities:
 
-class ExpensyDrawerSwitch extends StatelessWidget {
-  const ExpensyDrawerSwitch({
+class CustomDrawerSwitch extends StatelessWidget {
+  const CustomDrawerSwitch({
     Key key,
     @required this.switchLabel,
     @required this.activeColor,

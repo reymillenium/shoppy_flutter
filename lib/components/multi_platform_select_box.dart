@@ -1,11 +1,11 @@
 // Packages:
-import 'package:feeddy_flutter/helpers/_helpers.dart';
+import '../helpers/_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 //Components:
-import 'package:feeddy_flutter/components/drop_down_button_currency.dart';
-import 'package:feeddy_flutter/components/cupertino_picker.dart';
+import './drop_down_button_currency.dart';
+import './cupertino_picker.dart';
 
 // Utilities:
 

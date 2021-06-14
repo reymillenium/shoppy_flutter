@@ -1,16 +1,16 @@
 // Packages:
-import 'package:feeddy_flutter/_inner_packages.dart';
-import 'package:feeddy_flutter/_external_packages.dart';
+import '../_inner_packages.dart';
+import '../_external_packages.dart';
 // Screens:
 
 // Models:
-import 'package:feeddy_flutter/models/_models.dart';
+import '../models/_models.dart';
 
 // Components:
-import 'package:feeddy_flutter/components/_components.dart';
+import '../components/_components.dart';
 
 // Helpers:
-import 'package:feeddy_flutter/helpers/_helpers.dart';
+import '../helpers/_helpers.dart';
 // Utilities:
 
 class RecipeStepsList extends StatelessWidget {
@@ -35,7 +35,7 @@ class RecipeStepsList extends StatelessWidget {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return recipeSteps.isEmpty
-                ? FeeddyEmptyWidget(
+                ? CustomEmptyWidget(
                     packageImage: 1,
                     title: 'We are sorry',
                     subTitle: 'There is no recipe steps',
@@ -58,7 +58,7 @@ class RecipeStepsList extends StatelessWidget {
                   );
           default:
             return Container(
-              child: FeeddyEmptyWidget(
+              child: CustomEmptyWidget(
                 packageImage: 1,
                 title: 'We are sorry',
                 subTitle: 'There is no recipe steps',

@@ -43,6 +43,8 @@ dependencies:
   sqflite: ^2.0.0+3
   # A custom switch widget that can have a custom height and width, borders, border radius, colors, toggle size, custom text and icons inside the toggle.
   flutter_switch: ^0.3.1
+  # A HSV(HSB)/HSL color picker inspired by chrome devtools and a material color picker for your flutter app.
+  flutter_colorpicker: ^0.4.0
   # Better conversion of ENUMs to string. Dart has annoying EnumName.ValueName syntax when calling enum.toString, this package fixes that.
   enum_to_string: ^2.0.1
   # A library to convert Dart values into human-friendly representations.

@@ -15,7 +15,7 @@ import '../screens/_screens.dart';
 
 // Utilities:
 
-class FeeddyDrawer extends StatelessWidget {
+class CustomDrawer extends StatelessWidget {
   // Properties:
   // final bool showChart;
 
@@ -25,7 +25,7 @@ class FeeddyDrawer extends StatelessWidget {
   // final Function onSwitchPortraitOnLy;
 
   // Constructor:
-  FeeddyDrawer({
+  CustomDrawer({
     Key key,
     // this.showChart,
     // this.showPortraitOnly,
@@ -99,10 +99,10 @@ class FeeddyDrawer extends StatelessWidget {
           ),
 
           // Links:
-          FeeddyDrawerLink(
-            icon: Icons.category,
-            title: 'Categories',
-            screenId: FoodCategoryIndexScreen.screenId,
+          CustomDrawerLink(
+            icon: FontAwesomeIcons.productHunt,
+            title: 'Products',
+            screenId: ProductIndexScreen.screenId,
           ),
 
           // Drawer options: (Expansion Panels)

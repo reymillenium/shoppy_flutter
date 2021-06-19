@@ -153,11 +153,15 @@ class ProductsData with ChangeNotifier {
       // FoodCategoriesFoodRecipesData foodCategoriesFoodRecipesData = FoodCategoriesFoodRecipesData();
       for (int i = 0; i < (_maxAmountDummyData - currentLength); i++) {
         String title = faker.food.cuisine();
-        Color color = ColorHelper.randomMaterialColor();
-        Product product = await addProduct(title, color);
+        String description = faker.lorem.sentence();
+        double price = NumericHelper.roundRandomDoubleInRange(min: 0.99, max: 9.99, places: 2);
+        // Color color = ColorHelper.randomMaterialColor();
+        Product product = await addProduct(title: title, description: description, price: price, imageUrl: ListHelper.randomFromList(DUMMY_FOOD_IMAGE_URLS));
 
         // Creates a few dummy FoodRecipe objects by its id (as well as FoodRecipeProduct, FoodIngredient & RecipeStep objects):
         // foodRecipesData.generateDummyDataByProductId(product.id, 5);
+        // @required this.createdAt,
+        // @required this.updatedAt,
       }
     }
   }
@@ -173,7 +177,7 @@ class ProductsData with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Product> addProduct(String title, String description, double price, String imageUrl) async {
+  Future<Product> addProduct({String title, String description, double price, String imageUrl}) async {
     DateTime now = DateTime.now();
     Product newProduct = Product(
       title: title,

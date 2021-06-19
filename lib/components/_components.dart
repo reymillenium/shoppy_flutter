@@ -26,9 +26,9 @@ export './products_grid.dart'; // First attempt to list inside a ListView using 
 export './product_panel.dart'; // Second attempt using a ListGrid instead of a ListView:
 
 // FoodRecipe related:
-export './food_recipes_list.dart';
-export './food_recipe_tile.dart';
-export './food_recipe_details_header.dart'; // Goes on the FoodRecipeShowScreen, on top of the FoodIngredientsList
+// export './food_recipes_list.dart';
+// export './food_recipe_tile.dart';
+// export './food_recipe_details_header.dart'; // Goes on the FoodRecipeShowScreen, on top of the FoodIngredientsList
 
 // FoodIngredient related:
 export './food_Ingredients_list.dart';

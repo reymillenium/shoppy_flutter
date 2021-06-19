@@ -16,12 +16,18 @@ import '../helpers/_helpers.dart';
 // Utilities:
 
 class ProductsGrid extends StatelessWidget {
-  const ProductsGrid({Key key}) : super(key: key);
+  // Properties:
+  final List<Product> products;
+
+  const ProductsGrid({
+    Key key,
+    this.products,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
-    List<Product> products = productsData.products;
+    // ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    // List<Product> products = productsData.products;
 
     return products.isEmpty
         ? CustomEmptyWidget(

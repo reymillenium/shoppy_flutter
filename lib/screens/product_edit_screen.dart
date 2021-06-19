@@ -1,33 +1,30 @@
 // Packages:
 import '../_inner_packages.dart';
 import '../_external_packages.dart';
+
 // Screens:
 
 // Models:
 import '../models/_models.dart';
+
 // Components:
 
 // Helpers:
 import '../helpers/_helpers.dart';
+
 // Utilities:
+import '../utilities/_utilities.dart';
 
 class ProductEditScreen extends StatefulWidget {
   static const String screenId = 'food_product_edit_screen';
 
   // Properties:
-  final int id;
-
-  // final int index;
-  final String title;
-  final Color color;
+  final Product product;
   final Function onUpdateProductHandler;
 
   // Constructor:
   ProductEditScreen({
-    this.id,
-    // this.index,
-    this.title,
-    this.color,
+    this.product,
     this.onUpdateProductHandler,
   });
 
@@ -36,12 +33,12 @@ class ProductEditScreen extends StatefulWidget {
 }
 
 class _ProductEditScreenState extends State<ProductEditScreen> {
-  // State Properties:
+  // Local State Properties:
   int _id;
-
-  // int _index;
-  String _title;
-  Color _color;
+  String _title = '';
+  String _description = '';
+  double _price = 0;
+  String _imageUrl = ListHelper.randomFromList(DUMMY_FOOD_IMAGE_URLS);
 
   // Run time constants:
   DateTime now = DateTime.now();
@@ -53,13 +50,14 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _id = widget.id;
-    // _index = widget.index;
-    _title = widget.title;
-    _color = widget.color;
+    _id = widget.product.id;
+    _title = widget.product.title;
+    _description = widget.product.description;
+    _price = widget.product.price;
+    _imageUrl = widget.product.imageUrl;
   }
 
-  void changeColor(Color color) => setState(() => _color = color);
+  // void changeColor(Color color) => setState(() => _color = color);
 
   @override
   Widget build(BuildContext context) {
@@ -67,25 +65,25 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
     Map currentCurrency = appData.currentCurrency;
 
     ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
-    Function onUpdateProductsHandler = (id, title, color) => productsData.updateProduct(id, title, color);
+    Function onUpdateProductsHandler = (id, title, color) => productsData.updateProduct(_id, _title, _description, _price, _imageUrl);
 
     Color primaryColor = Theme.of(context).primaryColor;
     Color accentColor = Theme.of(context).accentColor;
 
-    var foregroundColor = ColorHelper.contrastingColor(_color);
-    final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-      onPrimary: foregroundColor,
-      primary: _color,
-      elevation: 3,
-      textStyle: TextStyle(
-        color: Colors.red,
-      ),
-      minimumSize: Size(double.infinity, 36),
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(2)),
-      ),
-    );
+    // var foregroundColor = ColorHelper.contrastingColor(_color);
+    // final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+    //   onPrimary: foregroundColor,
+    //   primary: _color,
+    //   elevation: 3,
+    //   textStyle: TextStyle(
+    //     color: Colors.red,
+    //   ),
+    //   minimumSize: Size(double.infinity, 36),
+    //   padding: EdgeInsets.symmetric(horizontal: 16),
+    //   shape: const RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.all(Radius.circular(2)),
+    //   ),
+    // );
 
     return SafeArea(
       bottom: false,
@@ -106,7 +104,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
             child: Column(
               children: [
                 Text(
-                  'Update Food Category',
+                  'Update Product',
                   style: TextStyle(
                     color: primaryColor,
                     fontSize: 30,
@@ -147,54 +145,84 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                       _title = newText;
                     });
                   },
-                  onFieldSubmitted: _hasValidData() ? (_) => () => _updateData(context, onUpdateProductsHandler) : null,
+                  onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
                 ),
 
-                // Color Input:
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: ElevatedButton(
-                    // elevation: 3.0,
-                    style: raisedButtonStyle,
-                    // style: elevatedButtonStyle,
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            titlePadding: const EdgeInsets.all(0.0),
-                            contentPadding: const EdgeInsets.all(0.0),
-                            content: SingleChildScrollView(
-                              child: ColorPicker(
-                                pickerColor: _color,
-                                onColorChanged: changeColor,
-                                colorPickerWidth: 300.0,
-                                pickerAreaHeightPercent: 0.7,
-                                enableAlpha: true,
-                                displayThumbColor: true,
-                                showLabel: true,
-                                paletteType: PaletteType.hsv,
-                                pickerAreaBorderRadius: const BorderRadius.only(
-                                  topLeft: const Radius.circular(2.0),
-                                  topRight: const Radius.circular(2.0),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: Text(
-                      'Color',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                        // color: Colors.white,
+                // Price Input
+                TextFormField(
+                  initialValue: _price.toString(),
+                  autofocus: true,
+                  autocorrect: false,
+                  keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
+                  decoration: InputDecoration(
+                    hintText: 'Price',
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        // color: kLightBlueBackground,
+                        color: Colors.red,
+                        // width: 30,
                       ),
                     ),
-                    // color: _color,
-                    // textColor: useWhiteForeground(currentColor) ? const Color(0xffffffff) : const Color(0xff000000),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: primaryColor,
+                        width: 4.0,
+                      ),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: accentColor,
+                        // color: Colors.red,
+                        width: 6.0,
+                      ),
+                    ),
                   ),
+                  style: TextStyle(),
+                  onChanged: (String newText) {
+                    setState(() {
+                      _title = newText;
+                    });
+                  },
+                  onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
+                ),
+
+                // Description Input
+                TextFormField(
+                  initialValue: _description,
+                  autofocus: true,
+                  autocorrect: false,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    hintText: 'Description',
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        // color: kLightBlueBackground,
+                        color: Colors.red,
+                        // width: 30,
+                      ),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: primaryColor,
+                        width: 4.0,
+                      ),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: accentColor,
+                        // color: Colors.red,
+                        width: 6.0,
+                      ),
+                    ),
+                  ),
+                  style: TextStyle(),
+                  onChanged: (String newText) {
+                    setState(() {
+                      _title = newText;
+                    });
+                  },
+                  onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
                 ),
 
                 // Update button:
@@ -230,16 +258,13 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
   }
 
   bool _hasValidData() {
-    bool result = false;
-    if (_title.isNotEmpty) {
-      result = true;
-    }
-    return result;
+    return (_title.isNotEmpty && _description.isNotEmpty && _price > 0 && _imageUrl.isNotEmpty);
   }
 
   void _updateData(BuildContext context, Function onUpdateProductsHandler) {
-    if (_title.isNotEmpty) {
-      onUpdateProductsHandler(_id, _title, _color);
+    if (_hasValidData()) {
+      // onUpdateProductsHandler(_id, _title, _description, _price, _imageUrl);
+      onUpdateProductsHandler();
     }
     Navigator.pop(context);
   }

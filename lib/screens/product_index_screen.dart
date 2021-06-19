@@ -73,7 +73,8 @@ class _ProductIndexScreenState extends State<ProductIndexScreen> with RouteAware
   @override
   Widget build(BuildContext context) {
     ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
-    int amountTotalProducts = productsData.products.length;
+    List<Product> products = productsData.products;
+    int amountTotalProducts = products.length;
 
     return CustomScaffold(
       activeIndex: _activeTab,
@@ -82,7 +83,9 @@ class _ProductIndexScreenState extends State<ProductIndexScreen> with RouteAware
         // Food Categories Grid:
         Expanded(
           flex: 5,
-          child: ProductsGrid(),
+          child: ProductsGrid(
+            products: products,
+          ),
         ),
       ],
       objectsLength: amountTotalProducts,

@@ -17,7 +17,7 @@ import '../helpers/_helpers.dart';
 import '../utilities/_utilities.dart';
 
 class ProductNewScreen extends StatefulWidget {
-  static const String screenId = 'food_product_new_screen';
+  static const String screenId = 'product_new_screen';
 
   @override
   _ProductNewScreenState createState() => _ProductNewScreenState();
@@ -167,12 +167,14 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
                   onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
                 ),
 
-                // Title Input
+                // Description Input
                 TextField(
                   autofocus: true,
                   autocorrect: false,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
                   decoration: InputDecoration(
-                    hintText: 'Title',
+                    hintText: 'Description',
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(
                           // color: kLightBlueBackground,
@@ -201,53 +203,6 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
                   },
                   onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
                 ),
-
-                // Color Input:
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 8),
-                //   child: ElevatedButton(
-                //     // elevation: 3.0,
-                //     style: raisedButtonStyle,
-                //     // style: elevatedButtonStyle,
-                //     onPressed: () {
-                //       showDialog(
-                //         context: context,
-                //         builder: (BuildContext context) {
-                //           return AlertDialog(
-                //             titlePadding: const EdgeInsets.all(0.0),
-                //             contentPadding: const EdgeInsets.all(0.0),
-                //             content: SingleChildScrollView(
-                //               child: ColorPicker(
-                //                 pickerColor: _color,
-                //                 onColorChanged: changeColor,
-                //                 colorPickerWidth: 300.0,
-                //                 pickerAreaHeightPercent: 0.7,
-                //                 enableAlpha: true,
-                //                 displayThumbColor: true,
-                //                 showLabel: true,
-                //                 paletteType: PaletteType.hsv,
-                //                 pickerAreaBorderRadius: const BorderRadius.only(
-                //                   topLeft: const Radius.circular(2.0),
-                //                   topRight: const Radius.circular(2.0),
-                //                 ),
-                //               ),
-                //             ),
-                //           );
-                //         },
-                //       );
-                //     },
-                //     child: Text(
-                //       'Color',
-                //       style: TextStyle(
-                //         fontWeight: FontWeight.bold,
-                //         fontSize: 18.0,
-                //         // color: Colors.white,
-                //       ),
-                //     ),
-                //     // color: _color,
-                //     // textColor: useWhiteForeground(currentColor) ? const Color(0xffffffff) : const Color(0xff000000),
-                //   ),
-                // ),
 
                 // Add button:
                 Padding(
@@ -302,14 +257,15 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
 
   bool _hasValidData() {
     bool result = false;
-    if (_title.isNotEmpty) {
+    if (_title.isNotEmpty && _description.isNotEmpty && _price > 0 && _imageUrl.isNotEmpty) {
       result = true;
     }
     return result;
   }
 
   void _submitData(BuildContext context, Function onAddProduct) {
-    if (_title.isNotEmpty && _description.isNotEmpty && _price > 0 && _imageUrl.isNotEmpty) {
+    if (_hasValidData()) {
+      // onAddProduct(_title, _description, _price, _imageUrl);
       onAddProduct();
     }
     Navigator.pop(context);

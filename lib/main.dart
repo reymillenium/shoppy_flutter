@@ -164,7 +164,7 @@ class MyApp extends StatelessWidget {
       routes: {
         ProductIndexScreen.screenId: (context) => ProductIndexScreen(appTitle: appTitle),
         FavoritesScreen.screenId: (context) => FavoritesScreen(),
-        // ProductNewScreen.screenId: (context) => ProductNewScreen(),
+        ProductNewScreen.screenId: (context) => ProductNewScreen(),
         // ProductEditScreen.screenId: (context) => ProductEditScreen(),
         // FavoritesScreen.screenId: (context) => FavoritesScreen(),
       },

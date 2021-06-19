@@ -121,12 +121,12 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
 
   @override
   Widget build(BuildContext context) {
-    FoodRecipesData foodRecipesData = Provider.of<FoodRecipesData>(context, listen: true);
-    FavoriteFoodRecipesData favoriteFoodRecipesData = Provider.of<FavoriteFoodRecipesData>(context, listen: true);
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context, listen: true);
 
     return FutureBuilder(
         // future: foodRecipesData.byProduct(_product, filtersList: selectedFilters),
-        future: Future.wait([foodRecipesData.byProduct(_product, filtersList: selectedFilters), favoriteFoodRecipesData.byUserId(1)]),
+        future: Future.wait([productsData.byProduct(_product, filtersList: selectedFilters), favoriteProductsData.byUserId(1)]),
         builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
           List<FoodRecipe> foodRecipes;
           List<FavoriteFoodRecipe> favoriteFoodRecipes;

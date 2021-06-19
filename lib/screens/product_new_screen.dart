@@ -1,16 +1,20 @@
 // Packages:
 import '../_inner_packages.dart';
 import '../_external_packages.dart';
+
 // Screens:
 
 // Models:
 import '../models/_models.dart';
+
 // Components:
+import 'package:flutter/cupertino.dart';
 
 // Helpers:
 import '../helpers/_helpers.dart';
-import 'package:flutter/cupertino.dart';
+
 // Utilities:
+import '../utilities/_utilities.dart';
 
 class ProductNewScreen extends StatefulWidget {
   static const String screenId = 'food_product_new_screen';
@@ -22,6 +26,9 @@ class ProductNewScreen extends StatefulWidget {
 class _ProductNewScreenState extends State<ProductNewScreen> {
   // Local State Properties:
   String _title = '';
+  String _description = '';
+  double _price = 0;
+  String _imageUrl = ListHelper.randomFromList(DUMMY_FOOD_IMAGE_URLS);
   Color _color = Colors.orangeAccent;
 
   void changeColor(Color color) => setState(() => _color = color);
@@ -31,7 +38,7 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
     AppData appData = Provider.of<AppData>(context, listen: true);
 
     ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
-    Function onAddProductHandler = (title, color) => productsData.addProduct(title, color);
+    Function onAddProductHandler = (title, color) => productsData.addProduct(title: _title, description: _description, price: _price, imageUrl: _imageUrl);
 
     Color primaryColor = Theme.of(context).primaryColor;
     Color accentColor = Theme.of(context).accentColor;
@@ -52,16 +59,16 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
       ),
     );
 
-    final ButtonStyle elevatedButtonStyle = ButtonStyle(
-      foregroundColor: MaterialStateProperty.all(foregroundColor),
-      backgroundColor: MaterialStateProperty.all(_color),
-      minimumSize: MaterialStateProperty.all(Size(double.infinity, 36)),
-      padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16)),
-      elevation: MaterialStateProperty.all(3),
-      textStyle: MaterialStateProperty.all(TextStyle(
-        color: Colors.red,
-      )),
-    );
+    // final ButtonStyle elevatedButtonStyle = ButtonStyle(
+    //   foregroundColor: MaterialStateProperty.all(foregroundColor),
+    //   backgroundColor: MaterialStateProperty.all(_color),
+    //   minimumSize: MaterialStateProperty.all(Size(double.infinity, 36)),
+    //   padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16)),
+    //   elevation: MaterialStateProperty.all(3),
+    //   textStyle: MaterialStateProperty.all(TextStyle(
+    //     color: Colors.red,
+    //   )),
+    // );
 
     return SafeArea(
       bottom: false,
@@ -124,52 +131,123 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
                   onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
                 ),
 
-                // Color Input:
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: ElevatedButton(
-                    // elevation: 3.0,
-                    style: raisedButtonStyle,
-                    // style: elevatedButtonStyle,
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            titlePadding: const EdgeInsets.all(0.0),
-                            contentPadding: const EdgeInsets.all(0.0),
-                            content: SingleChildScrollView(
-                              child: ColorPicker(
-                                pickerColor: _color,
-                                onColorChanged: changeColor,
-                                colorPickerWidth: 300.0,
-                                pickerAreaHeightPercent: 0.7,
-                                enableAlpha: true,
-                                displayThumbColor: true,
-                                showLabel: true,
-                                paletteType: PaletteType.hsv,
-                                pickerAreaBorderRadius: const BorderRadius.only(
-                                  topLeft: const Radius.circular(2.0),
-                                  topRight: const Radius.circular(2.0),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: Text(
-                      'Color',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                        // color: Colors.white,
+                // Price Input
+                TextField(
+                  autofocus: true,
+                  autocorrect: false,
+                  keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
+                  decoration: InputDecoration(
+                    hintText: 'Price',
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          // color: kLightBlueBackground,
+                          // width: 30,
+                          ),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: primaryColor,
+                        width: 4.0,
                       ),
                     ),
-                    // color: _color,
-                    // textColor: useWhiteForeground(currentColor) ? const Color(0xffffffff) : const Color(0xff000000),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: accentColor,
+                        // color: Colors.red,
+                        width: 6.0,
+                      ),
+                    ),
                   ),
+                  style: TextStyle(),
+                  onChanged: (String newText) {
+                    setState(() {
+                      _price = NumericHelper.roundDouble(newText.parseDoubleOrZero, 2);
+                    });
+                  },
+                  onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
                 ),
+
+                // Title Input
+                TextField(
+                  autofocus: true,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    hintText: 'Title',
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          // color: kLightBlueBackground,
+                          // width: 30,
+                          ),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: primaryColor,
+                        width: 4.0,
+                      ),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: accentColor,
+                        // color: Colors.red,
+                        width: 6.0,
+                      ),
+                    ),
+                  ),
+                  style: TextStyle(),
+                  onChanged: (String newText) {
+                    setState(() {
+                      _title = newText;
+                    });
+                  },
+                  onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
+                ),
+
+                // Color Input:
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 8),
+                //   child: ElevatedButton(
+                //     // elevation: 3.0,
+                //     style: raisedButtonStyle,
+                //     // style: elevatedButtonStyle,
+                //     onPressed: () {
+                //       showDialog(
+                //         context: context,
+                //         builder: (BuildContext context) {
+                //           return AlertDialog(
+                //             titlePadding: const EdgeInsets.all(0.0),
+                //             contentPadding: const EdgeInsets.all(0.0),
+                //             content: SingleChildScrollView(
+                //               child: ColorPicker(
+                //                 pickerColor: _color,
+                //                 onColorChanged: changeColor,
+                //                 colorPickerWidth: 300.0,
+                //                 pickerAreaHeightPercent: 0.7,
+                //                 enableAlpha: true,
+                //                 displayThumbColor: true,
+                //                 showLabel: true,
+                //                 paletteType: PaletteType.hsv,
+                //                 pickerAreaBorderRadius: const BorderRadius.only(
+                //                   topLeft: const Radius.circular(2.0),
+                //                   topRight: const Radius.circular(2.0),
+                //                 ),
+                //               ),
+                //             ),
+                //           );
+                //         },
+                //       );
+                //     },
+                //     child: Text(
+                //       'Color',
+                //       style: TextStyle(
+                //         fontWeight: FontWeight.bold,
+                //         fontSize: 18.0,
+                //         // color: Colors.white,
+                //       ),
+                //     ),
+                //     // color: _color,
+                //     // textColor: useWhiteForeground(currentColor) ? const Color(0xffffffff) : const Color(0xff000000),
+                //   ),
+                // ),
 
                 // Add button:
                 Padding(
@@ -231,8 +309,8 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
   }
 
   void _submitData(BuildContext context, Function onAddProduct) {
-    if (_title.isNotEmpty) {
-      onAddProduct(_title, _color);
+    if (_title.isNotEmpty && _description.isNotEmpty && _price > 0 && _imageUrl.isNotEmpty) {
+      onAddProduct();
     }
     Navigator.pop(context);
   }

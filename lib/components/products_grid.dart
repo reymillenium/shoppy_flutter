@@ -33,7 +33,7 @@ class ProductsGrid extends StatelessWidget {
         ? CustomEmptyWidget(
             packageImage: 1,
             title: 'We are sorry',
-            subTitle: 'There is no categories',
+            subTitle: 'There is no products',
           )
         : GridView(
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(

@@ -62,7 +62,7 @@ class ProductsData with ChangeNotifier {
     refresh();
 
     // dbHelper.deleteDb();
-    _generateDummyData();
+    // _generateDummyData();
   }
 
   // Getters:
@@ -156,7 +156,7 @@ class ProductsData with ChangeNotifier {
         String description = faker.lorem.sentence();
         double price = NumericHelper.roundRandomDoubleInRange(min: 0.99, max: 9.99, places: 2);
         // Color color = ColorHelper.randomMaterialColor();
-        Product product = await addProduct(title: title, description: description, price: price, imageUrl: ListHelper.randomFromList(DUMMY_FOOD_IMAGE_URLS));
+        await addProduct(title: title, description: description, price: price, imageUrl: ListHelper.randomFromList(DUMMY_FOOD_IMAGE_URLS));
 
         // Creates a few dummy FoodRecipe objects by its id (as well as FoodRecipeProduct, FoodIngredient & RecipeStep objects):
         // foodRecipesData.generateDummyDataByProductId(product.id, 5);

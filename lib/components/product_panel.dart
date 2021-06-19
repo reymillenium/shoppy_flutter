@@ -56,14 +56,16 @@ class ProductPanel extends StatelessWidget {
     final String formattedDate = formatter.format(product.createdAt);
     // final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(transaction.amount)}';
     // final double amountFontSize = (84 / amountLabel.length);
-    var foregroundColor = ColorHelper.contrastingColor(product.color);
+    // var foregroundColor = ColorHelper.contrastingColor(product.color);
+    Color primaryColor = Theme.of(context).primaryColor;
+    var foregroundColor = ColorHelper.contrastingColor(primaryColor);
 
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            product.color.withOpacity(0.7),
-            product.color.withOpacity(1),
+            primaryColor.withOpacity(0.7),
+            primaryColor.withOpacity(1),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -95,7 +97,7 @@ class ProductPanel extends StatelessWidget {
                     //   color: Colors.red[500],
                     // ),
                     // color: TinyColor(product.color).lighten(20).color,
-                    color: TinyColor(product.color).darken(6).color,
+                    color: TinyColor(primaryColor).darken(6).color,
                     // color: Colors.blueGrey,
                     // color: Colors.transparent,
                     // border: Border(
@@ -154,9 +156,7 @@ class ProductPanel extends StatelessWidget {
                                   isScrollControlled: true,
                                   context: context,
                                   builder: (context) => ProductEditScreen(
-                                    id: product.id,
-                                    title: product.title,
-                                    color: product.color,
+                                    product: product,
                                   ),
                                 );
                               },

@@ -20,12 +20,12 @@ class ProductEditScreen extends StatefulWidget {
 
   // Properties:
   final Product product;
-  final Function onUpdateProductHandler;
+  // final Function onUpdateProductHandler;
 
   // Constructor:
   ProductEditScreen({
     this.product,
-    this.onUpdateProductHandler,
+    // this.onUpdateProductHandler,
   });
 
   @override

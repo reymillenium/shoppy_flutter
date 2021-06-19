@@ -16,48 +16,48 @@ import '../helpers/_helpers.dart';
 
 // Utilities:
 
-class FavoriteFoodRecipe {
+class FavoriteProduct {
   // Properties:
   int id;
   int userId;
-  int foodRecipeId;
+  int productId;
   DateTime updatedAt;
   DateTime createdAt;
 
   // Constructors:
-  FavoriteFoodRecipe({
+  FavoriteProduct({
     this.id,
     @required this.userId,
-    @required this.foodRecipeId,
+    @required this.productId,
     @required this.createdAt,
     @required this.updatedAt,
   });
 
-  FavoriteFoodRecipe.fromMap(Map<String, dynamic> favoriteFoodRecipeMap) {
-    id = favoriteFoodRecipeMap['id'];
-    userId = favoriteFoodRecipeMap['user_id'];
-    foodRecipeId = favoriteFoodRecipeMap['food_recipe_id'];
+  FavoriteProduct.fromMap(Map<String, dynamic> favoriteProductMap) {
+    id = favoriteProductMap['id'];
+    userId = favoriteProductMap['user_id'];
+    productId = favoriteProductMap['product_id'];
 
-    createdAt = DateTime.parse(favoriteFoodRecipeMap['created_at']);
-    updatedAt = DateTime.parse(favoriteFoodRecipeMap['updated_at']);
+    createdAt = DateTime.parse(favoriteProductMap['created_at']);
+    updatedAt = DateTime.parse(favoriteProductMap['updated_at']);
   }
 
   Map<String, dynamic> toMap() {
-    var favoriteFoodRecipeMap = <String, dynamic>{
+    var favoriteProductMap = <String, dynamic>{
       'id': id,
       'user_id': userId,
-      'food_recipe_id': foodRecipeId,
+      'product_id': productId,
       'created_at': createdAt.toString(),
       'updated_at': updatedAt.toString(),
     };
-    return favoriteFoodRecipeMap;
+    return favoriteProductMap;
   }
 
   dynamic getProp(String key) => <String, dynamic>{
         'id': id,
         'userId': userId,
-        'foodRecipeId': foodRecipeId,
-        'updatedAt': updatedAt,
+        'productId': productId,
         'createdAt': createdAt,
+        'updatedAt': updatedAt,
       }[key];
 }

@@ -113,13 +113,12 @@ class _CustomScaffoldState extends State<CustomScaffold> {
       onDrawerChanged: (isOpened) {
         if (!isOpened) {
           // closeAllThePanels();
-          // This fixes the error:
-          // Flutter setState() or markNeedsBuild() called when widget tree was locked
+          // This fixes the error: Flutter setState() or markNeedsBuild() called when widget tree was locked
           WidgetsBinding.instance.addPostFrameCallback((_) {
             closeAllThePanels();
           });
 
-          // This also fixes the ame error:
+          // This also fixes the same error:
           // Future.delayed(Duration.zero, () {
           //   closeAllThePanels();
           // });

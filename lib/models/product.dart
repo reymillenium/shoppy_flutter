@@ -20,8 +20,9 @@ class Product {
   // Properties:
   int id;
   String title;
-  Color color;
-  List<FoodRecipe> foodRecipes;
+  String description;
+  double price;
+  String imageUrl;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -29,8 +30,9 @@ class Product {
   Product({
     this.id,
     @required this.title,
-    this.color = Colors.orangeAccent,
-    this.foodRecipes,
+    @required this.description,
+    @required this.price,
+    @required this.imageUrl,
     @required this.createdAt,
     @required this.updatedAt,
   });
@@ -38,7 +40,10 @@ class Product {
   Product.fromMap(Map<String, dynamic> productMap) {
     id = productMap['id'];
     title = productMap['title'];
-    color = ColorHelper.fromHex(productMap['color']);
+    description = productMap['description'];
+    price = productMap['price'];
+    imageUrl = productMap['image_url'];
+
     createdAt = DateTime.parse(productMap['created_at']);
     updatedAt = DateTime.parse(productMap['updated_at']);
   }
@@ -47,7 +52,9 @@ class Product {
     var productMap = <String, dynamic>{
       'id': id,
       'title': title,
-      'color': color.toHex(leadingHashSign: true),
+      'description': description,
+      'price': price,
+      'image_url': imageUrl,
       'created_at': createdAt.toString(),
       'updated_at': updatedAt.toString(),
     };
@@ -57,8 +64,10 @@ class Product {
 // Map<String, dynamic> toMap() => {
 //       'id': id,
 //       'title': title,
-//       'color': color.toHex(leadingHashSign: true),
-//       'createdAt': createdAt.toString(),
-//       'updatedAt': updatedAt.toString(),
+//       'description': description,
+//       'price': price,
+//       'image_url': imageUrl,
+//       'created_at': createdAt.toString(),
+//       'updated_at': updatedAt.toString(),
 //     };
 }

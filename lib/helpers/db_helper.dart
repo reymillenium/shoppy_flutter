@@ -12,7 +12,7 @@ import '../models/_models.dart';
 
 class DBHelper {
   static Database _db;
-  static const String DB_NAME = 'expensy.db';
+  static const String DB_NAME = 'shoppy.db';
 
   Future<Database> dbPlus() async {
     if (_db != null) {
@@ -42,6 +42,10 @@ class DBHelper {
     Map<String, Object> productsTable = ProductsData.sqliteTable;
     await _createTable(db, 1, productsTable);
 
+    // favorite_products table:
+    Map<String, Object> favoriteProductsTable = FavoriteProductsData.sqliteTable;
+    await _createTable(db, 1, favoriteProductsTable);
+
     // food_recipes table:
     // Map<String, Object> foodRecipesTable = FoodRecipesData.sqliteTable;
     // await _createTable(db, 1, foodRecipesTable);
@@ -58,7 +62,7 @@ class DBHelper {
     // Map<String, Object> recipeStepsTable = RecipeStepsData.sqliteTable;
     // await _createTable(db, 1, recipeStepsTable);
 
-    // recipe_steps table:
+    // favorite_food_recipes table:
     // Map<String, Object> favoriteFoodRecipesTable = FavoriteFoodRecipesData.sqliteTable;
     // await _createTable(db, 1, favoriteFoodRecipesTable);
   }

@@ -106,23 +106,23 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
 
   @override
   Widget build(BuildContext context) {
-    FoodRecipesData foodRecipesData = Provider.of<FoodRecipesData>(context, listen: true);
-    FavoriteFoodRecipesData favoriteFoodRecipesData = Provider.of<FavoriteFoodRecipesData>(context, listen: true);
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context, listen: true);
 
     return FutureBuilder(
         // future: foodRecipesData.thoseFavoritesByUserId(1, filtersList: selectedFilters),
-        future: Future.wait([foodRecipesData.thoseFavoritesByUserId(1, filtersList: selectedFilters), favoriteFoodRecipesData.byUserId(1)]),
+        future: Future.wait([productsData.thoseFavoritesByUserId(1, filtersList: selectedFilters), favoriteProductsData.byUserId(1)]),
         builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
-          List<FoodRecipe> foodRecipes;
-          List<FavoriteFoodRecipe> favoriteFoodRecipes;
+          List<Product> products;
+          List<FavoriteProduct> favoriteProducts;
           if (snapshot.data != null) {
-            foodRecipes = snapshot.data[0] ?? [];
-            favoriteFoodRecipes = snapshot.data[1] ?? [];
+            products = snapshot.data[0] ?? [];
+            favoriteProducts = snapshot.data[1] ?? [];
           }
 
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-              return foodRecipes.isEmpty
+              return products.isEmpty
                   ? CustomScaffold(
                       activeIndex: _activeTab,
                       appTitle: 'Favorite Recipes',
@@ -142,21 +142,21 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
                     )
                   : CustomScaffold(
                       activeIndex: _activeTab,
-                      appTitle: 'Favorite Recipes',
+                      appTitle: 'Favorite Products',
                       innerWidgets: [
                         // Expanded(
                         //   flex: 5,
-                        //   child: FoodRecipesList(
+                        //   child: ProductsList(
                         //     // product: _product,
                         //     selectedFilters: selectedFilters,
-                        //     foodRecipes: foodRecipes,
-                        //     favoriteFoodRecipes: favoriteFoodRecipes,
+                        //     products: products,
+                        //     favoriteProducts: favoriteProducts,
                         //     pageStorageKey: _screenId,
                         //   ),
                         // ),
                       ],
-                      objectsLength: foodRecipes.length,
-                      objectName: 'recipe',
+                      objectsLength: products.length,
+                      objectName: 'product',
                       appBarActionIcon: Icons.filter_alt_outlined,
                       onPressedBarActionIcon: () => _openFilterDialog(context),
                       onPressedFAB: () => _showModalNewFavorite(context),
@@ -164,12 +164,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
             default:
               return CustomScaffold(
                 activeIndex: _activeTab,
-                appTitle: 'Favorite Recipes',
+                appTitle: 'Favorite Products',
                 innerWidgets: [
                   CustomEmptyWidget(
                     packageImage: 1,
                     title: 'We are sorry',
-                    subTitle: 'There is no favorite recipes',
+                    subTitle: 'There is no favorite products',
                   ),
                 ],
                 objectsLength: 0,

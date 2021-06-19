@@ -85,7 +85,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Feeddy',
+                  'Shoppy',
                   style: TextStyle(
                     fontSize: 24,
                     color: Colors.white,

@@ -15,5 +15,5 @@ export './food_ingredients_data.dart';
 export './recipe_step.dart';
 export './recipe_steps_data.dart';
 
-export './favorite_food_recipe.dart';
-export './favorite_food_recipes_data.dart';
+export './favorite_product.dart';
+export './favorite_products_data.dart';

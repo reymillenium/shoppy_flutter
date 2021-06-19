@@ -20,7 +20,7 @@ class ProductsData with ChangeNotifier {
   // Properties:
   static const sqliteTable = {
     'table_plural_name': 'products',
-    'table_singular_name': 'food_product',
+    'table_singular_name': 'product',
     'fields': [
       {
         'field_name': 'id',
@@ -31,15 +31,23 @@ class ProductsData with ChangeNotifier {
         'field_type': 'TEXT',
       },
       {
-        'field_name': 'color',
+        'field_name': 'description',
         'field_type': 'TEXT',
       },
       {
-        'field_name': 'createdAt',
+        'field_name': 'price',
+        'field_type': 'REAL',
+      },
+      {
+        'field_name': 'image_url',
         'field_type': 'TEXT',
       },
       {
-        'field_name': 'updatedAt',
+        'field_name': 'created_at',
+        'field_type': 'TEXT',
+      },
+      {
+        'field_name': 'updated_at',
         'field_type': 'TEXT',
       },
     ],
@@ -165,11 +173,13 @@ class ProductsData with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Product> addProduct(String title, Color color) async {
+  Future<Product> addProduct(String title, String description, double price, String imageUrl) async {
     DateTime now = DateTime.now();
     Product newProduct = Product(
       title: title,
-      color: color,
+      description: description,
+      price: price,
+      imageUrl: imageUrl,
       createdAt: now,
       updatedAt: now,
     );
@@ -178,12 +188,14 @@ class ProductsData with ChangeNotifier {
     return product;
   }
 
-  Future<void> updateProduct(int id, String title, Color color) async {
+  Future<void> updateProduct(int id, String title, String description, double price, String imageUrl) async {
     DateTime now = DateTime.now();
-    Product updatingProduct = _products.firstWhere((Product) => id == Product.id);
+    Product updatingProduct = _products.firstWhere((product) => id == product.id);
 
     updatingProduct.title = title;
-    updatingProduct.color = color;
+    updatingProduct.description = description;
+    updatingProduct.price = price;
+    updatingProduct.imageUrl = imageUrl;
     updatingProduct.updatedAt = now;
 
     await _update(updatingProduct, sqliteTable);
@@ -200,5 +212,58 @@ class ProductsData with ChangeNotifier {
   void deleteProductWithoutConfirm(int id) {
     _removeWhere(id);
     // refresh();
+  }
+
+  Future<List<Product>> thoseFavoritesByUserId(int userId, {List<String> filtersList}) async {
+    var dbClient = await dbHelper.dbPlus();
+    List<Product> productsList = [];
+    filtersList = filtersList ?? [];
+    FavoriteProductsData favoriteProductsData = FavoriteProductsData();
+    // Gathering of the productsIdsList on the FavoriteProducts table (favorite_products) by the user_id:
+    List<FavoriteProduct> favoriteProductsList = await favoriteProductsData.byUserId(userId);
+
+    if (favoriteProductsList.isNotEmpty) {
+      List<int> productsIdsList = favoriteProductsList.map((favoriteProduct) => favoriteProduct.productId).toList();
+
+      Map<String, Object> productsTable = ProductsData.sqliteTable;
+      String productsTableName = productsTable['table_plural_name'];
+      List<Map> productsTableFields = productsTable['fields'];
+      String filteringString = (filtersList.isEmpty) ? '' : "(${filtersList.map((e) => "$e = 1").join(' OR ')}) AND ";
+      List<Map> productsMaps = await dbClient.query(productsTableName, columns: productsTableFields.map<String>((field) => field['field_name']).toList(), where: '${filteringString}id IN (${productsIdsList.map((e) => "'$e'").join(', ')})');
+
+      // Conversion into Product objects:
+      if (productsMaps.length > 0) {
+        for (int i = 0; i < productsMaps.length; i++) {
+          Product product = Product.fromMap(productsMaps[i]);
+          productsList.add(product);
+        }
+      }
+    }
+
+    return productsList;
+  }
+
+  Future<void> setAsFavorite(int userId, int productId) async {
+    FavoriteProductsData favoriteProductsData = FavoriteProductsData();
+    await favoriteProductsData.addFavoriteProduct(userId: userId, productId: productId);
+    // await refresh();
+  }
+
+  Future<void> setAsNotFavorite(int userId, int productId) async {
+    FavoriteProductsData favoriteProductsData = FavoriteProductsData();
+    await favoriteProductsData.deleteFavoriteProductWithoutConfirm(userId, productId);
+    // await refresh();
+  }
+
+  Future<void> toggleFavorite(int userId, int productId) async {
+    bool isFavorite = await this.isFavorite(userId, productId);
+    await (isFavorite ? this.setAsNotFavorite(userId, productId) : this.setAsFavorite(userId, productId));
+    await refresh();
+  }
+
+  Future<bool> isFavorite(int userId, int productId) async {
+    FavoriteProductsData favoriteProductsData = FavoriteProductsData();
+    List<FavoriteProduct> favoriteProducts = await favoriteProductsData.byUserId(userId);
+    return favoriteProducts.any((favoriteProduct) => favoriteProduct.productId == productId);
   }
 }

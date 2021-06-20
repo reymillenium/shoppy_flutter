@@ -79,6 +79,8 @@ class ProductGridTile extends StatelessWidget {
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
                       ),
                       child: Image.network(
                         product.imageUrl,
@@ -164,38 +166,46 @@ class ProductGridTile extends StatelessWidget {
                     ],
                   ],
                 ),
-                footer: GridTileBar(
-                  backgroundColor: Colors.black38,
-
-                  leading: IconButton(
-                    // iconSize: 24,
-                    icon: Icon(
-                      isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: isFavorite ? Colors.yellow : Colors.white,
-                      size: 18,
-                    ),
-                    tooltip: 'Favorite',
-                    onPressed: () => toggleFavorite(1, product.id),
+                footer: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    // topLeft: Radius.circular(10),
+                    // topRight: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
                   ),
+                  child: GridTileBar(
+                    backgroundColor: Colors.black38,
 
-                  title: Text(
-                    product.title,
-                    softWrap: true,
-                    overflow: TextOverflow.fade,
-                  ),
-
-                  // Trailing with actions:
-                  trailing: Tooltip(
-                    padding: EdgeInsets.all(0),
-                    message: 'Add to cart',
-                    child: IconButton(
-                      padding: EdgeInsets.all(0),
+                    leading: IconButton(
+                      // iconSize: 24,
                       icon: Icon(
-                        Icons.shopping_cart,
-                        color: Colors.black,
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: isFavorite ? Colors.yellow : Colors.white,
                         size: 18,
                       ),
-                      onPressed: () => {},
+                      tooltip: 'Favorite',
+                      onPressed: () => toggleFavorite(1, product.id),
+                    ),
+
+                    title: Text(
+                      product.title,
+                      softWrap: true,
+                      overflow: TextOverflow.fade,
+                    ),
+
+                    // Trailing with actions:
+                    trailing: Tooltip(
+                      padding: EdgeInsets.all(0),
+                      message: 'Add to cart',
+                      child: IconButton(
+                        padding: EdgeInsets.all(0),
+                        icon: Icon(
+                          Icons.shopping_cart_outlined,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                        onPressed: () => {},
+                      ),
                     ),
                   ),
                 ),

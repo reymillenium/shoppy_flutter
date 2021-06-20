@@ -94,22 +94,26 @@ class ProductGridTile extends StatelessWidget {
                     // Product Price:
                     ...[
                       Positioned(
-                        top: 10,
-                        left: 10,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.black38,
-                          radius: 14,
+                        top: 0,
+                        left: 0,
+                        child: Container(
+                          height: 26,
+                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.black38,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
+                          ),
                           child: FittedBox(
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              child: Text(
-                                '$amountLabel',
-                                style: TextStyle(
-                                  color: ColorHelper.contrastingColor(primaryColor),
-                                  fontWeight: FontWeight.bold,
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: priceFontSize,
-                                ),
+                            child: Text(
+                              '$amountLabel',
+                              style: TextStyle(
+                                color: ColorHelper.contrastingColor(primaryColor),
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                                fontSize: priceFontSize,
                               ),
                             ),
                           ),
@@ -123,9 +127,8 @@ class ProductGridTile extends StatelessWidget {
                         top: 0,
                         right: 0,
                         child: Container(
-                          // height: 20,
+                          height: 26,
                           padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-                          // padding: EdgeInsets.all(0),
                           decoration: BoxDecoration(
                             color: Colors.black38,
                             borderRadius: BorderRadius.only(
@@ -139,14 +142,15 @@ class ProductGridTile extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Tooltip(
-                                  margin: EdgeInsets.only(right: 15),
-                                  padding: EdgeInsets.all(8),
                                   message: 'Delete',
                                   child: GestureDetector(
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: Colors.white,
-                                      size: 14,
+                                    child: Container(
+                                      margin: EdgeInsets.only(right: 8),
+                                      child: Icon(
+                                        Icons.delete,
+                                        color: Colors.white,
+                                        size: 14,
+                                      ),
                                     ),
                                     onTap: () => onDeleteProductHandler(product.id, context),
                                   )),
@@ -154,7 +158,7 @@ class ProductGridTile extends StatelessWidget {
                                 message: 'Edit',
                                 child: GestureDetector(
                                   child: Container(
-                                    margin: EdgeInsets.only(left: 15),
+                                    margin: EdgeInsets.only(left: 8),
                                     child: Icon(
                                       Icons.edit,
                                       color: Colors.white,

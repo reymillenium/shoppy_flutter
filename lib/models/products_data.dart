@@ -109,10 +109,10 @@ class ProductsData with ChangeNotifier {
     final int currentLength = products.length;
     if (currentLength < _maxAmountDummyData) {
       for (int i = 0; i < (_maxAmountDummyData - currentLength); i++) {
-        String title = faker.food.cuisine();
+        String title = faker.lorem.word();
         String description = faker.lorem.sentence();
         double price = NumericHelper.roundRandomDoubleInRange(min: 0.99, max: 9.99, places: 2);
-        await addProduct(title: title, description: description, price: price, imageUrl: ListHelper.randomFromList(DUMMY_FOOD_IMAGE_URLS));
+        await addProduct(title: title, description: description, price: price, imageUrl: ListHelper.randomFromList(DUMMY_PRODUCT_IMAGE_URLS));
       }
     }
   }

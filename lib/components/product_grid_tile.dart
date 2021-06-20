@@ -75,6 +75,7 @@ class ProductGridTile extends StatelessWidget {
               return GridTile(
                 child: Stack(
                   children: [
+                    // Product Image:
                     ClipRRect(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
@@ -89,16 +90,18 @@ class ProductGridTile extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ),
+
+                    // Product Price:
                     ...[
                       Positioned(
                         top: 10,
                         left: 10,
                         child: CircleAvatar(
                           backgroundColor: Colors.black38,
-                          radius: 16,
+                          radius: 14,
                           child: FittedBox(
                             child: Container(
-                              padding: EdgeInsets.all(16),
+                              padding: EdgeInsets.all(8),
                               child: Text(
                                 '$amountLabel',
                                 style: TextStyle(
@@ -113,41 +116,52 @@ class ProductGridTile extends StatelessWidget {
                         ),
                       ),
                     ],
+
+                    // Action Buttons (Delete & Edit):
                     ...[
                       Positioned(
                         top: 0,
                         right: 0,
-                        child: Align(
-                          alignment: Alignment.bottomRight,
+                        child: Container(
+                          // height: 20,
+                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                          // padding: EdgeInsets.all(0),
+                          decoration: BoxDecoration(
+                            color: Colors.black38,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(10),
+                            ),
+                          ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Tooltip(
-                                padding: EdgeInsets.all(0),
-                                message: 'Delete',
-                                child: IconButton(
-                                  padding: EdgeInsets.all(0),
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.black,
-                                    size: 18,
-                                  ),
-                                  onPressed: () => onDeleteProductHandler(product.id, context),
-                                ),
-                              ),
+                                  margin: EdgeInsets.only(right: 15),
+                                  padding: EdgeInsets.all(8),
+                                  message: 'Delete',
+                                  child: GestureDetector(
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                      size: 14,
+                                    ),
+                                    onTap: () => onDeleteProductHandler(product.id, context),
+                                  )),
                               Tooltip(
-                                padding: EdgeInsets.all(0),
                                 message: 'Edit',
-                                child: IconButton(
-                                  padding: EdgeInsets.all(0),
-                                  icon: Icon(
-                                    Icons.edit,
-                                    color: Colors.black,
-                                    size: 18,
+                                child: GestureDetector(
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 15),
+                                    child: Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                      size: 14,
+                                    ),
                                   ),
-                                  onPressed: () {
+                                  onTap: () {
                                     showModalBottomSheet(
                                       backgroundColor: Colors.transparent,
                                       isScrollControlled: true,
@@ -166,6 +180,8 @@ class ProductGridTile extends StatelessWidget {
                     ],
                   ],
                 ),
+
+                // Footer: Favorite icon, Title & Add to cart icon
                 footer: ClipRRect(
                   borderRadius: BorderRadius.only(
                     // topLeft: Radius.circular(10),
@@ -176,24 +192,26 @@ class ProductGridTile extends StatelessWidget {
                   child: GridTileBar(
                     backgroundColor: Colors.black38,
 
+                    // Favorite icon:
                     leading: IconButton(
                       // iconSize: 24,
                       icon: Icon(
                         isFavorite ? Icons.favorite : Icons.favorite_border,
                         color: isFavorite ? Colors.yellow : Colors.white,
-                        size: 18,
+                        size: 14,
                       ),
                       tooltip: 'Favorite',
                       onPressed: () => toggleFavorite(1, product.id),
                     ),
 
+                    // Product Title:
                     title: Text(
                       product.title,
                       softWrap: true,
-                      overflow: TextOverflow.fade,
+                      overflow: TextOverflow.ellipsis,
                     ),
 
-                    // Trailing with actions:
+                    // Add to cart icon:
                     trailing: Tooltip(
                       padding: EdgeInsets.all(0),
                       message: 'Add to cart',
@@ -202,7 +220,7 @@ class ProductGridTile extends StatelessWidget {
                         icon: Icon(
                           Icons.shopping_cart_outlined,
                           color: Colors.white,
-                          size: 18,
+                          size: 14,
                         ),
                         onPressed: () => {},
                       ),

@@ -125,7 +125,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
               return products.isEmpty
                   ? CustomScaffold(
                       activeIndex: _activeTab,
-                      appTitle: 'Favorite Recipes',
+                      appTitle: 'Favorite Products',
                       innerWidgets: [
                         CustomEmptyWidget(
                           packageImage: 1,
@@ -134,7 +134,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
                         ),
                       ],
                       objectsLength: 0,
-                      objectName: 'recipe',
+                      objectName: 'product',
                       appBarActionIcon: Icons.filter_alt_outlined,
                       iconFAB: FontAwesomeIcons.question,
                       onPressedBarActionIcon: () => _openFilterDialog(context),
@@ -144,16 +144,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
                       activeIndex: _activeTab,
                       appTitle: 'Favorite Products',
                       innerWidgets: [
-                        // Expanded(
-                        //   flex: 5,
-                        //   child: ProductsList(
-                        //     // product: _product,
-                        //     selectedFilters: selectedFilters,
-                        //     products: products,
-                        //     favoriteProducts: favoriteProducts,
-                        //     pageStorageKey: _screenId,
-                        //   ),
-                        // ),
+                        Expanded(
+                          flex: 5,
+                          child: ProductsGrid(
+                            products: products,
+                          ),
+                        ),
                       ],
                       objectsLength: products.length,
                       objectName: 'product',
@@ -173,7 +169,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
                   ),
                 ],
                 objectsLength: 0,
-                objectName: 'recipe',
+                objectName: 'product',
                 appBarActionIcon: Icons.filter_alt_outlined,
                 iconFAB: FontAwesomeIcons.question,
                 onPressedBarActionIcon: () => _openFilterDialog(context),

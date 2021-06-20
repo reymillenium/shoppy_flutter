@@ -81,53 +81,12 @@ class ProductsData with ChangeNotifier {
     var dbClient = await dbHelper.dbPlus();
     List<Map> tableFields = table['fields'];
     List<Map> productsMaps = await dbClient.query(table['table_plural_name'], columns: tableFields.map<String>((field) => field['field_name']).toList());
-    //List<Map> objectMaps = await dbClient.rawQuery("SELECT * FROM $TABLE");
-    // var dbClientJoinedTables = await dbHelper.dbManyToManyTablePlus(productsFoodRecipesData.sqliteTable, table, FoodRecipesData.sqliteTable);
 
     List<Product> productsList = [];
     if (productsMaps.length > 0) {
       for (int i = 0; i < productsMaps.length; i++) {
         Product product;
         product = Product.fromMap(productsMaps[i]);
-        // Declaration of temporal empty lists:
-        // List<FoodCategoryFoodRecipe> foodCategoriesFoodRecipesList = [];
-        // List<FoodRecipe> foodRecipesList = [];
-
-        // try {
-        //   // Gathering on the join table (food_categories_food_recipes) by the foodCategoryId:
-        //   List<Map> foodCategoriesFoodRecipesTableFields = FoodCategoriesFoodRecipesData.sqliteTable['fields'];
-        //   String foodCategoriesFoodRecipesTableName = FoodCategoriesFoodRecipesData.sqliteTable['table_plural_name'];
-        //
-        //   List<Map> foodCategoriesFoodRecipesMaps = await dbClient.query(foodCategoriesFoodRecipesTableName, columns: foodCategoriesFoodRecipesTableFields.map<String>((field) => field['field_name']).toList(), where: 'food_category_id = ?', whereArgs: [foodCategory.id]);
-        //   if (foodCategoriesFoodRecipesMaps.length > 0) {
-        //     // If the FoodCategory object has at least one associated FoodRecipe...
-        //     for (int j = 0; j < foodCategoriesFoodRecipesMaps.length; j++) {
-        //       FoodCategoryFoodRecipe foodCategoryFoodRecipe;
-        //       foodCategoryFoodRecipe = FoodCategoryFoodRecipe.fromMap(foodCategoriesFoodRecipesMaps[j]);
-        //       // Adding the FoodCategoryFoodRecipe object to the temporal list:
-        //       foodCategoriesFoodRecipesList.add(foodCategoryFoodRecipe);
-        //     }
-        //
-        //     List<int> foodRecipesIdsList = foodCategoriesFoodRecipesList.map((foodCategoryFoodRecipe) => foodCategoryFoodRecipe.foodRecipeId).toList();
-        //     // Gathering of its FoodRecipe objects based on then possibly gathered FoodCategoryFoodRecipe objects:
-        //     List<Map> foodRecipesTableFields = FoodRecipesData.sqliteTable['fields'];
-        //     // List<Map> foodRecipesMaps = await dbClient.query(FoodRecipesData.sqliteTable['table_plural_name'], columns: foodRecipesTableFields.map<String>((field) => field['field_name']).toList(), where: 'id = ?', whereArgs: foodRecipesIdsList);
-        //     List<Map> foodRecipesMaps = await dbClient.query(FoodRecipesData.sqliteTable['table_plural_name'], columns: foodRecipesTableFields.map<String>((field) => field['field_name']).toList(), where: 'id IN (${foodRecipesIdsList.map((e) => "'$e'").join(', ')})');
-        //
-        //     for (int k = 0; k < foodRecipesMaps.length; k++) {
-        //       FoodRecipe foodRecipe;
-        //       foodRecipe = FoodRecipe.fromMap(foodRecipesMaps[k]);
-        //       // Adding the FoodCategoryFoodRecipe object to the temporal list:
-        //       foodRecipesList.add(foodRecipe);
-        //     }
-        //   }
-        // } catch (error) {
-        //   // No rows on the join table or there is any other error there.
-        //   print(error);
-        // }
-
-        // product.foodRecipes = foodRecipesList;
-        // Adding the Product object with everything inside to the list:
         productsList.add(product);
       }
     }
@@ -149,26 +108,18 @@ class ProductsData with ChangeNotifier {
     final List<Product> products = await _index(sqliteTable);
     final int currentLength = products.length;
     if (currentLength < _maxAmountDummyData) {
-      // FoodRecipesData foodRecipesData = FoodRecipesData();
-      // FoodCategoriesFoodRecipesData foodCategoriesFoodRecipesData = FoodCategoriesFoodRecipesData();
       for (int i = 0; i < (_maxAmountDummyData - currentLength); i++) {
         String title = faker.food.cuisine();
         String description = faker.lorem.sentence();
         double price = NumericHelper.roundRandomDoubleInRange(min: 0.99, max: 9.99, places: 2);
-        // Color color = ColorHelper.randomMaterialColor();
         await addProduct(title: title, description: description, price: price, imageUrl: ListHelper.randomFromList(DUMMY_FOOD_IMAGE_URLS));
-
-        // Creates a few dummy FoodRecipe objects by its id (as well as FoodRecipeProduct, FoodIngredient & RecipeStep objects):
-        // foodRecipesData.generateDummyDataByProductId(product.id, 5);
-        // @required this.createdAt,
-        // @required this.updatedAt,
       }
     }
   }
 
   void _removeWhere(int id) async {
     await _destroy(id, sqliteTable);
-    await refresh();
+    // await refresh();
   }
 
   // Public methods:
@@ -215,7 +166,7 @@ class ProductsData with ChangeNotifier {
 
   void deleteProductWithoutConfirm(int id) {
     _removeWhere(id);
-    // refresh();
+    refresh();
   }
 
   Future<List<Product>> thoseFavoritesByUserId(int userId, {List<String> filtersList}) async {

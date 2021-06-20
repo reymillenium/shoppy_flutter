@@ -62,7 +62,7 @@ class ProductsData with ChangeNotifier {
     refresh();
 
     // dbHelper.deleteDb();
-    // _generateDummyData();
+    _generateDummyData();
   }
 
   // Getters:

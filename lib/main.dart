@@ -124,7 +124,7 @@ class MyApp extends StatelessWidget {
     AppData appData = Provider.of<AppData>(context, listen: true);
     ThemeData currentThemeData = appData.currentThemeData;
     Map currentThemeFont = appData.currentThemeFont;
-    final String appTitle = 'Feeddy';
+    final String appTitle = 'Shoppy';
 
     return MaterialApp(
       title: appTitle,

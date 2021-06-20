@@ -35,15 +35,41 @@ class ProductsGrid extends StatelessWidget {
             title: 'We are sorry',
             subTitle: 'There is no products',
           )
-        : GridView(
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200,
+        // : GridView(
+        //     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        //       maxCrossAxisExtent: 200,
+        //       childAspectRatio: 3 / 2,
+        //       crossAxisSpacing: 10,
+        //       mainAxisSpacing: 10,
+        //     ),
+        //     padding: EdgeInsets.all(10),
+        //     children: buildProductPanels(products),
+        //   );
+        : GridView.builder(
+            // gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            //   maxCrossAxisExtent: 200,
+            //   childAspectRatio: 3 / 2,
+            //   crossAxisSpacing: 10,
+            //   mainAxisSpacing: 10,
+            // ),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
               childAspectRatio: 3 / 2,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
             ),
-            padding: EdgeInsets.all(10),
-            children: buildProductPanels(products),
+            padding: const EdgeInsets.all(10.0),
+            itemBuilder: (BuildContext context, int index) {
+              // return ProductPanel(
+              //   key: ValueKey(products[index].id),
+              //   product: products[index],
+              // );
+              return ProductGridTile(
+                key: ValueKey(products[index].id),
+                product: products[index],
+              );
+            },
+            itemCount: products.length,
           );
   }
 

@@ -20,9 +20,8 @@ export './cupertino_picker.dart';
 export './drop_down_button_currency.dart';
 
 // Product related:
-export './products_list.dart'; // First attempt to list using a ListView:
-export './product_tile.dart'; // First attempt to list using a ListView:
 export './products_grid.dart'; // First attempt to list inside a ListView using ListTile
+export 'product_grid_tile.dart';
 export './product_panel.dart'; // Second attempt using a ListGrid instead of a ListView:
 
 // FoodRecipe related:

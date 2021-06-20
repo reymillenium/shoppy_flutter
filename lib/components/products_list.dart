@@ -25,7 +25,7 @@ class ProductsList extends StatelessWidget {
           ? CustomEmptyWidget(
               packageImage: 1,
               title: 'We are sorry',
-              subTitle: 'There is no categories',
+              subTitle: 'There is no products',
             )
           : ListView.custom(
               padding: const EdgeInsets.only(left: 0, top: 0, right: 0),

@@ -1,12 +1,16 @@
 // Packages:
 import '../_inner_packages.dart';
 import '../_external_packages.dart';
+
 // Screens:
 import '../screens/_screens.dart';
+
 // Models:
 import '../models/_models.dart';
+
 // Components:
 import '../components/_components.dart';
+
 // Helpers:
 import '../helpers/_helpers.dart';
 // Utilities:
@@ -38,8 +42,11 @@ class ProductTile extends StatelessWidget {
     Function onDeleteProductHandler = (id, context) => productsData.deleteProductWithConfirm(id, context);
 
     final String formattedDate = formatter.format(product.createdAt);
-    // final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(transaction.amount)}';
-    // final double amountFontSize = (84 / amountLabel.length);
+    final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(product.price)}';
+    final double priceFontSize = (84 / amountLabel.length);
+
+    Color primaryColor = Theme.of(context).primaryColor;
+    var foregroundColor = ColorHelper.contrastingColor(primaryColor);
 
     return Card(
       // shadowColor: Colors.purpleAccent,
@@ -62,17 +69,18 @@ class ProductTile extends StatelessWidget {
         child: ListTile(
           // visualDensity: VisualDensity.standard,
           leading: CircleAvatar(
-            backgroundColor: product.color,
+            backgroundColor: primaryColor,
             radius: 32,
             child: FittedBox(
               child: Container(
                 padding: EdgeInsets.all(16),
                 child: Text(
-                  'test',
+                  amountLabel,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.italic,
-                    fontSize: 14,
+                    fontSize: priceFontSize,
+                    color: foregroundColor,
                   ),
                 ),
               ),
@@ -125,10 +133,7 @@ class ProductTile extends StatelessWidget {
                       isScrollControlled: true,
                       context: context,
                       builder: (context) => ProductEditScreen(
-                        id: id,
-                        // index: index,
-                        title: product.title,
-                        color: product.color,
+                        product: product,
                       ),
                     );
                   },

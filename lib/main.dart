@@ -35,9 +35,14 @@ void main() {
       ),
 
       // Data related to the ProductsData objects: (sqlite)
-      // ChangeNotifierProvider<ProductsData>(
-      //   create: (context) => ProductsData(),
-      // ),
+      ChangeNotifierProvider<ProductsData>(
+        create: (context) => ProductsData(),
+      ),
+
+      // Data related to the FavoriteProduct objects: (sqlite)
+      ChangeNotifierProvider<FavoriteProductsData>(
+        create: (context) => FavoriteProductsData(),
+      ),
 
       // Data related to the ProductsFoodRecipesData objects: (sqlite)
       // ChangeNotifierProvider<ProductsFoodRecipesData>(

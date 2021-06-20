@@ -126,18 +126,18 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
 
     return FutureBuilder(
         // future: foodRecipesData.byProduct(_product, filtersList: selectedFilters),
-        future: Future.wait([productsData.byProduct(_product, filtersList: selectedFilters), favoriteProductsData.byUserId(1)]),
+        future: Future.wait([productsData.thoseFavoritesByUserId(1, filtersList: selectedFilters), favoriteProductsData.byUserId(1)]),
         builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
-          List<FoodRecipe> foodRecipes;
-          List<FavoriteFoodRecipe> favoriteFoodRecipes;
+          List<Product> products;
+          List<FavoriteProduct> favoriteProducts;
           if (snapshot.data != null) {
-            foodRecipes = snapshot.data[0] ?? [];
-            favoriteFoodRecipes = snapshot.data[1] ?? [];
+            products = snapshot.data[0] ?? [];
+            favoriteProducts = snapshot.data[1] ?? [];
           }
 
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-              return foodRecipes.isEmpty
+              return products.isEmpty
                   ? CustomScaffold(
                       activeIndex: _activeTab,
                       appTitle: _product.title,
@@ -169,7 +169,7 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
                         //   ),
                         // ),
                       ],
-                      objectsLength: foodRecipes.length,
+                      objectsLength: 0,
                       objectName: 'recipe',
                       appBarActionIcon: Icons.filter_alt_outlined,
                       onPressedBarActionIcon: () => _openFilterDialog(context),

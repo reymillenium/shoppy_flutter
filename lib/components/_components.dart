@@ -20,7 +20,7 @@ export './cupertino_picker.dart';
 export './drop_down_button_currency.dart';
 
 // Product related:
-export './food_Ingredients_list.dart';
+export './products_list.dart'; // First attempt to list using a ListView:
 export './product_tile.dart'; // First attempt to list using a ListView:
 export './products_grid.dart'; // First attempt to list inside a ListView using ListTile
 export './product_panel.dart'; // Second attempt using a ListGrid instead of a ListView:
@@ -29,11 +29,3 @@ export './product_panel.dart'; // Second attempt using a ListGrid instead of a L
 // export './food_recipes_list.dart';
 // export './food_recipe_tile.dart';
 // export './food_recipe_details_header.dart'; // Goes on the FoodRecipeShowScreen, on top of the FoodIngredientsList
-
-// FoodIngredient related:
-export './food_Ingredients_list.dart';
-export './food_ingredient_tile.dart';
-
-// RecipeStep related:
-export './recipe_steps_list.dart';
-export './recipe_step_tile.dart';

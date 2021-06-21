@@ -31,7 +31,7 @@ class ProductGridTile extends StatelessWidget {
   final currencyFormat = new NumberFormat("#,##0.00", "en_US");
 
   void selectProduct(BuildContext context, bool isFavorite) {
-    Navigator.pushNamed(context, ProductShowScreen.screenId, arguments: {'product': product, 'isFavorite': isFavorite});
+    Navigator.pushNamed(context, ProductShowScreen.screenId, arguments: {'product': product});
   }
 
   @override

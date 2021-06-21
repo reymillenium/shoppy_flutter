@@ -22,12 +22,10 @@ class ProductShowScreen extends StatefulWidget {
 
   // Properties:
   final Product product;
-  final bool isFavorite;
 
   const ProductShowScreen({
     Key key,
     this.product,
-    this.isFavorite,
   }) : super(key: key);
 
   @override
@@ -37,6 +35,7 @@ class ProductShowScreen extends StatefulWidget {
 class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, RouteObserverMixin {
   // State Properties:
   Product _product;
+
   final String _screenId = ProductShowScreen.screenId;
   int _activeTab = 0;
   List<String> availableFilters = ["isGlutenFree", "isLactoseFree", "isVegan", "isVegetarian"];
@@ -129,59 +128,105 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
 
     return FutureBuilder(
         // future: foodRecipesData.byProduct(_product, filtersList: selectedFilters),
-        future: Future.wait([productsData.thoseFavoritesByUserId(userId, filtersList: selectedFilters), favoriteProductsData.byUserId(userId)]),
+        // future: Future.wait([productsData.thoseFavoritesByUserId(userId, filtersList: selectedFilters), favoriteProductsData.byUserId(userId, filtersList: selectedFilters)]),
+        future: Future.wait([productsData.isFavorite(userId, _product.id), favoriteProductsData.byUserId(userId, filtersList: selectedFilters)]),
         builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
-          List<Product> products;
+          // List<Product> products;
+          bool isFavorite;
           List<FavoriteProduct> favoriteProducts;
           if (snapshot.data != null) {
-            products = snapshot.data[0] ?? [];
+            // products = snapshot.data[0] ?? [];
+            isFavorite = snapshot.data[0];
             favoriteProducts = snapshot.data[1] ?? [];
           }
+          // This is just temporal, as it not depends of thoseFavoritesByUser. It should only wait for those list of objects related to each Product object (none yet)
 
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-              return products.isEmpty
-                  ? CustomScaffold(
-                      activeIndex: _activeTab,
-                      appTitle: _product.title,
-                      innerWidgets: [
-                        CustomEmptyWidget(
-                          packageImage: 1,
-                          title: 'We are sorry',
-                          subTitle: 'There is no recipes',
+              //   return products.isEmpty
+              //       ? CustomScaffold(
+              //           activeIndex: _activeTab,
+              //           appTitle: _product.title,
+              //           innerWidgets: [
+              //             CustomEmptyWidget(
+              //               packageImage: 1,
+              //               title: 'We are sorry',
+              //               subTitle: 'There is no things',
+              //             ),
+              //           ],
+              //           objectsLength: 0,
+              //           objectName: 'recipe',
+              //           appBarActionIcon: Icons.filter_alt_outlined,
+              //           iconFAB: FontAwesomeIcons.question,
+              //           onPressedBarActionIcon: () => _openFilterDialog(context),
+              //           onPressedFAB: () => _showModalNewFoodRecipe(context),
+              //         )
+              //       : CustomScaffold(
+              //           activeIndex: _activeTab,
+              //           appTitle: _product.title,
+              //           innerWidgets: [
+              //             Expanded(
+              //               child: ListView(
+              //                 scrollDirection: Axis.vertical,
+              //                 shrinkWrap: true,
+              //                 children: [
+              //                   // Product Details Header
+              //                   ProductDetailsHeader(
+              //                     product: _product,
+              //                     isFavorite: widget.isFavorite,
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //           ],
+              //           objectsLength: 0,
+              //           objectName: 'recipe',
+              //           appBarActionIcon: Icons.filter_alt_outlined,
+              //           onPressedBarActionIcon: () => _openFilterDialog(context),
+              //           onPressedFAB: () => _showModalNewFoodRecipe(context),
+              //         );
+              // default:
+              //   return CustomScaffold(
+              //     activeIndex: _activeTab,
+              //     appTitle: _product.title,
+              //     innerWidgets: [
+              //       CustomEmptyWidget(
+              //         packageImage: 1,
+              //         title: 'We are sorry',
+              //         subTitle: 'There is no recipes',
+              //       ),
+              //     ],
+              //     objectsLength: 0,
+              //     objectName: 'recipe',
+              //     appBarActionIcon: Icons.filter_alt_outlined,
+              //     iconFAB: FontAwesomeIcons.question,
+              //     onPressedBarActionIcon: () => _openFilterDialog(context),
+              //     onPressedFAB: () => _showModalNewFoodRecipe(context),
+              //   );
+              return CustomScaffold(
+                activeIndex: _activeTab,
+                appTitle: _product.title,
+                innerWidgets: [
+                  Expanded(
+                    child: ListView(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      children: [
+                        // Product Details Header
+                        ProductDetailsHeader(
+                          product: _product,
+                          isFavorite: isFavorite,
                         ),
                       ],
-                      objectsLength: 0,
-                      objectName: 'recipe',
-                      appBarActionIcon: Icons.filter_alt_outlined,
-                      iconFAB: FontAwesomeIcons.question,
-                      onPressedBarActionIcon: () => _openFilterDialog(context),
-                      onPressedFAB: () => _showModalNewFoodRecipe(context),
-                    )
-                  : CustomScaffold(
-                      activeIndex: _activeTab,
-                      appTitle: _product.title,
-                      innerWidgets: [
-                        Expanded(
-                          child: ListView(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            children: [
-                              // Product Details Header
-                              ProductDetailsHeader(
-                                product: _product,
-                                isFavorite: widget.isFavorite,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                      objectsLength: 0,
-                      objectName: 'recipe',
-                      appBarActionIcon: Icons.filter_alt_outlined,
-                      onPressedBarActionIcon: () => _openFilterDialog(context),
-                      onPressedFAB: () => _showModalNewFoodRecipe(context),
-                    );
+                    ),
+                  ),
+                ],
+                objectsLength: 0,
+                objectName: 'recipe',
+                appBarActionIcon: Icons.filter_alt_outlined,
+                onPressedBarActionIcon: () => _openFilterDialog(context),
+                onPressedFAB: () => _showModalNewFoodRecipe(context),
+              );
             default:
               return CustomScaffold(
                 activeIndex: _activeTab,

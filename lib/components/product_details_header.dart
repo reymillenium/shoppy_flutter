@@ -110,13 +110,15 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
                   child: IconButton(
                     iconSize: 32,
                     icon: Icon(
-                      _isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: _isFavorite ? Colors.yellow : Colors.white,
+                      // _isFavorite ? Icons.favorite : Icons.favorite_border,
+                      // color: _isFavorite ? Colors.yellow : Colors.white,
+                      widget.isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: widget.isFavorite ? Colors.yellow : Colors.white,
                     ),
                     tooltip: 'Favorite',
                     // onPressed: () => toggleFavorite(userId, widget.foodRecipe.id),
                     onPressed: () {
-                      toggleLocallyFavorite();
+                      // toggleLocallyFavorite();
                       toggleFavorite(userId, widget.product.id);
                     },
                   ),

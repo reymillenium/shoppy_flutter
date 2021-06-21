@@ -182,10 +182,7 @@ class MyApp extends StatelessWidget {
           case ProductShowScreen.screenId:
             return MaterialPageRoute(
               builder: (context) {
-                return ProductShowScreen(
-                  product: args['product'],
-                  isFavorite: args['isFavorite'],
-                );
+                return ProductShowScreen(product: args['product']);
               },
             );
             break;

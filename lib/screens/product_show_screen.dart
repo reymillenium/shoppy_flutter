@@ -217,6 +217,16 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
                           product: _product,
                           isFavorite: isFavorite,
                         ),
+
+                        // Description  Header Text:
+                        SimpleListHeader(
+                          listHeader: 'Description',
+                        ),
+
+                        // Product Description:
+                        PartialListContainer(
+                          innerWidgetList: Text('${_product.description}'),
+                        ),
                       ],
                     ),
                   ),

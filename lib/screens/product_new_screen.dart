@@ -198,7 +198,7 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
                   style: TextStyle(),
                   onChanged: (String newText) {
                     setState(() {
-                      _title = newText;
+                      _description = newText;
                     });
                   },
                   onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),

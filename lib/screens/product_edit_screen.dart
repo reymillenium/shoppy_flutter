@@ -180,7 +180,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                   style: TextStyle(),
                   onChanged: (String newText) {
                     setState(() {
-                      _title = newText;
+                      _price = NumericHelper.roundDouble(newText.parseDoubleOrZero, 2);
                     });
                   },
                   onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
@@ -219,7 +219,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                   style: TextStyle(),
                   onChanged: (String newText) {
                     setState(() {
-                      _title = newText;
+                      _description = newText;
                     });
                   },
                   onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),

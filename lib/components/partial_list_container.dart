@@ -47,7 +47,7 @@ class PartialListContainer extends StatelessWidget {
           ),
         ],
       ),
-      height: 300,
+      // height: 300,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0),
         child: innerWidgetList,

@@ -51,7 +51,7 @@ class ProductPanel extends StatelessWidget {
     Map currentCurrency = appData.currentCurrency;
 
     ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
-    Function onDeleteProductHandler = (id, context) => productsData.deleteProductWithConfirm(id, context);
+    Function onDeleteProductHandler = (productId, context, userId) => productsData.deleteProductWithConfirm(productId, context, userId);
 
     final String formattedDate = formatter.format(product.createdAt);
     // final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(transaction.amount)}';
@@ -59,6 +59,7 @@ class ProductPanel extends StatelessWidget {
     // var foregroundColor = ColorHelper.contrastingColor(product.color);
     Color primaryColor = Theme.of(context).primaryColor;
     var foregroundColor = ColorHelper.contrastingColor(primaryColor);
+    int userId = 1;
 
     return Container(
       decoration: BoxDecoration(
@@ -139,7 +140,7 @@ class ProductPanel extends StatelessWidget {
                                 color: foregroundColor,
                                 size: 20,
                               ),
-                              onPressed: () => onDeleteProductHandler(product.id, context),
+                              onPressed: () => onDeleteProductHandler(product.id, context, userId),
                             ),
                           ),
                           Tooltip(
@@ -169,7 +170,7 @@ class ProductPanel extends StatelessWidget {
                           //   child: Tooltip(
                           //     message: 'Delete',
                           //     child: GestureDetector(
-                          //       onTap: () => onDeleteProductHandler(product.id, context),
+                          //       onTap: () => onDeleteProductHandler(product.id, context, userId),
                           //       child: Icon(Icons.delete),
                           //     ),
                           //   ),

@@ -22,10 +22,12 @@ class ProductShowScreen extends StatefulWidget {
 
   // Properties:
   final Product product;
+  final bool isFavorite;
 
   const ProductShowScreen({
     Key key,
     this.product,
+    this.isFavorite,
   }) : super(key: key);
 
   @override
@@ -123,10 +125,11 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
   Widget build(BuildContext context) {
     ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
     FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context, listen: true);
+    int userId = 1;
 
     return FutureBuilder(
         // future: foodRecipesData.byProduct(_product, filtersList: selectedFilters),
-        future: Future.wait([productsData.thoseFavoritesByUserId(1, filtersList: selectedFilters), favoriteProductsData.byUserId(1)]),
+        future: Future.wait([productsData.thoseFavoritesByUserId(userId, filtersList: selectedFilters), favoriteProductsData.byUserId(userId)]),
         builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
           List<Product> products;
           List<FavoriteProduct> favoriteProducts;
@@ -159,15 +162,19 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
                       activeIndex: _activeTab,
                       appTitle: _product.title,
                       innerWidgets: [
-                        // Expanded(
-                        //   flex: 5,
-                        //   child: FoodRecipesList(
-                        //     selectedFilters: selectedFilters,
-                        //     foodRecipes: foodRecipes,
-                        //     favoriteFoodRecipes: favoriteFoodRecipes,
-                        //     pageStorageKey: _product.id.toString(),
-                        //   ),
-                        // ),
+                        Expanded(
+                          child: ListView(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            children: [
+                              // Product Details Header
+                              ProductDetailsHeader(
+                                product: _product,
+                                isFavorite: widget.isFavorite,
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                       objectsLength: 0,
                       objectName: 'recipe',

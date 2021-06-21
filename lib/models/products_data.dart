@@ -98,9 +98,9 @@ class ProductsData with ChangeNotifier {
     return await dbClient.delete(table['table_plural_name'], where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<int> _update(Product Product, Map<String, dynamic> table) async {
+  Future<int> _update(Product product, Map<String, dynamic> table) async {
     var dbClient = await dbHelper.dbPlus();
-    return await dbClient.update(table['table_plural_name'], Product.toMap(), where: 'id = ?', whereArgs: [Product.id]);
+    return await dbClient.update(table['table_plural_name'], product.toMap(), where: 'id = ?', whereArgs: [product.id]);
   }
 
   // Private methods:
@@ -117,8 +117,12 @@ class ProductsData with ChangeNotifier {
     }
   }
 
-  void _removeWhere(int id) async {
-    await _destroy(id, sqliteTable);
+  void _removeWhere(int productId, int userId) async {
+    bool isFavorite = await this.isFavorite(userId, productId);
+    if (isFavorite) {
+      await this.setAsNotFavorite(userId, productId);
+    }
+    await _destroy(productId, sqliteTable);
     // await refresh();
   }
 
@@ -143,9 +147,9 @@ class ProductsData with ChangeNotifier {
     return product;
   }
 
-  Future<void> updateProduct(int id, String title, String description, double price, String imageUrl) async {
+  Future<void> updateProduct(int productId, String title, String description, double price, String imageUrl) async {
     DateTime now = DateTime.now();
-    Product updatingProduct = _products.firstWhere((product) => id == product.id);
+    Product updatingProduct = _products.firstWhere((product) => productId == product.id);
 
     updatingProduct.title = title;
     updatingProduct.description = description;
@@ -157,15 +161,15 @@ class ProductsData with ChangeNotifier {
     refresh();
   }
 
-  Future<void> deleteProductWithConfirm(int id, BuildContext context) {
-    DialogHelper.showDialogPlus(id, context, () => _removeWhere(id)).then((value) {
+  Future<void> deleteProductWithConfirm(int productId, BuildContext context, int userId) {
+    DialogHelper.showDialogPlus(productId, context, () => _removeWhere(productId, userId)).then((value) {
       (context as Element).reassemble();
       refresh();
     });
   }
 
-  void deleteProductWithoutConfirm(int id) {
-    _removeWhere(id);
+  void deleteProductWithoutConfirm(int id, int userId) {
+    _removeWhere(id, userId);
     refresh();
   }
 

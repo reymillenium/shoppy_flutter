@@ -65,7 +65,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
     Map currentCurrency = appData.currentCurrency;
 
     ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
-    Function onUpdateProductsHandler = (id, title, color) => productsData.updateProduct(_id, _title, _description, _price, _imageUrl);
+    Function onUpdateProductsHandler = (productId, title, description, price, imageUrl) => productsData.updateProduct(productId, title, description, price, imageUrl);
 
     Color primaryColor = Theme.of(context).primaryColor;
     Color accentColor = Theme.of(context).accentColor;
@@ -263,8 +263,8 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
 
   void _updateData(BuildContext context, Function onUpdateProductsHandler) {
     if (_hasValidData()) {
-      // onUpdateProductsHandler(_id, _title, _description, _price, _imageUrl);
-      onUpdateProductsHandler();
+      onUpdateProductsHandler(_id, _title, _description, _price, _imageUrl);
+      // onUpdateProductsHandler();
     }
     Navigator.pop(context);
   }

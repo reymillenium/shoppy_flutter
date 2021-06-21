@@ -179,15 +179,16 @@ class MyApp extends StatelessWidget {
         final args = settings.arguments as Map;
 
         switch (settings.name) {
-          // case ProductShowScreen.screenId:
-          //   return MaterialPageRoute(
-          //     builder: (context) {
-          //       return ProductShowScreen(
-          //         product: args['product'],
-          //       );
-          //     },
-          //   );
-          //   break;
+          case ProductShowScreen.screenId:
+            return MaterialPageRoute(
+              builder: (context) {
+                return ProductShowScreen(
+                  product: args['product'],
+                  isFavorite: args['isFavorite'],
+                );
+              },
+            );
+            break;
 
           // case FoodRecipeShowScreen.screenId:
           //   return MaterialPageRoute(

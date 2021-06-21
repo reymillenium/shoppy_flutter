@@ -108,10 +108,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
   Widget build(BuildContext context) {
     ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
     FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context, listen: true);
+    int userId = 1;
 
     return FutureBuilder(
-        // future: foodRecipesData.thoseFavoritesByUserId(1, filtersList: selectedFilters),
-        future: Future.wait([productsData.thoseFavoritesByUserId(1, filtersList: selectedFilters), favoriteProductsData.byUserId(1)]),
+        // future: foodRecipesData.thoseFavoritesByUserId(userId, filtersList: selectedFilters),
+        future: Future.wait([productsData.thoseFavoritesByUserId(userId, filtersList: selectedFilters), favoriteProductsData.byUserId(userId)]),
         builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
           List<Product> products;
           List<FavoriteProduct> favoriteProducts;

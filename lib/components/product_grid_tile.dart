@@ -30,8 +30,8 @@ class ProductGridTile extends StatelessWidget {
   final DateFormat formatter = DateFormat().add_yMMMMd();
   final currencyFormat = new NumberFormat("#,##0.00", "en_US");
 
-  void selectProduct(BuildContext context) {
-    Navigator.pushNamed(context, ProductShowScreen.screenId, arguments: {'product': product});
+  void selectProduct(BuildContext context, bool isFavorite) {
+    Navigator.pushNamed(context, ProductShowScreen.screenId, arguments: {'product': product, 'isFavorite': isFavorite});
   }
 
   @override
@@ -40,7 +40,7 @@ class ProductGridTile extends StatelessWidget {
     Map currentCurrency = appData.currentCurrency;
 
     ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
-    Function onDeleteProductHandler = (id, context) => productsData.deleteProductWithConfirm(id, context);
+    Function onDeleteProductHandler = (productId, context, userId) => productsData.deleteProductWithConfirm(productId, context, userId);
     Function toggleFavorite = (userId, productId) => productsData.toggleFavorite(userId, productId);
 
     // final String formattedDate = formatter.format(product.createdAt);
@@ -49,9 +49,10 @@ class ProductGridTile extends StatelessWidget {
 
     Color primaryColor = Theme.of(context).primaryColor;
     // var foregroundColor = ColorHelper.contrastingColor(primaryColor);
+    int userId = 1;
 
     return FutureBuilder(
-        future: productsData.isFavorite(1, product.id),
+        future: productsData.isFavorite(userId, product.id),
         builder: (ctx, AsyncSnapshot<bool> snapshot) {
           bool isFavorite;
           if (snapshot.data != null) {
@@ -69,11 +70,16 @@ class ProductGridTile extends StatelessWidget {
                       // Product Image:
                       ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
-                        child: Image.network(
-                          product.imageUrl,
-                          height: 250,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
+                        child: GestureDetector(
+                          child: Image.network(
+                            product.imageUrl,
+                            height: 250,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                          onTap: () {
+                            selectProduct(context, isFavorite);
+                          },
                         ),
                       ),
 
@@ -138,7 +144,7 @@ class ProductGridTile extends StatelessWidget {
                                           size: 14,
                                         ),
                                       ),
-                                      onTap: () => onDeleteProductHandler(product.id, context),
+                                      onTap: () => onDeleteProductHandler(product.id, context, userId),
                                     )),
                                 Tooltip(
                                   message: 'Edit',
@@ -191,7 +197,7 @@ class ProductGridTile extends StatelessWidget {
                           size: 14,
                         ),
                         tooltip: 'Favorite',
-                        onPressed: () => toggleFavorite(1, product.id),
+                        onPressed: () => toggleFavorite(userId, product.id),
                       ),
 
                       // Product Title:

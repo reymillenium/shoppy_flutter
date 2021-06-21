@@ -23,6 +23,7 @@ export './drop_down_button_currency.dart';
 export './products_grid.dart'; // First attempt to list inside a ListView using ListTile
 export 'product_grid_tile.dart';
 export './product_panel.dart'; // Second attempt using a ListGrid instead of a ListView:
+export './product_details_header.dart'; // Second attempt using a ListGrid instead of a ListView:
 
 // FoodRecipe related:
 // export './food_recipes_list.dart';

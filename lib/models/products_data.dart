@@ -62,12 +62,15 @@ class ProductsData with ChangeNotifier {
     refresh();
 
     // dbHelper.deleteDb();
-    _generateDummyData();
+    // _generateDummyData();
   }
 
   // Getters:
-  get products {
-    return _products;
+  // get products {
+  //   return _products;
+  // }
+  UnmodifiableListView<Product> get products {
+    return UnmodifiableListView(_products);
   }
 
   // SQLite DB CRUD:
@@ -123,7 +126,7 @@ class ProductsData with ChangeNotifier {
       await this.setAsNotFavorite(userId, productId);
     }
     await _destroy(productId, sqliteTable);
-    // await refresh();
+    await refresh();
   }
 
   // Public methods:

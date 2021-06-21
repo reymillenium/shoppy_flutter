@@ -43,31 +43,6 @@ void main() {
       ChangeNotifierProvider<FavoriteProductsData>(
         create: (context) => FavoriteProductsData(),
       ),
-
-      // Data related to the ProductsFoodRecipesData objects: (sqlite)
-      // ChangeNotifierProvider<ProductsFoodRecipesData>(
-      //   create: (context) => ProductsFoodRecipesData(),
-      // ),
-
-      // Data related to the FoodRecipesData objects: (sqlite)
-      // ChangeNotifierProvider<FoodRecipesData>(
-      //   create: (context) => FoodRecipesData(),
-      // ),
-
-      // Data related to the FoodIngredientsData objects: (sqlite)
-      // ChangeNotifierProvider<FoodIngredientsData>(
-      //   create: (context) => FoodIngredientsData(),
-      // ),
-
-      // Data related to the RecipeStepsData objects: (sqlite)
-      // ChangeNotifierProvider<RecipeStepsData>(
-      //   create: (context) => RecipeStepsData(),
-      // ),
-
-      // Data related to the FavoriteFoodRecipesData objects: (sqlite)
-      // ChangeNotifierProvider<FavoriteFoodRecipesData>(
-      //   create: (context) => FavoriteFoodRecipesData(),
-      // ),
     ],
     // child: MyApp(),
     child: InitialSplashScreen(),
@@ -186,18 +161,6 @@ class MyApp extends StatelessWidget {
               },
             );
             break;
-
-          // case FoodRecipeShowScreen.screenId:
-          //   return MaterialPageRoute(
-          //     builder: (context) {
-          //       return FoodRecipeShowScreen(
-          //         appTitle: appTitle,
-          //         foodRecipe: args['foodRecipe'],
-          //         isFavorite: args['isFavorite'],
-          //       );
-          //     },
-          //   );
-          //   break;
 
           default:
             return MaterialPageRoute(

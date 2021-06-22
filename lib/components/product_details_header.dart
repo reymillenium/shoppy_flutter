@@ -77,8 +77,6 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
       // margin: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.white70, width: 1),
-        // side: BorderSide(color: Colors.red, width: 1),
-        // borderRadius: BorderRadius.circular(10),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),

@@ -34,17 +34,16 @@ void main() {
         create: (context) => AppData(),
       ),
 
-      // Data related to the ProductsData objects: (sqlite)
+      // Data related to the Product objects: (sqlite DB)
       ChangeNotifierProvider<ProductsData>(
         create: (context) => ProductsData(),
       ),
 
-      // Data related to the FavoriteProduct objects: (sqlite)
+      // Data related to the FavoriteProduct objects: (sqlite DB)
       ChangeNotifierProvider<FavoriteProductsData>(
         create: (context) => FavoriteProductsData(),
       ),
     ],
-    // child: MyApp(),
     child: InitialSplashScreen(),
   ));
 }

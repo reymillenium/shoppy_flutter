@@ -56,7 +56,7 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
 
   @override
   Widget build(BuildContext context) {
-    AppData appData = Provider.of<AppData>(context, listen: true);
+    AppData appData = Provider.of<AppData>(context);
     Map currentCurrency = appData.currentCurrency;
     final String formattedDate = formatter.format(widget.product.createdAt);
     final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(widget.product.price)}';
@@ -65,7 +65,7 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
     // Color accentColor = Theme.of(context).accentColor;
     int userId = 1;
 
-    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    ProductsData productsData = Provider.of<ProductsData>(context);
     // Function onDeleteFoodRecipeHandler = (id, context) => foodRecipesData.deleteFoodRecipeWithConfirm(id, context);
     // Function onUpdateFoodRecipeHandler = (id, title, imageUrl, duration, complexity, affordability, isGlutenFree, isLactoseFree, isVegan, isVegetarian) => foodRecipesData.updateFoodRecipe(id, title, imageUrl, duration, complexity, affordability, isGlutenFree, isLactoseFree, isVegan, isVegetarian);
     Function toggleFavorite = (userId, productId) => productsData.toggleFavorite(userId, productId);

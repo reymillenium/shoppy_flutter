@@ -106,8 +106,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
 
   @override
   Widget build(BuildContext context) {
-    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
-    FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context, listen: true);
+    ProductsData productsData = Provider.of<ProductsData>(context);
+    FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context);
     int userId = 1;
 
     return FutureBuilder(

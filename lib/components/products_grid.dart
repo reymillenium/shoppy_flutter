@@ -26,7 +26,7 @@ class ProductsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    // ProductsData productsData = Provider.of<ProductsData>(context);
     // List<Product> products = productsData.products;
 
     return products.isEmpty

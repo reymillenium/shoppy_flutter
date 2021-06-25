@@ -27,7 +27,8 @@ class ProductIndexScreen extends StatefulWidget {
   _ProductIndexScreenState createState() => _ProductIndexScreenState();
 }
 
-class _ProductIndexScreenState extends State<ProductIndexScreen> with RouteAware, RouteObserverMixin {
+class _ProductIndexScreenState extends State<ProductIndexScreen>
+    with RouteAware, RouteObserverMixin {
   final String _screenId = ProductIndexScreen.screenId;
   int _activeTab = 0;
 
@@ -72,7 +73,7 @@ class _ProductIndexScreenState extends State<ProductIndexScreen> with RouteAware
 
   @override
   Widget build(BuildContext context) {
-    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    ProductsData productsData = Provider.of<ProductsData>(context);
     List<Product> products = productsData.products;
     int amountTotalProducts = products.length;
 

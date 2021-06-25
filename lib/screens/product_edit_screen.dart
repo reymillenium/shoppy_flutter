@@ -61,10 +61,10 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppData appData = Provider.of<AppData>(context, listen: true);
+    AppData appData = Provider.of<AppData>(context);
     Map currentCurrency = appData.currentCurrency;
 
-    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: false);
     Function onUpdateProductsHandler = (productId, title, description, price, imageUrl) => productsData.updateProduct(productId, title, description, price, imageUrl);
 
     Color primaryColor = Theme.of(context).primaryColor;

@@ -85,7 +85,7 @@ class _CustomScaffoldState extends State<CustomScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    AppData appData = Provider.of<AppData>(context, listen: true);
+    AppData appData = Provider.of<AppData>(context);
     Function closeAllThePanels = appData.closeAllThePanels; // Drawer related:
     bool deviceIsIOS = DeviceHelper.deviceIsIOS(context);
     Color primaryColor = Theme.of(context).primaryColor;

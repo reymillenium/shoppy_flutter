@@ -95,7 +95,7 @@ class InitialSplashScreen extends StatelessWidget {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AppData appData = Provider.of<AppData>(context, listen: true);
+    AppData appData = Provider.of<AppData>(context);
     ThemeData currentThemeData = appData.currentThemeData;
     Map currentThemeFont = appData.currentThemeFont;
     final String appTitle = 'Shoppy';

@@ -35,9 +35,9 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppData appData = Provider.of<AppData>(context, listen: true);
+    AppData appData = Provider.of<AppData>(context);
 
-    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: false);
     Function onAddProductHandler = (title, color) => productsData.addProduct(title: _title, description: _description, price: _price, imageUrl: _imageUrl);
 
     Color primaryColor = Theme.of(context).primaryColor;

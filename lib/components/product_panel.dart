@@ -47,10 +47,10 @@ class ProductPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppData appData = Provider.of<AppData>(context, listen: true);
+    AppData appData = Provider.of<AppData>(context);
     Map currentCurrency = appData.currentCurrency;
 
-    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
+    ProductsData productsData = Provider.of<ProductsData>(context);
     Function onDeleteProductHandler = (productId, context, userId) => productsData.deleteProductWithConfirm(productId, context, userId);
 
     final String formattedDate = formatter.format(product.createdAt);

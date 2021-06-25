@@ -35,7 +35,7 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppData appData = Provider.of<AppData>(context, listen: true);
+    AppData appData = Provider.of<AppData>(context);
 
     List<Map> availableThemeColors = appData.availableThemeColors;
     Map currentThemeColors = appData.currentThemeColors;

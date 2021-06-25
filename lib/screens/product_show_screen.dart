@@ -122,8 +122,8 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
 
   @override
   Widget build(BuildContext context) {
-    ProductsData productsData = Provider.of<ProductsData>(context, listen: true);
-    FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context, listen: true);
+    ProductsData productsData = Provider.of<ProductsData>(context);
+    FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context);
     int userId = 1;
 
     return FutureBuilder(
@@ -143,66 +143,6 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
 
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-              //   return products.isEmpty
-              //       ? CustomScaffold(
-              //           activeIndex: _activeTab,
-              //           appTitle: _product.title,
-              //           innerWidgets: [
-              //             CustomEmptyWidget(
-              //               packageImage: 1,
-              //               title: 'We are sorry',
-              //               subTitle: 'There is no things',
-              //             ),
-              //           ],
-              //           objectsLength: 0,
-              //           objectName: 'recipe',
-              //           appBarActionIcon: Icons.filter_alt_outlined,
-              //           iconFAB: FontAwesomeIcons.question,
-              //           onPressedBarActionIcon: () => _openFilterDialog(context),
-              //           onPressedFAB: () => _showModalNewFoodRecipe(context),
-              //         )
-              //       : CustomScaffold(
-              //           activeIndex: _activeTab,
-              //           appTitle: _product.title,
-              //           innerWidgets: [
-              //             Expanded(
-              //               child: ListView(
-              //                 scrollDirection: Axis.vertical,
-              //                 shrinkWrap: true,
-              //                 children: [
-              //                   // Product Details Header
-              //                   ProductDetailsHeader(
-              //                     product: _product,
-              //                     isFavorite: widget.isFavorite,
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //           ],
-              //           objectsLength: 0,
-              //           objectName: 'recipe',
-              //           appBarActionIcon: Icons.filter_alt_outlined,
-              //           onPressedBarActionIcon: () => _openFilterDialog(context),
-              //           onPressedFAB: () => _showModalNewFoodRecipe(context),
-              //         );
-              // default:
-              //   return CustomScaffold(
-              //     activeIndex: _activeTab,
-              //     appTitle: _product.title,
-              //     innerWidgets: [
-              //       CustomEmptyWidget(
-              //         packageImage: 1,
-              //         title: 'We are sorry',
-              //         subTitle: 'There is no recipes',
-              //       ),
-              //     ],
-              //     objectsLength: 0,
-              //     objectName: 'recipe',
-              //     appBarActionIcon: Icons.filter_alt_outlined,
-              //     iconFAB: FontAwesomeIcons.question,
-              //     onPressedBarActionIcon: () => _openFilterDialog(context),
-              //     onPressedFAB: () => _showModalNewFoodRecipe(context),
-              //   );
               return CustomScaffold(
                 activeIndex: _activeTab,
                 appTitle: _product.title,

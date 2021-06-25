@@ -60,14 +60,4 @@ class Product {
     };
     return productMap;
   }
-
-// Map<String, dynamic> toMap() => {
-//       'id': id,
-//       'title': title,
-//       'description': description,
-//       'price': price,
-//       'image_url': imageUrl,
-//       'created_at': createdAt.toString(),
-//       'updated_at': updatedAt.toString(),
-//     };
 }

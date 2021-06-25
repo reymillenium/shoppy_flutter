@@ -64,9 +64,22 @@ class ProductsGrid extends StatelessWidget {
               //   key: ValueKey(products[index].id),
               //   product: products[index],
               // );
-              return ProductGridTile(
-                key: ValueKey(products[index].id),
-                product: products[index],
+
+              // Return error: A Product was used after being disposed. Once you have called dispose() on a Product, it can no longer be used.
+              // return ChangeNotifierProvider(
+              //   create: (context) => products[index],
+              //   child: ProductGridTile(
+              //     key: ValueKey(products[index].id),
+              //     // product: products[index],
+              //   ),
+              // );
+
+              return ChangeNotifierProvider.value(
+                value: products[index],
+                child: ProductGridTile(
+                  key: ValueKey(products[index].id),
+                  // product: products[index],
+                ),
               );
             },
             itemCount: products.length,

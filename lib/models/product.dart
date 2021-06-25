@@ -16,7 +16,7 @@ import '../helpers/_helpers.dart';
 
 // Utilities:
 
-class Product {
+class Product with ChangeNotifier {
   // Properties:
   int id;
   String title;
@@ -59,5 +59,30 @@ class Product {
       'updated_at': updatedAt.toString(),
     };
     return productMap;
+  }
+
+  Future<void> setAsFavorite(int userId) async {
+    FavoriteProductsData favoriteProductsData = FavoriteProductsData();
+    await favoriteProductsData.addFavoriteProduct(userId: userId, productId: id);
+    // await refresh();
+  }
+
+  Future<void> setAsNotFavorite(int userId) async {
+    FavoriteProductsData favoriteProductsData = FavoriteProductsData();
+    await favoriteProductsData.deleteFavoriteProductWithoutConfirm(userId, id);
+    // await refresh();
+  }
+
+  Future<void> toggleFavorite(int userId) async {
+    bool isFavorite = await this.isFavorite(userId);
+    await (isFavorite ? this.setAsNotFavorite(userId) : this.setAsFavorite(userId));
+    // await refresh();
+    notifyListeners();
+  }
+
+  Future<bool> isFavorite(int userId) async {
+    FavoriteProductsData favoriteProductsData = FavoriteProductsData();
+    List<FavoriteProduct> favoriteProducts = await favoriteProductsData.byUserId(userId);
+    return favoriteProducts.any((favoriteProduct) => favoriteProduct.productId == id);
   }
 }

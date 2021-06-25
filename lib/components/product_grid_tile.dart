@@ -31,8 +31,7 @@ class ProductGridTile extends StatelessWidget {
   final currencyFormat = new NumberFormat("#,##0.00", "en_US");
 
   void selectProduct(BuildContext context, bool isFavorite) {
-    Navigator.pushNamed(context, ProductShowScreen.screenId,
-        arguments: {'product': product});
+    Navigator.pushNamed(context, ProductShowScreen.screenId, arguments: {'product': product});
   }
 
   @override
@@ -41,14 +40,11 @@ class ProductGridTile extends StatelessWidget {
     Map currentCurrency = appData.currentCurrency;
 
     ProductsData productsData = Provider.of<ProductsData>(context);
-    Function onDeleteProductHandler = (productId, context, userId) =>
-        productsData.deleteProductWithConfirm(productId, context, userId);
-    Function toggleFavorite =
-        (userId, productId) => productsData.toggleFavorite(userId, productId);
+    Function onDeleteProductHandler = (productId, context, userId) => productsData.deleteProductWithConfirm(productId, context, userId);
+    Function toggleFavorite = (userId, productId) => productsData.toggleFavorite(userId, productId);
 
     // final String formattedDate = formatter.format(product.createdAt);
-    final String amountLabel =
-        '${currentCurrency['symbol']}${currencyFormat.format(product.price)}';
+    final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(product.price)}';
     final double priceFontSize = (84 / amountLabel.length);
 
     Color primaryColor = Theme.of(context).primaryColor;
@@ -94,8 +90,7 @@ class ProductGridTile extends StatelessWidget {
                           left: 0,
                           child: Container(
                             height: 26,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 8),
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                             decoration: BoxDecoration(
                               color: Colors.black38,
                               borderRadius: BorderRadius.only(
@@ -107,8 +102,7 @@ class ProductGridTile extends StatelessWidget {
                               child: Text(
                                 '$amountLabel',
                                 style: TextStyle(
-                                  color: ColorHelper.contrastingColor(
-                                      primaryColor),
+                                  color: ColorHelper.contrastingColor(primaryColor),
                                   fontWeight: FontWeight.bold,
                                   fontStyle: FontStyle.italic,
                                   fontSize: priceFontSize,
@@ -126,8 +120,7 @@ class ProductGridTile extends StatelessWidget {
                           right: 0,
                           child: Container(
                             height: 26,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 8),
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                             decoration: BoxDecoration(
                               color: Colors.black38,
                               borderRadius: BorderRadius.only(
@@ -151,8 +144,7 @@ class ProductGridTile extends StatelessWidget {
                                           size: 14,
                                         ),
                                       ),
-                                      onTap: () => onDeleteProductHandler(
-                                          product.id, context, userId),
+                                      onTap: () => onDeleteProductHandler(product.id, context, userId),
                                     )),
                                 Tooltip(
                                   message: 'Edit',

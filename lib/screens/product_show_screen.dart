@@ -151,15 +151,8 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
                         // Product Details Header
                         ChangeNotifierProvider.value(
                           value: _product,
-                          child: ProductDetailsHeader(
-                            product: _product,
-                            // isFavorite: isFavorite,
-                          ),
+                          child: ProductDetailsHeader(),
                         ),
-                        // ProductDetailsHeader(
-                        //   product: _product,
-                        //   isFavorite: isFavorite,
-                        // ),
 
                         // Description  Header Text:
                         SimpleListHeader(

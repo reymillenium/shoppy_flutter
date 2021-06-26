@@ -18,15 +18,9 @@ import '../helpers/_helpers.dart';
 import '../utilities/_utilities.dart';
 
 class ProductDetailsHeader extends StatefulWidget {
-  // Properties:
-  final Product product;
-
-  // final bool isFavorite;
-
   // Constructor:
   ProductDetailsHeader({
     Key key,
-    this.product,
   }) : super(key: key);
 
   @override
@@ -42,16 +36,17 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
   Widget build(BuildContext context) {
     AppData appData = Provider.of<AppData>(context);
     Map currentCurrency = appData.currentCurrency;
-    final String formattedDate = formatter.format(widget.product.createdAt);
-    final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(widget.product.price)}';
+
+    Product productData = Provider.of<Product>(context);
+    Function toggleFavorite = (userId) => productData.toggleFavorite(userId);
+
+    final String formattedDate = formatter.format(productData.createdAt);
+    final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(productData.price)}';
     int userId = 1;
 
     ProductsData productsData = Provider.of<ProductsData>(context);
     // Function onDeleteFoodRecipeHandler = (id, context) => foodRecipesData.deleteFoodRecipeWithConfirm(id, context);
     // Function onUpdateFoodRecipeHandler = (id, title, imageUrl, duration, complexity, affordability, isGlutenFree, isLactoseFree, isVegan, isVegetarian) => foodRecipesData.updateFoodRecipe(id, title, imageUrl, duration, complexity, affordability, isGlutenFree, isLactoseFree, isVegan, isVegetarian);
-
-    Product productData = Provider.of<Product>(context);
-    Function toggleFavorite = (userId) => productData.toggleFavorite(userId);
 
     return FutureBuilder(
         future: productData.isFavorite(userId),
@@ -64,19 +59,13 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
           return Card(
             elevation: 2,
             color: Colors.white70,
-            // margin: EdgeInsets.all(10),
             shape: RoundedRectangleBorder(
               side: BorderSide(color: Colors.white70, width: 1),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
             child: Column(
               children: [
-                // FoodRecipe Image
+                // Product Image
                 Stack(
                   children: [
                     ClipRRect(
@@ -85,7 +74,7 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
                         topRight: Radius.circular(10),
                       ),
                       child: Image.network(
-                        widget.product.imageUrl,
+                        productData.imageUrl,
                         height: 250,
                         width: double.infinity,
                         fit: BoxFit.cover,
@@ -109,21 +98,22 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
                   ],
                 ),
 
-                // Tile with data: Duration, etc
+                // Some data: Tile, price
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Title
                         Text(
-                          widget.product.title,
+                          productData.title,
                           style: Theme.of(context).textTheme.headline6,
                           softWrap: true,
                           overflow: TextOverflow.fade,
                         ),
 
-                        // Nested Row with duration, complexity & affordability:
+                        // Nested Row with Price & Add to cart button:
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

@@ -127,19 +127,15 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
     int userId = 1;
 
     return FutureBuilder(
-        // future: foodRecipesData.byProduct(_product, filtersList: selectedFilters),
-        // future: Future.wait([productsData.thoseFavoritesByUserId(userId, filtersList: selectedFilters), favoriteProductsData.byUserId(userId, filtersList: selectedFilters)]),
         future: Future.wait([productsData.isFavorite(userId, _product.id), favoriteProductsData.byUserId(userId, filtersList: selectedFilters)]),
         builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
-          // List<Product> products;
           bool isFavorite;
           List<FavoriteProduct> favoriteProducts;
           if (snapshot.data != null) {
-            // products = snapshot.data[0] ?? [];
             isFavorite = snapshot.data[0];
             favoriteProducts = snapshot.data[1] ?? [];
           }
-          // This is just temporal, as it not depends of thoseFavoritesByUser. It should only wait for those list of objects related to each Product object (none yet)
+          // This is just temporal, as it doesn't depends of thoseFavoritesByUser. It should only wait for those list of objects related to each Product object (none yet)
 
           switch (snapshot.connectionState) {
             case ConnectionState.done:

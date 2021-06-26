@@ -26,25 +26,12 @@ class ProductsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ProductsData productsData = Provider.of<ProductsData>(context);
-    // List<Product> products = productsData.products;
-
     return products.isEmpty
         ? CustomEmptyWidget(
             packageImage: 1,
             title: 'We are sorry',
             subTitle: 'There is no products',
           )
-        // : GridView(
-        //     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        //       maxCrossAxisExtent: 200,
-        //       childAspectRatio: 3 / 2,
-        //       crossAxisSpacing: 10,
-        //       mainAxisSpacing: 10,
-        //     ),
-        //     padding: EdgeInsets.all(10),
-        //     children: buildProductPanels(products),
-        //   );
         : GridView.builder(
             // gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             //   maxCrossAxisExtent: 200,

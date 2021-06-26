@@ -18,21 +18,13 @@ import '../helpers/_helpers.dart';
 import '../utilities/_utilities.dart';
 
 class ProductGridTile extends StatelessWidget {
-  // Properties:
-  // final Product product;
-
   ProductGridTile({
     Key key,
-    // this.product,
   }) : super(key: key);
 
   // Runtime constants:
   final DateFormat formatter = DateFormat().add_yMMMMd();
   final currencyFormat = new NumberFormat("#,##0.00", "en_US");
-
-  // void selectProduct(BuildContext context, bool isFavorite) {
-  //   Navigator.pushNamed(context, ProductShowScreen.screenId, arguments: {'product': product});
-  // }
 
   void selectProduct(BuildContext context, bool isFavorite, Product product) {
     Navigator.pushNamed(context, ProductShowScreen.screenId, arguments: {'product': product});
@@ -45,21 +37,17 @@ class ProductGridTile extends StatelessWidget {
 
     ProductsData productsData = Provider.of<ProductsData>(context);
     Function onDeleteProductHandler = (productId, context, userId) => productsData.deleteProductWithConfirm(productId, context, userId);
-    // Function toggleFavorite = (userId, productId) => productsData.toggleFavorite(userId, productId);
+
     Product productData = Provider.of<Product>(context);
     Function toggleFavorite = (userId) => productData.toggleFavorite(userId);
 
-    // final String formattedDate = formatter.format(product.createdAt);
-    // final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(product.price)}';
     final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(productData.price)}';
     final double priceFontSize = (84 / amountLabel.length);
 
     Color primaryColor = Theme.of(context).primaryColor;
-    // var foregroundColor = ColorHelper.contrastingColor(primaryColor);
     int userId = 1;
 
     return FutureBuilder(
-        // future: productsData.isFavorite(userId, product.id),
         future: productData.isFavorite(userId),
         builder: (ctx, AsyncSnapshot<bool> snapshot) {
           bool isFavorite;
@@ -80,14 +68,12 @@ class ProductGridTile extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         child: GestureDetector(
                           child: Image.network(
-                            // product.imageUrl,
                             productData.imageUrl,
                             height: 250,
                             width: double.infinity,
                             fit: BoxFit.cover,
                           ),
                           onTap: () {
-                            // selectProduct(context, isFavorite);
                             selectProduct(context, isFavorite, productData);
                           },
                         ),
@@ -154,7 +140,6 @@ class ProductGridTile extends StatelessWidget {
                                           size: 14,
                                         ),
                                       ),
-                                      // onTap: () => onDeleteProductHandler(product.id, context, userId),
                                       onTap: () => onDeleteProductHandler(productData.id, context, userId),
                                     )),
                                 Tooltip(
@@ -174,7 +159,6 @@ class ProductGridTile extends StatelessWidget {
                                         isScrollControlled: true,
                                         context: context,
                                         builder: (context) => ProductEditScreen(
-                                          // product: product,
                                           product: productData,
                                         ),
                                       );
@@ -202,20 +186,17 @@ class ProductGridTile extends StatelessWidget {
 
                       // Favorite icon:
                       leading: IconButton(
-                        // iconSize: 24,
                         icon: Icon(
                           isFavorite ? Icons.favorite : Icons.favorite_border,
                           color: isFavorite ? Colors.yellow : Colors.white,
                           size: 14,
                         ),
                         tooltip: 'Favorite',
-                        // onPressed: () => toggleFavorite(userId, product.id),
                         onPressed: () => toggleFavorite(userId),
                       ),
 
                       // Product Title:
                       title: Text(
-                        // product.title,
                         productData.title,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,

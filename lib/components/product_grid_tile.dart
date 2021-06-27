@@ -38,7 +38,7 @@ class ProductGridTile extends StatelessWidget {
     ProductsData productsData = Provider.of<ProductsData>(context);
     Function onDeleteProductHandler = (productId, context, userId) => productsData.deleteProductWithConfirm(productId, context, userId);
 
-    Product productData = Provider.of<Product>(context);
+    Product productData = Provider.of<Product>(context, listen: false);
     Function toggleFavorite = (userId) => productData.toggleFavorite(userId);
 
     final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(productData.price)}';
@@ -185,15 +185,43 @@ class ProductGridTile extends StatelessWidget {
                       backgroundColor: Colors.black38,
 
                       // Favorite icon:
-                      leading: IconButton(
-                        icon: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? Colors.yellow : Colors.white,
-                          size: 14,
-                        ),
-                        tooltip: 'Favorite',
-                        onPressed: () => toggleFavorite(userId),
-                      ),
+                      // leading: IconButton(
+                      //   icon: Icon(
+                      //     isFavorite ? Icons.favorite : Icons.favorite_border,
+                      //     color: isFavorite ? Colors.yellow : Colors.white,
+                      //     size: 14,
+                      //   ),
+                      //   tooltip: 'Favorite',
+                      //   onPressed: () => toggleFavorite(userId),
+                      // ),
+                      leading: Consumer<Product>(builder: (context, product, child) {
+                        return FutureBuilder(
+                            future: product.isFavorite(userId),
+                            builder: (ctx, AsyncSnapshot<bool> snapshot) {
+                              bool isFavoriteNow = false;
+                              if (snapshot.data != null) {
+                                isFavoriteNow = snapshot.data;
+                              }
+                              return IconButton(
+                                icon: Icon(
+                                  isFavoriteNow ? Icons.favorite : Icons.favorite_border,
+                                  color: isFavoriteNow ? Colors.yellow : Colors.white,
+                                  size: 14,
+                                ),
+                                tooltip: 'Favorite',
+                                onPressed: () => product.toggleFavorite(userId),
+                              );
+                            });
+                        // return IconButton(
+                        //   icon: Icon(
+                        //     isFavorite ? Icons.favorite : Icons.favorite_border,
+                        //     color: isFavorite ? Colors.yellow : Colors.white,
+                        //     size: 14,
+                        //   ),
+                        //   tooltip: 'Favorite',
+                        //   onPressed: () => product.toggleFavorite(userId),
+                        // );
+                      }),
 
                       // Product Title:
                       title: Text(

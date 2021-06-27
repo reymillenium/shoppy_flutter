@@ -20,9 +20,12 @@ import '../utilities/_utilities.dart';
 class FavoriteProductSmallButton extends StatelessWidget {
   // Properties:
   final int userId;
+  final bool inFavoriteScreen;
+
   const FavoriteProductSmallButton({
     Key key,
     this.userId,
+    this.inFavoriteScreen = false,
   }) : super(key: key);
 
   @override
@@ -35,6 +38,10 @@ class FavoriteProductSmallButton extends StatelessWidget {
             if (snapshot.data != null) {
               isFavoriteNow = snapshot.data;
             }
+
+            ProductsData productsData = Provider.of<ProductsData>(context);
+            Function toggleFavoriteProductsData = (userId, productId) => productsData.toggleFavorite(userId, productId);
+
             return IconButton(
               icon: Icon(
                 isFavoriteNow ? Icons.favorite : Icons.favorite_border,
@@ -42,7 +49,7 @@ class FavoriteProductSmallButton extends StatelessWidget {
                 size: 14,
               ),
               tooltip: 'Favorite',
-              onPressed: () => product.toggleFavorite(userId),
+              onPressed: () => inFavoriteScreen ? toggleFavoriteProductsData(userId, product.id) : product.toggleFavorite(userId),
             );
           });
       // return IconButton(

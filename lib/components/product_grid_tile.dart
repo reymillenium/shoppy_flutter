@@ -20,10 +20,12 @@ import '../utilities/_utilities.dart';
 class ProductGridTile extends StatelessWidget {
   // Properties:
   final int userId;
+  final bool inFavoriteScreen;
 
   ProductGridTile({
     Key key,
     this.userId = 1,
+    this.inFavoriteScreen = false,
   }) : super(key: key);
 
   // Runtime constants:
@@ -180,6 +182,7 @@ class ProductGridTile extends StatelessWidget {
             // Favorite icon:
             leading: FavoriteProductSmallButton(
               userId: userId,
+              inFavoriteScreen: inFavoriteScreen,
             ),
 
             // Product Title:

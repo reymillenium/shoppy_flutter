@@ -107,76 +107,37 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
   @override
   Widget build(BuildContext context) {
     ProductsData productsData = Provider.of<ProductsData>(context);
-    FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context);
+    // FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context);
     int userId = 1;
 
     return FutureBuilder(
-        // future: foodRecipesData.thoseFavoritesByUserId(userId, filtersList: selectedFilters),
-        future: Future.wait([productsData.thoseFavoritesByUserId(userId, filtersList: selectedFilters), favoriteProductsData.byUserId(userId)]),
+        future: productsData.thoseFavoritesByUserId(userId, filtersList: selectedFilters),
+        // future: Future.wait([productsData.thoseFavoritesByUserId(userId, filtersList: selectedFilters)]),
         builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
-          List<Product> products;
-          List<FavoriteProduct> favoriteProducts;
+          List<Product> products = [];
           if (snapshot.data != null) {
-            products = snapshot.data[0] ?? [];
-            favoriteProducts = snapshot.data[1] ?? [];
+            products = snapshot.data ?? [];
+            // products = snapshot.data[0] ?? [];
           }
 
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return products.isEmpty
-                  ? CustomScaffold(
-                      activeIndex: _activeTab,
-                      appTitle: 'Favorite Products',
-                      innerWidgets: [
-                        CustomEmptyWidget(
-                          packageImage: 1,
-                          title: 'We are sorry',
-                          subTitle: 'There is no favorite recipes',
-                        ),
-                      ],
-                      objectsLength: 0,
-                      objectName: 'product',
-                      appBarActionIcon: Icons.filter_alt_outlined,
-                      iconFAB: FontAwesomeIcons.question,
-                      onPressedBarActionIcon: () => _openFilterDialog(context),
-                      onPressedFAB: () => _showModalNewFavorite(context),
-                    )
-                  : CustomScaffold(
-                      activeIndex: _activeTab,
-                      appTitle: 'Favorite Products',
-                      innerWidgets: [
-                        Expanded(
-                          flex: 5,
-                          child: ProductsGrid(
-                            products: products,
-                          ),
-                        ),
-                      ],
-                      objectsLength: products.length,
-                      objectName: 'product',
-                      appBarActionIcon: Icons.filter_alt_outlined,
-                      onPressedBarActionIcon: () => _openFilterDialog(context),
-                      onPressedFAB: () => _showModalNewFavorite(context),
-                    );
-            default:
-              return CustomScaffold(
-                activeIndex: _activeTab,
-                appTitle: 'Favorite Products',
-                innerWidgets: [
-                  CustomEmptyWidget(
-                    packageImage: 1,
-                    title: 'We are sorry',
-                    subTitle: 'There is no favorite products',
-                  ),
-                ],
-                objectsLength: 0,
-                objectName: 'product',
-                appBarActionIcon: Icons.filter_alt_outlined,
-                iconFAB: FontAwesomeIcons.question,
-                onPressedBarActionIcon: () => _openFilterDialog(context),
-                onPressedFAB: () => _showModalNewFavorite(context),
-              );
-          }
+          return CustomScaffold(
+            activeIndex: _activeTab,
+            appTitle: 'Favorite Products',
+            innerWidgets: [
+              Expanded(
+                flex: 5,
+                child: ProductsGrid(
+                  products: products,
+                  inFavoriteScreen: true,
+                ),
+              ),
+            ],
+            objectsLength: products.length,
+            objectName: 'product',
+            appBarActionIcon: Icons.filter_alt_outlined,
+            onPressedBarActionIcon: () => _openFilterDialog(context),
+            onPressedFAB: () => _showModalNewFavorite(context),
+          );
         });
   }
 

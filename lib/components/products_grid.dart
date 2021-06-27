@@ -19,11 +19,13 @@ class ProductsGrid extends StatelessWidget {
   // Properties:
   final List<Product> products;
   final int userId;
+  final bool inFavoriteScreen;
 
   const ProductsGrid({
     Key key,
     this.products,
     this.userId = 1,
+    this.inFavoriteScreen = false,
   }) : super(key: key);
 
   @override
@@ -69,6 +71,7 @@ class ProductsGrid extends StatelessWidget {
                   key: ValueKey(products[index].id),
                   // product: products[index],
                   userId: userId,
+                  inFavoriteScreen: inFavoriteScreen,
                 ),
               );
             },

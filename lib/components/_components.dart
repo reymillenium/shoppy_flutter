@@ -24,6 +24,8 @@ export './products_grid.dart'; // First attempt to list inside a ListView using 
 export 'product_grid_tile.dart';
 export './product_panel.dart'; // Second attempt using a ListGrid instead of a ListView:
 export './product_details_header.dart'; // Second attempt using a ListGrid instead of a ListView:
+export 'favorite_product_small_button.dart';
+export 'favorite_product_big_button.dart';
 
 // FoodRecipe related:
 // export './food_recipes_list.dart';

@@ -1,4 +1,6 @@
 // Packages:
+import 'package:shoppy_flutter/components/_components.dart';
+
 import '../_inner_packages.dart';
 import '../_external_packages.dart';
 
@@ -84,14 +86,17 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
                       Positioned(
                         top: 20,
                         right: 10,
-                        child: IconButton(
-                          iconSize: 32,
-                          icon: Icon(
-                            isFavorite ? Icons.favorite : Icons.favorite_outline,
-                            color: isFavorite ? Colors.yellow : Colors.black,
-                          ),
-                          tooltip: 'Favorite',
-                          onPressed: () => toggleFavorite(userId),
+                        // child: IconButton(
+                        //   iconSize: 32,
+                        //   icon: Icon(
+                        //     isFavorite ? Icons.favorite : Icons.favorite_outline,
+                        //     color: isFavorite ? Colors.yellow : Colors.black,
+                        //   ),
+                        //   tooltip: 'Favorite',
+                        //   onPressed: () => toggleFavorite(userId),
+                        // ),
+                        child: FavoriteProductBigButton(
+                          userId: userId,
                         ),
                       ),
                     ],

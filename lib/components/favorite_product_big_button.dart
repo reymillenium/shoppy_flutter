@@ -38,14 +38,18 @@ class FavoriteProductBigButton extends StatelessWidget {
           if (snapshot.data != null) {
             isFavorite = snapshot.data;
           }
-          return IconButton(
-            iconSize: 32,
-            icon: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_outline,
-              color: isFavorite ? Colors.yellow : Colors.black,
+          return CircleAvatar(
+            radius: 24,
+            backgroundColor: Colors.black26,
+            child: IconButton(
+              icon: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_outline,
+                color: isFavorite ? Colors.yellow : Colors.white,
+                size: 32,
+              ),
+              tooltip: 'Favorite',
+              onPressed: () => toggleFavorite(userId),
             ),
-            tooltip: 'Favorite',
-            onPressed: () => toggleFavorite(userId),
           );
         });
   }

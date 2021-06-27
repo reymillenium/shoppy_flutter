@@ -22,10 +22,12 @@ class ProductShowScreen extends StatefulWidget {
 
   // Properties:
   final Product product;
+  final int userId;
 
   const ProductShowScreen({
     Key key,
     this.product,
+    this.userId = 1,
   }) : super(key: key);
 
   @override
@@ -122,77 +124,43 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
 
   @override
   Widget build(BuildContext context) {
-    ProductsData productsData = Provider.of<ProductsData>(context);
-    FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context);
-    int userId = 1;
+    // ProductsData productsData = Provider.of<ProductsData>(context);
+    // FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context);
 
-    return FutureBuilder(
-        future: Future.wait([productsData.isFavorite(userId, _product.id), favoriteProductsData.byUserId(userId, filtersList: selectedFilters)]),
-        builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
-          bool isFavorite;
-          List<FavoriteProduct> favoriteProducts;
-          if (snapshot.data != null) {
-            isFavorite = snapshot.data[0];
-            favoriteProducts = snapshot.data[1] ?? [];
-          }
-          // This is just temporal, as it doesn't depends of thoseFavoritesByUser. It should only wait for those list of objects related to each Product object (none yet)
+    return CustomScaffold(
+      activeIndex: _activeTab,
+      appTitle: _product.title,
+      innerWidgets: [
+        Expanded(
+          child: ListView(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            children: [
+              // Product Details Header
+              ChangeNotifierProvider.value(
+                value: _product,
+                child: ProductDetailsHeader(userId: widget.userId),
+              ),
 
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return CustomScaffold(
-                activeIndex: _activeTab,
-                appTitle: _product.title,
-                innerWidgets: [
-                  Expanded(
-                    child: ListView(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      children: [
-                        // Product Details Header
-                        ChangeNotifierProvider.value(
-                          value: _product,
-                          child: ProductDetailsHeader(),
-                        ),
+              // Description  Header Text:
+              SimpleListHeader(
+                listHeader: 'Description',
+              ),
 
-                        // Description  Header Text:
-                        SimpleListHeader(
-                          listHeader: 'Description',
-                        ),
-
-                        // Product Description:
-                        PartialListContainer(
-                          innerWidgetList: Text('${_product.description}'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-                objectsLength: 0,
-                objectName: 'recipe',
-                appBarActionIcon: Icons.filter_alt_outlined,
-                onPressedBarActionIcon: () => _openFilterDialog(context),
-                onPressedFAB: () => _showModalNewFoodRecipe(context),
-              );
-            default:
-              return CustomScaffold(
-                activeIndex: _activeTab,
-                appTitle: _product.title,
-                innerWidgets: [
-                  CustomEmptyWidget(
-                    packageImage: 1,
-                    title: 'We are sorry',
-                    subTitle: 'There is no recipes',
-                  ),
-                ],
-                objectsLength: 0,
-                objectName: 'recipe',
-                appBarActionIcon: Icons.filter_alt_outlined,
-                iconFAB: FontAwesomeIcons.question,
-                onPressedBarActionIcon: () => _openFilterDialog(context),
-                onPressedFAB: () => _showModalNewFoodRecipe(context),
-              );
-          }
-        });
+              // Product Description:
+              PartialListContainer(
+                innerWidgetList: Text('${_product.description}'),
+              ),
+            ],
+          ),
+        ),
+      ],
+      objectsLength: 0,
+      objectName: 'recipe',
+      appBarActionIcon: Icons.filter_alt_outlined,
+      onPressedBarActionIcon: () => _openFilterDialog(context),
+      onPressedFAB: () => _showModalNewFoodRecipe(context),
+    );
   }
 
   void _showModalNewFoodRecipe(BuildContext context) {

@@ -18,16 +18,20 @@ import '../helpers/_helpers.dart';
 import '../utilities/_utilities.dart';
 
 class ProductGridTile extends StatelessWidget {
+  // Properties:
+  final int userId;
+
   ProductGridTile({
     Key key,
+    this.userId = 1,
   }) : super(key: key);
 
   // Runtime constants:
   final DateFormat formatter = DateFormat().add_yMMMMd();
   final currencyFormat = new NumberFormat("#,##0.00", "en_US");
 
-  void selectProduct(BuildContext context, Product product) {
-    Navigator.pushNamed(context, ProductShowScreen.screenId, arguments: {'product': product});
+  void selectProduct(BuildContext context, Product product, int userId) {
+    Navigator.pushNamed(context, ProductShowScreen.screenId, arguments: {'product': product, 'userId': userId});
   }
 
   @override
@@ -45,7 +49,6 @@ class ProductGridTile extends StatelessWidget {
     final double priceFontSize = (84 / amountLabel.length);
 
     Color primaryColor = Theme.of(context).primaryColor;
-    int userId = 1;
 
     return Material(
       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -64,7 +67,7 @@ class ProductGridTile extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
                 onTap: () {
-                  selectProduct(context, productData);
+                  selectProduct(context, productData, userId);
                 },
               ),
             ),
@@ -78,7 +81,7 @@ class ProductGridTile extends StatelessWidget {
                   height: 26,
                   padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                   decoration: BoxDecoration(
-                    color: Colors.black38,
+                    color: Colors.black26,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       bottomRight: Radius.circular(10),
@@ -108,7 +111,7 @@ class ProductGridTile extends StatelessWidget {
                   height: 26,
                   padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                   decoration: BoxDecoration(
-                    color: Colors.black38,
+                    color: Colors.black26,
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(10),
                       bottomLeft: Radius.circular(10),
@@ -172,7 +175,7 @@ class ProductGridTile extends StatelessWidget {
             bottomRight: Radius.circular(10),
           ),
           child: GridTileBar(
-            backgroundColor: Colors.black38,
+            backgroundColor: Colors.black26,
 
             // Favorite icon:
             leading: FavoriteProductSmallButton(

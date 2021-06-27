@@ -18,10 +18,12 @@ import '../helpers/_helpers.dart';
 class ProductsGrid extends StatelessWidget {
   // Properties:
   final List<Product> products;
+  final int userId;
 
   const ProductsGrid({
     Key key,
     this.products,
+    this.userId = 1,
   }) : super(key: key);
 
   @override
@@ -66,6 +68,7 @@ class ProductsGrid extends StatelessWidget {
                 child: ProductGridTile(
                   key: ValueKey(products[index].id),
                   // product: products[index],
+                  userId: userId,
                 ),
               );
             },

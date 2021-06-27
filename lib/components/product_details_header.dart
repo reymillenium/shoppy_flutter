@@ -19,17 +19,16 @@ import '../models/_models.dart';
 // Utilities:
 // import '../utilities/_utilities.dart';
 
-class ProductDetailsHeader extends StatefulWidget {
+class ProductDetailsHeader extends StatelessWidget {
+  // Properties:
+  final int userId;
+
   // Constructor:
   ProductDetailsHeader({
     Key key,
+    this.userId,
   }) : super(key: key);
 
-  @override
-  _ProductDetailsHeaderState createState() => _ProductDetailsHeaderState();
-}
-
-class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
   // Runtime constants:
   final DateFormat formatter = DateFormat().add_yMMMMd();
   final currencyFormat = new NumberFormat("#,##0.00", "en_US");
@@ -43,7 +42,7 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
 
     final String formattedDate = formatter.format(productData.createdAt);
     final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(productData.price)}';
-    int userId = 1;
+    // int userId = 1;
 
     // ProductsData productsData = Provider.of<ProductsData>(context);
     // Function onDeleteFoodRecipeHandler = (id, context) => foodRecipesData.deleteFoodRecipeWithConfirm(id, context);
@@ -77,18 +76,7 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
                 Positioned(
                   top: 20,
                   right: 10,
-                  // child: IconButton(
-                  //   iconSize: 32,
-                  //   icon: Icon(
-                  //     isFavorite ? Icons.favorite : Icons.favorite_outline,
-                  //     color: isFavorite ? Colors.yellow : Colors.black,
-                  //   ),
-                  //   tooltip: 'Favorite',
-                  //   onPressed: () => toggleFavorite(userId),
-                  // ),
-                  child: FavoriteProductBigButton(
-                    userId: userId,
-                  ),
+                  child: FavoriteProductBigButton(userId: userId),
                 ),
               ],
             ],

@@ -3,19 +3,19 @@ import '../_inner_packages.dart';
 import '../_external_packages.dart';
 
 // Screens:
-import '../screens/_screens.dart';
+// import '../screens/_screens.dart';
 
 // Models:
 import '../models/_models.dart';
 
 // Components:
-import '../components/_components.dart';
+// import '../components/_components.dart';
 
 // Helpers:
-import '../helpers/_helpers.dart';
+// import '../helpers/_helpers.dart';
 
 // Utilities:
-import '../utilities/_utilities.dart';
+// import '../utilities/_utilities.dart';
 
 class ProductDetailsHeader extends StatefulWidget {
   // Constructor:
@@ -44,7 +44,7 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
     final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(productData.price)}';
     int userId = 1;
 
-    ProductsData productsData = Provider.of<ProductsData>(context);
+    // ProductsData productsData = Provider.of<ProductsData>(context);
     // Function onDeleteFoodRecipeHandler = (id, context) => foodRecipesData.deleteFoodRecipeWithConfirm(id, context);
     // Function onUpdateFoodRecipeHandler = (id, title, imageUrl, duration, complexity, affordability, isGlutenFree, isLactoseFree, isVegan, isVegetarian) => foodRecipesData.updateFoodRecipe(id, title, imageUrl, duration, complexity, affordability, isGlutenFree, isLactoseFree, isVegan, isVegetarian);
 
@@ -87,8 +87,8 @@ class _ProductDetailsHeaderState extends State<ProductDetailsHeader> {
                         child: IconButton(
                           iconSize: 32,
                           icon: Icon(
-                            isFavorite ? Icons.favorite : Icons.favorite_border,
-                            color: isFavorite ? Colors.yellow : Colors.white,
+                            isFavorite ? Icons.favorite : Icons.favorite_outline,
+                            color: isFavorite ? Colors.yellow : Colors.black,
                           ),
                           tooltip: 'Favorite',
                           onPressed: () => toggleFavorite(userId),

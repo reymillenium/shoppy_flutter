@@ -63,13 +63,13 @@ class AddProductToCartSmallButton extends StatelessWidget {
     // Function addCartItem = (userId, productId, quantity) => cartItemsData.addCartItem(userId: userId, productId: productId, quantity: quantity);
 
     return FutureBuilder(
-      future: Future.wait([product.isInCart(userId), product.amountInCart(userId)]),
+      future: Future.wait([product.isInCart(userId), product.quantityAmountInCart(userId)]),
       builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
         bool isInCart = false;
-        int amountInCart = 0;
+        int quantityAmountInCart = 0;
         if (snapshot.data != null) {
           isInCart = snapshot.data[0];
-          amountInCart = snapshot.data[1];
+          quantityAmountInCart = snapshot.data[1];
         }
 
         var verticalDivider = VerticalDivider(
@@ -80,7 +80,7 @@ class AddProductToCartSmallButton extends StatelessWidget {
           thickness: 1,
         );
 
-        return amountInCart == 0
+        return quantityAmountInCart == 0
             ? Tooltip(
                 padding: EdgeInsets.all(0),
                 message: 'Add product to cart',
@@ -133,7 +133,7 @@ class AddProductToCartSmallButton extends StatelessWidget {
                     // Amount in Cart Label:
                     FittedBox(
                       child: Text(
-                        '$amountInCart',
+                        '$quantityAmountInCart',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

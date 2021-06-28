@@ -147,6 +147,7 @@ class MyApp extends StatelessWidget {
       // Named Routes with none or few arguments:
       routes: {
         ProductIndexScreen.screenId: (context) => ProductIndexScreen(appTitle: appTitle),
+        CartItemIndexScreen.screenId: (context) => CartItemIndexScreen(appTitle: 'Cart'),
         FavoritesScreen.screenId: (context) => FavoritesScreen(),
         ProductNewScreen.screenId: (context) => ProductNewScreen(),
         // ProductEditScreen.screenId: (context) => ProductEditScreen(),

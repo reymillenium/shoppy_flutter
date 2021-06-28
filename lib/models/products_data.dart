@@ -329,17 +329,32 @@ class ProductsData with ChangeNotifier {
     return hasOneInCart;
   }
 
-  Future<int> amountInCart(int userId, int productId) async {
-    int amountInCart = 0;
+  Future<int> quantityAmountInCart(int userId, int productId) async {
+    int quantityAmountInCart = 0;
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
     bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
 
     if (isInCart) {
       CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == productId);
-      amountInCart = cartItem.quantity;
+      quantityAmountInCart = cartItem.quantity;
     }
 
-    return amountInCart;
+    return quantityAmountInCart;
+  }
+
+  Future<double> priceAmountInCart(int userId, int productId) async {
+    double priceAmountInCart = 0;
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == productId);
+      Product product = _products.firstWhere((product) => product.id == productId);
+      priceAmountInCart = cartItem.quantity * product.price;
+    }
+
+    return priceAmountInCart;
   }
 }

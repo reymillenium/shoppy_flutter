@@ -154,17 +154,31 @@ class Product with ChangeNotifier {
     return hasOneInCart;
   }
 
-  Future<int> amountInCart(int userId) async {
-    int amountInCart = 0;
+  Future<int> quantityAmountInCart(int userId) async {
+    int quantityAmountInCart = 0;
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
     bool isInCart = cartItems.any((cartItem) => cartItem.productId == id);
 
     if (isInCart) {
       CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == id);
-      amountInCart = cartItem.quantity;
+      quantityAmountInCart = cartItem.quantity;
     }
 
-    return amountInCart;
+    return quantityAmountInCart;
+  }
+
+  Future<double> priceAmountInCart(int userId) async {
+    double priceAmountInCart = 0;
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == id);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == id);
+      priceAmountInCart = cartItem.quantity * price;
+    }
+
+    return priceAmountInCart;
   }
 }

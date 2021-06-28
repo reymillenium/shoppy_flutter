@@ -121,6 +121,19 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateOnCart(int userId, int quantity) async {
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == id);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == id);
+      cartItemsData.updateCartItem(cartItem.id, quantity);
+    }
+    // await refresh();
+    notifyListeners();
+  }
+
   Future<bool> isInCart(int userId) async {
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);

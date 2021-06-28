@@ -291,6 +291,19 @@ class ProductsData with ChangeNotifier {
     await refresh();
   }
 
+  Future<void> updateOnCart(int userId, int productId, int quantity) async {
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == productId);
+      cartItemsData.updateCartItem(cartItem.id, quantity);
+    }
+    // await refresh();
+    notifyListeners();
+  }
+
   Future<bool> isInCart(int userId, int productId) async {
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);

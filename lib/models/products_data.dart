@@ -125,6 +125,11 @@ class ProductsData with ChangeNotifier {
     if (isFavorite) {
       await this.setAsNotFavorite(userId, productId);
     }
+    bool isInCart = await this.isInCart(userId, productId);
+    if (isInCart) {
+      CartItemsData cartItemsData = CartItemsData();
+      await cartItemsData.deleteCartItemWithoutConfirm(userId, productId);
+    }
     await _destroy(productId, sqliteTable);
     await refresh();
   }

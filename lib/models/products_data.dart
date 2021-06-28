@@ -205,6 +205,35 @@ class ProductsData with ChangeNotifier {
     return productsList;
   }
 
+  Future<List<Product>> thoseInTheCartByUserId(int userId, {List<String> filtersList}) async {
+    var dbClient = await dbHelper.dbPlus();
+    List<Product> productsList = [];
+    filtersList = filtersList ?? [];
+    CartItemsData cartItemsData = CartItemsData();
+    // Gathering of the productsIdsList on the CartItemsData table (cart_items) by the user_id:
+    List<CartItem> cartItemsList = await cartItemsData.byUserId(userId);
+
+    if (cartItemsList.isNotEmpty) {
+      List<int> productsIdsList = cartItemsList.map((cartItem) => cartItem.productId).toList();
+
+      Map<String, Object> productsTable = ProductsData.sqliteTable;
+      String productsTableName = productsTable['table_plural_name'];
+      List<Map> productsTableFields = productsTable['fields'];
+      String filteringString = (filtersList.isEmpty) ? '' : "(${filtersList.map((e) => "$e = 1").join(' OR ')}) AND ";
+      List<Map> productsMaps = await dbClient.query(productsTableName, columns: productsTableFields.map<String>((field) => field['field_name']).toList(), where: '${filteringString}id IN (${productsIdsList.map((e) => "'$e'").join(', ')})');
+
+      // Conversion into Product objects:
+      if (productsMaps.length > 0) {
+        for (int i = 0; i < productsMaps.length; i++) {
+          Product product = Product.fromMap(productsMaps[i]);
+          productsList.add(product);
+        }
+      }
+    }
+
+    return productsList;
+  }
+
   Future<void> setAsFavorite(int userId, int productId) async {
     FavoriteProductsData favoriteProductsData = FavoriteProductsData();
     await favoriteProductsData.addFavoriteProduct(userId: userId, productId: productId);
@@ -227,5 +256,58 @@ class ProductsData with ChangeNotifier {
     FavoriteProductsData favoriteProductsData = FavoriteProductsData();
     List<FavoriteProduct> favoriteProducts = await favoriteProductsData.byUserId(userId);
     return favoriteProducts.any((favoriteProduct) => favoriteProduct.productId == productId);
+  }
+
+  // Add to Cart feature:
+  Future<void> addToCart(int userId, int productId, int quantity) async {
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == productId);
+      cartItemsData.updateCartItem(cartItem.id, cartItem.quantity + 1);
+    } else {
+      await cartItemsData.addCartItem(userId: userId, productId: productId, quantity: quantity);
+    }
+    await refresh();
+  }
+
+  Future<void> removeFromCart(int userId, int productId) async {
+    bool hasOneInCart = false;
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == productId);
+      hasOneInCart = (cartItem.quantity == 1 ? true : false);
+      if (hasOneInCart) {
+        await cartItemsData.deleteCartItemWithoutConfirm(userId, productId);
+      } else {
+        cartItemsData.updateCartItem(cartItem.id, cartItem.quantity - 1);
+      }
+    }
+    await refresh();
+  }
+
+  Future<bool> isInCart(int userId, int productId) async {
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    return cartItems.any((cartItem) => cartItem.productId == productId);
+  }
+
+  Future<bool> hasOneInCart(int userId, int productId) async {
+    bool hasOneInCart = false;
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == productId);
+      hasOneInCart = (cartItem.quantity == 1 ? true : false);
+    }
+
+    return hasOneInCart;
   }
 }

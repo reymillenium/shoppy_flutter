@@ -85,4 +85,59 @@ class Product with ChangeNotifier {
     List<FavoriteProduct> favoriteProducts = await favoriteProductsData.byUserId(userId);
     return favoriteProducts.any((favoriteProduct) => favoriteProduct.productId == id);
   }
+
+  // Add to Cart feature:
+  Future<void> addToCart(int userId, int quantity) async {
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == id);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == id);
+      cartItemsData.updateCartItem(cartItem.id, cartItem.quantity + 1);
+    } else {
+      await cartItemsData.addCartItem(userId: userId, productId: id, quantity: quantity);
+    }
+    // await refresh();
+    notifyListeners();
+  }
+
+  Future<void> removeFromCart(int userId) async {
+    bool hasOneInCart = false;
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == id);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == id);
+      hasOneInCart = (cartItem.quantity == 1 ? true : false);
+      if (hasOneInCart) {
+        await cartItemsData.deleteCartItemWithoutConfirm(userId, id);
+      } else {
+        cartItemsData.updateCartItem(cartItem.id, cartItem.quantity - 1);
+      }
+    }
+    // await refresh();
+    notifyListeners();
+  }
+
+  Future<bool> isInCart(int userId) async {
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    return cartItems.any((cartItem) => cartItem.productId == id);
+  }
+
+  Future<bool> hasOneInCart(int userId) async {
+    bool hasOneInCart = false;
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == id);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == id);
+      hasOneInCart = (cartItem.quantity == 1 ? true : false);
+    }
+
+    return hasOneInCart;
+  }
 }

@@ -43,6 +43,11 @@ void main() {
       ChangeNotifierProvider<FavoriteProductsData>(
         create: (context) => FavoriteProductsData(),
       ),
+
+      // Data related to the CartItem objects: (sqlite DB)
+      ChangeNotifierProvider<CartItemsData>(
+        create: (context) => CartItemsData(),
+      ),
     ],
     child: InitialSplashScreen(),
   ));

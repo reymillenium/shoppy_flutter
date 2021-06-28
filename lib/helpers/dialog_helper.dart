@@ -9,6 +9,7 @@ import '../_external_packages.dart';
 // import '../models/_models.dart';
 
 // Helpers:
+import '../helpers/_helpers.dart';
 
 // Utilities:
 
@@ -110,6 +111,40 @@ class DialogHelper {
           width: 120,
         ),
       ],
+    );
+  }
+
+  static void openFilterDialog(BuildContext context, List<String> availableFilters, List<String> selectedFilters, Function onApplyButtonClick) async {
+    await FilterListDialog.display<String>(
+      context,
+      listData: availableFilters,
+      selectedListData: selectedFilters,
+      height: 300,
+      headlineText: "Show me the Products:",
+      searchFieldHintText: "Search Here",
+      choiceChipLabel: (item) {
+        return item.toCamelCase.readable;
+      },
+      validateSelectedItem: (list, val) {
+        return list.contains(val);
+      },
+      onItemSearch: (list, text) {
+        if (list.any((element) => element.toLowerCase().contains(text.toLowerCase().removeWhiteSpaces))) {
+          return list.where((element) => element.toLowerCase().contains(text.toLowerCase().removeWhiteSpaces)).toList();
+        } else {
+          return [];
+        }
+      },
+      // onApplyButtonClick: (list) {
+      //   if (list != null) {
+      //     setState(() {
+      //       selectedFilters = List.from(list);
+      //     });
+      //   }
+      //   Navigator.pop(context);
+      // },
+      onApplyButtonClick: (list) => onApplyButtonClick(list, context),
+      useRootNavigator: false,
     );
   }
 }

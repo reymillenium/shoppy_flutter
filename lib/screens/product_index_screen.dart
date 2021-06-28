@@ -27,10 +27,21 @@ class ProductIndexScreen extends StatefulWidget {
   _ProductIndexScreenState createState() => _ProductIndexScreenState();
 }
 
-class _ProductIndexScreenState extends State<ProductIndexScreen>
-    with RouteAware, RouteObserverMixin {
+class _ProductIndexScreenState extends State<ProductIndexScreen> with RouteAware, RouteObserverMixin {
   final String _screenId = ProductIndexScreen.screenId;
   int _activeTab = 0;
+  List<String> availableFilters = ["favoriteProducts"];
+  List<String> selectedFilters = [];
+  final int userId = 1;
+
+  void onApplyButtonClick(list, BuildContext context) {
+    if (list != null) {
+      setState(() {
+        selectedFilters = List.from(list);
+      });
+    }
+    Navigator.pop(context);
+  }
 
   /// Called when the top route has been popped off, and the current route
   /// shows up.
@@ -82,15 +93,34 @@ class _ProductIndexScreenState extends State<ProductIndexScreen>
       appTitle: widget.appTitle,
       innerWidgets: [
         // Food Categories Grid:
-        Expanded(
-          flex: 5,
-          child: ProductsGrid(
-            products: products,
+        if (!selectedFilters.contains('favoriteProducts')) ...[
+          Expanded(
+            flex: 5,
+            child: ProductsGrid(
+              products: products,
+            ),
           ),
-        ),
+        ] else ...[
+          FutureBuilder(
+              future: productsData.thoseFavoritesByUserId(userId),
+              builder: (ctx, AsyncSnapshot<List<Product>> snapshot) {
+                List<Product> products = [];
+                if (snapshot.data != null) {
+                  products = snapshot.data;
+                }
+                return Expanded(
+                  flex: 5,
+                  child: ProductsGrid(
+                    products: products,
+                  ),
+                );
+              }),
+        ],
       ],
       objectsLength: amountTotalProducts,
       objectName: 'product',
+      onPressedBarActionIcon: () => DialogHelper.openFilterDialog(context, availableFilters, selectedFilters, onApplyButtonClick),
+      appBarActionIcon: Icons.filter_alt_outlined,
       onPressedFAB: () => _showModalNewProduct(context),
     );
   }

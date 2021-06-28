@@ -32,6 +32,15 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
   List<String> availableFilters = ["isGlutenFree", "isLactoseFree", "isVegan", "isVegetarian"];
   List<String> selectedFilters = [];
 
+  void onApplyButtonClick(list, BuildContext context) {
+    if (list != null) {
+      setState(() {
+        selectedFilters = List.from(list);
+      });
+    }
+    Navigator.pop(context);
+  }
+
   /// Called when the top route has been popped off, and the current route
   /// shows up.
   @override
@@ -77,7 +86,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
       listData: availableFilters,
       selectedListData: selectedFilters,
       height: 300,
-      headlineText: "Show me the Food Recipes:",
+      headlineText: "Show me the Products:",
       searchFieldHintText: "Search Here",
       choiceChipLabel: (item) {
         return item.toCamelCase.readable;

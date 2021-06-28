@@ -62,24 +62,27 @@ class ProductCartBadge extends StatelessWidget {
                   tooltip: '${objectName.inCaps}s in the cart',
                   onPressed: onPressedGoToCart,
                 )
-              : Badge(
-                  child: Tooltip(
-                    padding: EdgeInsets.all(0),
-                    message: 'Add product to cart',
-                    child: IconButton(
-                      iconSize: 32,
+              : GestureDetector(
+                  child: Badge(
+                    child: Tooltip(
                       padding: EdgeInsets.all(0),
-                      icon: Icon(
-                        cartIcon,
-                        color: Colors.white,
-                        // size: 32,
+                      message: 'Add product to cart',
+                      child: IconButton(
+                        iconSize: 32,
+                        padding: EdgeInsets.all(0),
+                        icon: Icon(
+                          cartIcon,
+                          color: Colors.white,
+                          // size: 32,
+                        ),
+                        tooltip: '${objectName.inCaps}s in the cart',
+                        // onPressed: onPressedGoToCart,
                       ),
-                      tooltip: '${objectName.inCaps}s in the cart',
-                      onPressed: onPressedGoToCart,
                     ),
+                    value: productsInCartAmount.toString(),
+                    // value: cartItemsAmount.toString(),
                   ),
-                  value: productsInCartAmount.toString(),
-                  // value: cartItemsAmount.toString(),
+                  onTap: onPressedGoToCart,
                 );
         });
   }

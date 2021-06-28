@@ -323,4 +323,18 @@ class ProductsData with ChangeNotifier {
 
     return hasOneInCart;
   }
+
+  Future<int> amountInCart(int userId, int productId) async {
+    int amountInCart = 0;
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == productId);
+      amountInCart = cartItem.quantity;
+    }
+
+    return amountInCart;
+  }
 }

@@ -192,20 +192,8 @@ class ProductGridTile extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
 
-            // Add to cart icon:
-            trailing: Tooltip(
-              padding: EdgeInsets.all(0),
-              message: 'Add to cart',
-              child: IconButton(
-                padding: EdgeInsets.all(0),
-                icon: Icon(
-                  Icons.shopping_cart_outlined,
-                  color: Colors.white,
-                  size: 14,
-                ),
-                onPressed: () => {},
-              ),
-            ),
+            // Add to cart Button:
+            trailing: AddProductToCartSmallButton(),
           ),
         ),
       ),

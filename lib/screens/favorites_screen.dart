@@ -142,7 +142,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> with RouteAware, Rout
               ),
             ],
             objectsLength: products.length,
-            objectName: 'product',
+            objectName: 'favoriteProduct',
             appBarActionIcon: Icons.filter_alt_outlined,
             onPressedBarActionIcon: () => _openFilterDialog(context),
             onPressedFAB: () => _showModalNewFavorite(context),

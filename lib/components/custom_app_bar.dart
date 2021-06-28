@@ -19,16 +19,24 @@ import '../utilities/constants.dart';
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   // Properties:
   final String appTitle;
-  final Function onPressedAdd;
+  final int userId;
   final String objectName;
+
   final IconData actionIcon;
+  final Function onPressedAdd;
+
+  final IconData cartIcon;
+  final Function onPressedGoToCart;
 
   const CustomAppBar({
     Key key,
     this.appTitle,
-    this.onPressedAdd,
+    this.userId = 1,
     this.objectName,
     this.actionIcon = Icons.add,
+    this.onPressedAdd,
+    this.cartIcon = Icons.shopping_cart_outlined,
+    this.onPressedGoToCart,
   }) : super(key: key);
 
   @override
@@ -55,6 +63,21 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
           tooltip: 'Add ${objectName.inCaps}',
           onPressed: onPressedAdd,
         ),
+        // IconButton(
+        //   iconSize: 32,
+        //   icon: Icon(cartIcon),
+        //   tooltip: 'Add ${objectName.inCaps} to cart',
+        //   onPressed: onPressedAddToCart,
+        // ),
+
+        if (objectName == 'product') ...[
+          ProductCartBadge(
+            userId: userId,
+            objectName: objectName,
+            cartIcon: cartIcon,
+            onPressedGoToCart: onPressedGoToCart,
+          ),
+        ]
       ],
       // bottom: PreferredSize(
       //   preferredSize: Size.fromHeight(100.0),

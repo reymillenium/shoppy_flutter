@@ -31,6 +31,9 @@ class CustomScaffold extends StatefulWidget {
   final IconData iconFAB;
   final IconData appBarActionIcon;
 
+  final IconData cartIcon;
+  final Function onPressedGoToCart;
+
   // Constructor:
   const CustomScaffold({
     Key key,
@@ -44,6 +47,8 @@ class CustomScaffold extends StatefulWidget {
     this.isAdditionFAB = true,
     this.iconFAB = FontAwesomeIcons.plus,
     this.appBarActionIcon = Icons.add,
+    this.cartIcon = Icons.shopping_cart_outlined,
+    this.onPressedGoToCart,
   }) : super(key: key);
 
   @override
@@ -106,6 +111,8 @@ class _CustomScaffoldState extends State<CustomScaffold> {
       onPressedAdd: widget.onPressedBarActionIcon ?? widget.onPressedFAB,
       objectName: widget.objectName,
       actionIcon: widget.appBarActionIcon,
+      cartIcon: widget.cartIcon,
+      onPressedGoToCart: widget.onPressedGoToCart,
     );
 
     return Scaffold(

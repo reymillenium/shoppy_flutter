@@ -5,6 +5,8 @@ export './partial_list_container.dart';
 
 // AppBar of the App:
 export './custom_app_bar.dart';
+export 'badge.dart';
+export 'product_cart_badge.dart';
 
 // Drawer of the App and related (all of them inside the AppBar):
 export './custom_drawer.dart';
@@ -26,6 +28,7 @@ export './product_panel.dart'; // Second attempt using a ListGrid instead of a L
 export './product_details_header.dart'; // Second attempt using a ListGrid instead of a ListView:
 export 'favorite_product_small_button.dart';
 export 'favorite_product_big_button.dart';
+export 'add_product_to_cart_small_button.dart';
 
 // FoodRecipe related:
 // export './food_recipes_list.dart';

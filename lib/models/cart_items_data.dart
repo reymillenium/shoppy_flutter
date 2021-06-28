@@ -67,6 +67,10 @@ class CartItemsData with ChangeNotifier {
     return UnmodifiableListView(_cartItems);
   }
 
+  // UnmodifiableListView<CartItem> get cartItems {
+  //   return UnmodifiableListView(_cartItems);
+  // }
+
   // SQLite DB CRUD:
   Future<CartItem> _create(CartItem cartItem, Map<String, dynamic> table) async {
     var dbClient = await dbHelper.dbPlus();

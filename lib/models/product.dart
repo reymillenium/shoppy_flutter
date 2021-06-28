@@ -88,13 +88,13 @@ class Product with ChangeNotifier {
 
   // Add to Cart feature:
   Future<void> addToCart(int userId, int quantity) async {
+    print('Inside lib/models/product.dart => addToCart');
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
     bool isInCart = cartItems.any((cartItem) => cartItem.productId == id);
-
     if (isInCart) {
       CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == id);
-      cartItemsData.updateCartItem(cartItem.id, cartItem.quantity + 1);
+      await cartItemsData.updateCartItem(cartItem.id, cartItem.quantity + 1);
     } else {
       await cartItemsData.addCartItem(userId: userId, productId: id, quantity: quantity);
     }
@@ -114,7 +114,7 @@ class Product with ChangeNotifier {
       if (hasOneInCart) {
         await cartItemsData.deleteCartItemWithoutConfirm(userId, id);
       } else {
-        cartItemsData.updateCartItem(cartItem.id, cartItem.quantity - 1);
+        await cartItemsData.updateCartItem(cartItem.id, cartItem.quantity - 1);
       }
     }
     // await refresh();
@@ -128,7 +128,7 @@ class Product with ChangeNotifier {
 
     if (isInCart) {
       CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == id);
-      cartItemsData.updateCartItem(cartItem.id, quantity);
+      await cartItemsData.updateCartItem(cartItem.id, quantity);
     }
     // await refresh();
     notifyListeners();

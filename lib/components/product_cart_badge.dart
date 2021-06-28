@@ -36,6 +36,7 @@ class ProductCartBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     ProductsData productsData = Provider.of<ProductsData>(context);
     CartItemsData cartItemsData = Provider.of<CartItemsData>(context);
+    // print('Running lib/components/product_cart_badge.dart => build');
 
     return FutureBuilder(
         future: Future.wait([productsData.thoseInTheCartByUserId(userId), cartItemsData.byUserId(userId)]),
@@ -79,7 +80,6 @@ class ProductCartBadge extends StatelessWidget {
                   ),
                   value: productsInCartAmount.toString(),
                   // value: cartItemsAmount.toString(),
-                  // value: cartItemsData.cartItems.length.toString(),
                 );
         });
   }

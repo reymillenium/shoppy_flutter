@@ -70,7 +70,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         //   onPressed: onPressedAddToCart,
         // ),
 
-        if (objectName == 'product') ...[
+        if (objectName == 'product' || objectName == 'favoriteProduct') ...[
           ProductCartBadge(
             userId: userId,
             objectName: objectName,

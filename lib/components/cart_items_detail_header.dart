@@ -164,7 +164,8 @@ class CartItemsDetailsHeader extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
-                                Icons.shopping_cart_outlined,
+                                // Icons.shopping_cart_outlined,
+                                FontAwesomeIcons.shippingFast,
                                 color: Colors.white,
                                 size: 14,
                               ),
@@ -172,7 +173,7 @@ class CartItemsDetailsHeader extends StatelessWidget {
                                 width: 10,
                               ),
                               Text(
-                                'ORDER',
+                                'ORDER NOW',
                                 style: TextStyle(
                                   fontSize: 14,
                                 ),

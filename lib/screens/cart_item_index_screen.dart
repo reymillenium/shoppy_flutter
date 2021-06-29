@@ -164,7 +164,7 @@ class _CartItemIndexScreenState extends State<CartItemIndexScreen> with RouteAwa
 
               // Description  Header Text:
               SimpleListHeader(
-                listHeader: 'Details',
+                listHeader: 'Products',
               ),
 
               // Product Description:

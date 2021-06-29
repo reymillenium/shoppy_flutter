@@ -124,8 +124,22 @@ class _CartItemIndexScreenState extends State<CartItemIndexScreen> with RouteAwa
 
   @override
   Widget build(BuildContext context) {
-    ProductsData productsData = Provider.of<ProductsData>(context);
-    // FavoriteProductsData favoriteProductsData = Provider.of<FavoriteProductsData>(context);
+    // ProductsData productsData = Provider.of<ProductsData>(context);
+
+    // return FutureBuilder(
+    //     future: Future.wait([
+    //       productsData.thoseInTheCartByUserId(widget.userId, filtersList: selectedFilters),
+    //       productsData.priceTotalAmountInCart(widget.userId),
+    //     ]),
+    //     builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
+    //       List<Product> productsInTheCart = [];
+    //       double priceTotalAmountInCart = 0;
+    //       if (snapshot.data != null) {
+    //         productsInTheCart = snapshot.data[0];
+    //         priceTotalAmountInCart = snapshot.data[1];
+    //       }
+    //       int productsInTheCartAmount = productsInTheCart.length;
+    //       double priceTotalAmountInCartLabel = NumericHelper.roundDouble(priceTotalAmountInCart, 2);
 
     return CustomScaffold(
       activeIndex: _activeTab,
@@ -141,6 +155,12 @@ class _CartItemIndexScreenState extends State<CartItemIndexScreen> with RouteAwa
               //   value: _product,
               //   child: ProductDetailsHeader(userId: widget.userId),
               // ),
+              // Text('$productsInTheCartAmount products = $priceTotalAmountInCartLabel USD'),
+
+              // Cart Items Details Header
+              CartItemsDetailsHeader(
+                userId: widget.userId,
+              ),
 
               // Description  Header Text:
               SimpleListHeader(
@@ -161,6 +181,8 @@ class _CartItemIndexScreenState extends State<CartItemIndexScreen> with RouteAwa
       onPressedBarActionIcon: () => _openFilterDialog(context),
       onPressedFAB: () => _showModalNewFoodRecipe(context),
     );
+
+    // });
   }
 
   void _showModalNewFoodRecipe(BuildContext context) {

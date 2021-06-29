@@ -343,6 +343,19 @@ class ProductsData with ChangeNotifier {
     return quantityAmountInCart;
   }
 
+  Future<int> quantityTotalAmountInCart(int userId) async {
+    int quantityTotalAmountInCart = 0;
+    List<Product> productsInCart = await this.thoseInTheCartByUserId(userId);
+
+    // Loop in a Future:
+    await Future.forEach(productsInCart, (productInCart) async {
+      int temp = await this.quantityAmountInCart(userId, productInCart.id);
+      quantityTotalAmountInCart += temp;
+    });
+
+    return quantityTotalAmountInCart;
+  }
+
   Future<double> priceAmountInCart(int userId, int productId) async {
     double priceAmountInCart = 0;
     CartItemsData cartItemsData = CartItemsData();
@@ -356,5 +369,18 @@ class ProductsData with ChangeNotifier {
     }
 
     return priceAmountInCart;
+  }
+
+  Future<double> priceTotalAmountInCart(int userId) async {
+    double priceTotalAmountInCart = 0.0;
+    List<Product> productsInCart = await this.thoseInTheCartByUserId(userId);
+
+    // Loop in a Future:
+    await Future.forEach(productsInCart, (productInCart) async {
+      double temp = await this.priceAmountInCart(userId, productInCart.id);
+      priceTotalAmountInCart += temp;
+    });
+
+    return priceTotalAmountInCart;
   }
 }

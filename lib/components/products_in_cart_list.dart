@@ -45,6 +45,7 @@ class ProductsInCartList extends StatelessWidget {
             // priceTotalAmountInCart = snapshot.data[1];
           }
 
+          // Preserves the state:
           return ListView.custom(
             padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
             controller: _listViewScrollController,
@@ -74,10 +75,9 @@ class ProductsInCartList extends StatelessWidget {
   int findChildIndexCallback(Key key, List<Product> productsInTheCart) {
     final ValueKey valueKey = key as ValueKey;
     final int id = valueKey.value;
-    // final int id = int.parse(foodRecipeWidgetID.substring(0, 12));
     Product product;
     try {
-      product = productsInTheCart.firstWhere((foodIngredient) => id == foodIngredient.id);
+      product = productsInTheCart.firstWhere((productInTheCart) => id == productInTheCart.id);
     } catch (e) {
       return null;
     }

@@ -95,7 +95,7 @@ class _CartItemIndexScreenState extends State<CartItemIndexScreen> with RouteAwa
       listData: availableFilters,
       selectedListData: selectedFilters,
       height: 300,
-      headlineText: "Show me the Food Recipes:",
+      headlineText: "Show me the products:",
       searchFieldHintText: "Search Here",
       choiceChipLabel: (item) {
         return item.toCamelCase.readable;

@@ -42,11 +42,6 @@ class ProductDetailsHeader extends StatelessWidget {
 
     final String formattedDate = formatter.format(productData.createdAt);
     final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(productData.price)}';
-    // int userId = 1;
-
-    // ProductsData productsData = Provider.of<ProductsData>(context);
-    // Function onDeleteFoodRecipeHandler = (id, context) => foodRecipesData.deleteFoodRecipeWithConfirm(id, context);
-    // Function onUpdateFoodRecipeHandler = (id, title, imageUrl, duration, complexity, affordability, isGlutenFree, isLactoseFree, isVegan, isVegetarian) => foodRecipesData.updateFoodRecipe(id, title, imageUrl, duration, complexity, affordability, isGlutenFree, isLactoseFree, isVegan, isVegetarian);
 
     return Card(
       elevation: 2,

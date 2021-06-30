@@ -49,7 +49,7 @@ class ProductInCartTile extends StatelessWidget {
     return Card(
       elevation: 2,
       color: Colors.white70,
-      // margin: EdgeInsets.all(10),
+      margin: EdgeInsets.only(left: 8, right: 8, top: 4),
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.white70, width: 1),
         // side: BorderSide(color: Colors.red, width: 1),

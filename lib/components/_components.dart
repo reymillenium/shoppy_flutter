@@ -26,12 +26,13 @@ export './products_grid.dart'; // First attempt to list inside a ListView using 
 export 'product_grid_tile.dart';
 export './product_panel.dart'; // Second attempt using a ListGrid instead of a ListView:
 export './product_details_header.dart'; // Second attempt using a ListGrid instead of a ListView:
+
+// Favorite Product related:
 export 'favorite_product_small_button.dart';
 export 'favorite_product_big_button.dart';
 export 'add_product_to_cart_small_button.dart';
-export 'cart_items_detail_header.dart';
 
-// FoodRecipe related:
-// export './food_recipes_list.dart';
-// export './food_recipe_tile.dart';
-// export './food_recipe_details_header.dart'; // Goes on the FoodRecipeShowScreen, on top of the FoodIngredientsList
+// Cart Items related:
+export 'cart_items_detail_header.dart';
+export 'cart_items_list.dart';
+export 'cart_item_tile.dart';

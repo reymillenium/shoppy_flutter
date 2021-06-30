@@ -124,65 +124,68 @@ class _CartItemIndexScreenState extends State<CartItemIndexScreen> with RouteAwa
 
   @override
   Widget build(BuildContext context) {
-    // ProductsData productsData = Provider.of<ProductsData>(context);
+    ProductsData productsData = Provider.of<ProductsData>(context);
 
-    // return FutureBuilder(
-    //     future: Future.wait([
-    //       productsData.thoseInTheCartByUserId(widget.userId, filtersList: selectedFilters),
-    //       productsData.priceTotalAmountInCart(widget.userId),
-    //     ]),
-    //     builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
-    //       List<Product> productsInTheCart = [];
-    //       double priceTotalAmountInCart = 0;
-    //       if (snapshot.data != null) {
-    //         productsInTheCart = snapshot.data[0];
-    //         priceTotalAmountInCart = snapshot.data[1];
-    //       }
-    //       int productsInTheCartAmount = productsInTheCart.length;
-    //       double priceTotalAmountInCartLabel = NumericHelper.roundDouble(priceTotalAmountInCart, 2);
+    return FutureBuilder(
+        future: Future.wait([
+          productsData.thoseInTheCartByUserId(widget.userId, filtersList: selectedFilters),
+          // productsData.priceTotalAmountInCart(widget.userId),
+        ]),
+        builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
+          List<Product> productsInTheCart = [];
+          // double priceTotalAmountInCart = 0;
+          if (snapshot.data != null) {
+            productsInTheCart = snapshot.data[0];
+            // priceTotalAmountInCart = snapshot.data[1];
+          }
+          int productsInTheCartAmount = productsInTheCart.length;
+          // double priceTotalAmountInCartLabel = NumericHelper.roundDouble(priceTotalAmountInCart, 2);
 
-    return CustomScaffold(
-      activeIndex: _activeTab,
-      appTitle: widget.appTitle,
-      innerWidgets: [
-        Expanded(
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            children: [
-              // Product Details Header
-              // ChangeNotifierProvider.value(
-              //   value: _product,
-              //   child: ProductDetailsHeader(userId: widget.userId),
-              // ),
-              // Text('$productsInTheCartAmount products = $priceTotalAmountInCartLabel USD'),
+          List<Widget> innerWidgets = [
+            // Cart Items Details Header
+            CartItemsDetailsHeader(
+              userId: widget.userId,
+            ),
 
-              // Cart Items Details Header
-              CartItemsDetailsHeader(
-                userId: widget.userId,
+            // Description  Header Text:
+            SimpleListHeader(
+              listHeader: 'Products',
+            ),
+
+            // Product Description:
+            PartialListContainer(
+              innerWidgetList: Text('test'),
+            ),
+          ];
+
+          List<Widget> noItemsWidgets = [
+            CustomEmptyWidget(
+              packageImage: 1,
+              title: 'We are sorry',
+              subTitle: 'There is no products in your Shopping Cart',
+            ),
+          ];
+
+          return CustomScaffold(
+            activeIndex: _activeTab,
+            appTitle: widget.appTitle,
+            innerWidgets: [
+              Expanded(
+                child: ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  children: productsInTheCartAmount > 0 ? innerWidgets : noItemsWidgets,
+                  // children: noItemsWidgets,
+                ),
               ),
-
-              // Description  Header Text:
-              SimpleListHeader(
-                listHeader: 'Products',
-              ),
-
-              // Product Description:
-              // PartialListContainer(
-              //   innerWidgetList: Text('${_product.description}'),
-              // ),
             ],
-          ),
-        ),
-      ],
-      objectsLength: 0,
-      objectName: 'product',
-      appBarActionIcon: Icons.filter_alt_outlined,
-      onPressedBarActionIcon: () => _openFilterDialog(context),
-      onPressedFAB: () => _showModalNewFoodRecipe(context),
-    );
-
-    // });
+            objectsLength: 0,
+            objectName: 'product',
+            appBarActionIcon: Icons.filter_alt_outlined,
+            onPressedBarActionIcon: () => _openFilterDialog(context),
+            onPressedFAB: () => _showModalNewFoodRecipe(context),
+          );
+        });
   }
 
   void _showModalNewFoodRecipe(BuildContext context) {

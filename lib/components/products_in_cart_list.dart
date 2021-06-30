@@ -35,14 +35,11 @@ class ProductsInCartList extends StatelessWidget {
     return FutureBuilder(
         future: Future.wait([
           productsData.thoseInTheCartByUserId(userId),
-          // productsData.priceTotalAmountInCart(widget.userId),
         ]),
         builder: (ctx, snapshot) {
           List<Product> productsInTheCart = [];
-          // double priceTotalAmountInCart = 0;
           if (snapshot.data != null) {
             productsInTheCart = snapshot.data[0];
-            // priceTotalAmountInCart = snapshot.data[1];
           }
 
           // Preserves the state:

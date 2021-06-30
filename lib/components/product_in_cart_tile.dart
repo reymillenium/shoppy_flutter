@@ -21,15 +21,10 @@ class ProductInCartTile extends StatelessWidget {
   // Properties:
   final int userId;
 
-  // final int id;
-  // final int index;
-
   // Constructor:
   ProductInCartTile({
     Key key,
     this.userId,
-    // this.id,
-    // this.index,
   }) : super(key: key);
 
   // Runtime constants:
@@ -52,8 +47,6 @@ class ProductInCartTile extends StatelessWidget {
       margin: EdgeInsets.only(left: 8, right: 8, top: 4),
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.white70, width: 1),
-        // side: BorderSide(color: Colors.red, width: 1),
-        // borderRadius: BorderRadius.circular(10),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
@@ -63,11 +56,9 @@ class ProductInCartTile extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // ListTile with data: title, duration and date
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
-              // visualDensity: VisualDensity.standard,
               leading: CircleAvatar(
                 backgroundColor: primaryColor,
                 radius: 30,
@@ -75,7 +66,6 @@ class ProductInCartTile extends StatelessWidget {
                   product.imageUrl,
                 ),
               ),
-
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -88,7 +78,6 @@ class ProductInCartTile extends StatelessWidget {
                 ],
               ),
               subtitle: Text(perItemPriceLabel),
-              // subtitle: Text('testing'),
               trailing: AddProductToCartSmallButton(),
             ),
           ),

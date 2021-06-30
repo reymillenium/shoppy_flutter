@@ -27,6 +27,9 @@ class PartialListContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double availableHeight = DeviceHelper.availableHeight(context: context);
+    print('availableHeight = $availableHeight');
+
     return Container(
       margin: EdgeInsets.only(left: 8, right: 8, bottom: 8),
       decoration: BoxDecoration(
@@ -47,7 +50,7 @@ class PartialListContainer extends StatelessWidget {
           ),
         ],
       ),
-      height: 300,
+      // height: 300,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0),
         child: innerWidgetList,

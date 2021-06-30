@@ -87,7 +87,7 @@ class ProductInCartTile extends StatelessWidget {
                   ),
                 ],
               ),
-              subtitle: Text('subtitle'),
+              subtitle: Text(perItemPriceLabel),
               // subtitle: Text('testing'),
               trailing: AddProductToCartSmallButton(),
             ),

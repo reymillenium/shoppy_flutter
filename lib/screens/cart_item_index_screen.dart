@@ -129,58 +129,47 @@ class _CartItemIndexScreenState extends State<CartItemIndexScreen> with RouteAwa
     return FutureBuilder(
         future: Future.wait([
           productsData.thoseInTheCartByUserId(widget.userId, filtersList: selectedFilters),
-          // productsData.priceTotalAmountInCart(widget.userId),
         ]),
         builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
           List<Product> productsInTheCart = [];
-          // double priceTotalAmountInCart = 0;
           if (snapshot.data != null) {
             productsInTheCart = snapshot.data[0];
-            // priceTotalAmountInCart = snapshot.data[1];
           }
           int productsInTheCartAmount = productsInTheCart.length;
-          // double priceTotalAmountInCartLabel = NumericHelper.roundDouble(priceTotalAmountInCart, 2);
 
-          List<Widget> innerWidgets = [
-            // Cart Items Details Header
-            CartItemsDetailsHeader(
-              userId: widget.userId,
-            ),
-
-            // Description  Header Text:
-            SimpleListHeader(
-              listHeader: 'Products',
-            ),
-
-            // Product Description:
-            PartialListContainer(
-              innerWidgetList: ProductsInCartList(
-                userId: widget.userId,
+          List<Widget> noProductsInCartWidgets = [
+            Expanded(
+              child: CustomEmptyWidget(
+                packageImage: 1,
+                title: 'We are sorry',
+                subTitle: 'There is no products in your Shopping Cart',
               ),
             ),
           ];
 
-          List<Widget> noItemsWidgets = [
-            CustomEmptyWidget(
-              packageImage: 1,
-              title: 'We are sorry',
-              subTitle: 'There is no products in your Shopping Cart',
+          List<Widget> productsInCartWidgets = [
+            // Products in Cart header:
+            CartItemsDetailsHeader(
+              userId: widget.userId,
+            ),
+
+            // Products header:
+            SimpleListHeader(
+              listHeader: 'Products',
+            ),
+
+            // Products in Cart List
+            Expanded(
+              child: ProductsInCartList(
+                userId: widget.userId,
+              ),
             ),
           ];
 
           return CustomScaffold(
             activeIndex: _activeTab,
             appTitle: widget.appTitle,
-            innerWidgets: [
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  children: productsInTheCartAmount > 0 ? innerWidgets : noItemsWidgets,
-                  // children: noItemsWidgets,
-                ),
-              ),
-            ],
+            innerWidgets: productsInTheCartAmount > 0 ? productsInCartWidgets : noProductsInCartWidgets,
             objectsLength: 0,
             objectName: 'product',
             appBarActionIcon: Icons.filter_alt_outlined,

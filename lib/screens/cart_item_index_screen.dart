@@ -154,7 +154,9 @@ class _CartItemIndexScreenState extends State<CartItemIndexScreen> with RouteAwa
 
             // Product Description:
             PartialListContainer(
-              innerWidgetList: Text('test'),
+              innerWidgetList: ProductsInCartList(
+                userId: widget.userId,
+              ),
             ),
           ];
 

@@ -34,5 +34,5 @@ export 'add_product_to_cart_small_button.dart';
 
 // Cart Items related:
 export 'cart_items_detail_header.dart';
-export 'cart_items_list.dart';
-export 'cart_item_tile.dart';
+export 'products_in_cart_list.dart';
+export 'product_in_cart_tile.dart';

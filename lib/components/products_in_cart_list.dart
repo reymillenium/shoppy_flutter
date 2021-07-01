@@ -31,6 +31,7 @@ class ProductsInCartList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProductsData productsData = Provider.of<ProductsData>(context);
+    Function removeFromCart = (userId, productId) => productsData.removeFromCart(userId, productId);
 
     return FutureBuilder(
         future: Future.wait([
@@ -43,23 +44,84 @@ class ProductsInCartList extends StatelessWidget {
           }
 
           // Preserves the state:
-          return ListView.custom(
+          // return ListView.custom(
+          //   padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
+          //   controller: _listViewScrollController,
+          //   childrenDelegate: SliverChildBuilderDelegate(
+          //     (BuildContext context, int index) {
+          //       return ChangeNotifierProvider.value(
+          //         value: productsInTheCart[index],
+          //         child: ProductInCartTile(
+          //           key: ValueKey(productsInTheCart[index].id),
+          //           userId: userId,
+          //         ),
+          //       );
+          //     },
+          //     childCount: productsInTheCart.length,
+          //     // This callback method is what allows to preserve the state:
+          //     findChildIndexCallback: (Key key) => findChildIndexCallback(key, productsInTheCart),
+          //   ),
+          // );
+
+          // Preserves the state ?:
+          // return ListView.builder(
+          //   padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
+          //   controller: _listViewScrollController,
+          //   itemCount: productsInTheCart.length,
+          //   itemBuilder: (BuildContext context, int index) {
+          //     return ChangeNotifierProvider.value(
+          //       value: productsInTheCart[index],
+          //       child: ProductInCartTile(
+          //         // key: ValueKey(productsInTheCart[index].id),
+          //         key: UniqueKey(),
+          //         userId: userId,
+          //       ),
+          //     );
+          //   },
+          // );
+
+          return ListView.builder(
             padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
             controller: _listViewScrollController,
-            childrenDelegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return ChangeNotifierProvider.value(
+            itemCount: productsInTheCart.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Dismissible(
+                // Not blinking, but shows error:
+                // key: ValueKey(productsInTheCart[index].id),
+                // Not initial error, but shows blinking:
+                key: UniqueKey(),
+                background: Container(
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                    size: 32,
+                  ),
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.only(right: 20),
+                  margin: EdgeInsets.only(left: 8, right: 8, top: 4),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).errorColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                  ),
+                ),
+                onDismissed: (DismissDirection direction) {
+                  removeFromCart(userId, productsInTheCart[index].id);
+                },
+                child: ChangeNotifierProvider.value(
                   value: productsInTheCart[index],
                   child: ProductInCartTile(
                     key: ValueKey(productsInTheCart[index].id),
+                    // key: UniqueKey(),
                     userId: userId,
                   ),
-                );
-              },
-              childCount: productsInTheCart.length,
-              // This callback method is what allows to preserve the state:
-              findChildIndexCallback: (Key key) => findChildIndexCallback(key, productsInTheCart),
-            ),
+                ),
+              );
+            },
           );
 
           // );

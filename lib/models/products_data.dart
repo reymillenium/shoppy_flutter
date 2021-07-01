@@ -278,7 +278,7 @@ class ProductsData with ChangeNotifier {
     await refresh();
   }
 
-  Future<void> removeFromCart(int userId, int productId) async {
+  Future<void> decreaseFromCart(int userId, int productId) async {
     bool hasOneInCart = false;
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
@@ -294,6 +294,18 @@ class ProductsData with ChangeNotifier {
       }
     }
     await refresh();
+  }
+
+  Future<void> removeFromCart(int userId, int productId) async {
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
+
+    if (isInCart) {
+      await cartItemsData.deleteCartItemWithoutConfirm(userId, productId);
+    }
+    // await refresh();
+    notifyListeners();
   }
 
   Future<void> updateOnCart(int userId, int productId, int quantity) async {

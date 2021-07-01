@@ -57,7 +57,7 @@ class AddProductToCartSmallButton extends StatelessWidget {
     // Works
     ProductsData productsData = Provider.of<ProductsData>(context);
     Function addToCart = (userId, productId, quantity) => productsData.addToCart(userId, productId, quantity);
-    Function removeFromCart = (userId, productId) => productsData.removeFromCart(userId, productId);
+    Function decreaseFromCart = (userId, productId) => productsData.decreaseFromCart(userId, productId);
     // Works too...
     // CartItemsData cartItemsData = Provider.of<CartItemsData>(context);
     // Function addCartItem = (userId, productId, quantity) => cartItemsData.addCartItem(userId: userId, productId: productId, quantity: quantity);
@@ -125,7 +125,7 @@ class AddProductToCartSmallButton extends StatelessWidget {
                               size: 14,
                             ),
                           ),
-                          onTap: () => removeFromCart(userId, product.id),
+                          onTap: () => decreaseFromCart(userId, product.id),
                         )),
 
                     verticalDivider,

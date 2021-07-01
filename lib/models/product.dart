@@ -102,7 +102,7 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> removeFromCart(int userId) async {
+  Future<void> decreaseFromCart(int userId) async {
     bool hasOneInCart = false;
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
@@ -116,6 +116,18 @@ class Product with ChangeNotifier {
       } else {
         await cartItemsData.updateCartItem(cartItem.id, cartItem.quantity - 1);
       }
+    }
+    // await refresh();
+    notifyListeners();
+  }
+
+  Future<void> removeFromCart(int userId) async {
+    CartItemsData cartItemsData = CartItemsData();
+    List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == id);
+
+    if (isInCart) {
+      await cartItemsData.deleteCartItemWithoutConfirm(userId, id);
     }
     // await refresh();
     notifyListeners();

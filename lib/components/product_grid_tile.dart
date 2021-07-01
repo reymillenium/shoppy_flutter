@@ -79,28 +79,7 @@ class ProductGridTile extends StatelessWidget {
               Positioned(
                 top: 0,
                 left: 0,
-                child: Container(
-                  height: 26,
-                  padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.black26,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
-                  ),
-                  child: FittedBox(
-                    child: Text(
-                      '$amountLabel',
-                      style: TextStyle(
-                        color: ColorHelper.contrastingColor(primaryColor),
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        fontSize: priceFontSize,
-                      ),
-                    ),
-                  ),
-                ),
+                child: AddProductToCartUpperLeftStyled(),
               ),
             ],
 
@@ -171,8 +150,6 @@ class ProductGridTile extends StatelessWidget {
         // Footer: Favorite icon, Title & Add to cart icon
         footer: ClipRRect(
           borderRadius: BorderRadius.only(
-            // topLeft: Radius.circular(10),
-            // topRight: Radius.circular(10),
             bottomLeft: Radius.circular(10),
             bottomRight: Radius.circular(10),
           ),
@@ -186,14 +163,27 @@ class ProductGridTile extends StatelessWidget {
             ),
 
             // Product Title:
-            title: Text(
-              productData.title,
-              softWrap: true,
-              overflow: TextOverflow.ellipsis,
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  productData.title,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                FittedBox(
+                  child: Text(
+                    '$amountLabel',
+                    style: Theme.of(context).textTheme.subtitle2.copyWith(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+              ],
             ),
-
-            // Add to cart Button:
-            trailing: AddProductToCartSmallButton(),
           ),
         ),
       ),

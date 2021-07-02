@@ -53,7 +53,7 @@ class AddProductToCartSmallButton extends StatelessWidget {
   // }
   // Works too:
   Widget build(BuildContext context) {
-    Product product = Provider.of<Product>(context);
+    Product product = Provider.of<Product>(context, listen: false);
     Function addToCartOnProduct = (userId, quantity) => product.addToCart(userId, quantity);
     Function decreaseFromCartOnProduct = (userId) => product.decreaseFromCart(userId);
 
@@ -63,19 +63,22 @@ class AddProductToCartSmallButton extends StatelessWidget {
     Function addToCart = (userId, productId, quantity) => productsData.addToCart(userId, productId, quantity);
     Function decreaseFromCart = (userId, productId) => productsData.decreaseFromCart(userId, productId);
     // Works too...
-    CartItemsData cartItemsData = Provider.of<CartItemsData>(context, listen: false);
+    // CartItemsData cartItemsData = Provider.of<CartItemsData>(context, listen: false);
     // Function addCartItem = (userId, productId, quantity) => cartItemsData.addCartItem(userId: userId, productId: productId, quantity: quantity);
-    Function addToCartOnCartItemsData = (userId, productId, quantity) => cartItemsData.addToCart(userId, productId, quantity);
-    Function decreaseFromCartOnCartItemsData = (userId, productId) => cartItemsData.decreaseFromCart(userId, productId);
+    // Function addToCartOnCartItemsData = (userId, productId, quantity) => cartItemsData.addToCart(userId, productId, quantity);
+    // Function decreaseFromCartOnCartItemsData = (userId, productId) => cartItemsData.decreaseFromCart(userId, productId);
 
     return FutureBuilder(
-      future: Future.wait([product.isInCart(userId), product.quantityAmountInCart(userId)]),
+      future: Future.wait([
+        // product.isInCart(userId),
+        product.quantityAmountInCart(userId),
+      ]),
       builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
-        bool isInCart = false;
+        // bool isInCart = false;
         int quantityAmountInCart = 0;
         if (snapshot.data != null) {
-          isInCart = snapshot.data[0];
-          quantityAmountInCart = snapshot.data[1];
+          // isInCart = snapshot.data[0];
+          quantityAmountInCart = snapshot.data[0];
         }
 
         var verticalDivider = VerticalDivider(
@@ -94,7 +97,7 @@ class AddProductToCartSmallButton extends StatelessWidget {
                   padding: EdgeInsets.all(0),
                   icon: Icon(
                     Icons.shopping_cart_outlined,
-                    color: isInCart ? Colors.red : Colors.white,
+                    color: Colors.white,
                     size: 14,
                   ),
                   // onPressed: () => addToCartOnProduct(widget.userId, 1), // Works

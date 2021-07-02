@@ -17,128 +17,102 @@ import '../helpers/_helpers.dart';
 // Utilities:
 import '../utilities/_utilities.dart';
 
-class ProductsInCartList extends StatelessWidget {
+class ProductsInCartList extends StatefulWidget {
   // Properties:
-  final _listViewScrollController = ScrollController();
   final int userId;
+  final List<Product> productsInTheCart;
 
   // Constructor:
   ProductsInCartList({
     Key key,
     this.userId = 1,
+    this.productsInTheCart,
   }) : super(key: key);
 
   @override
+  _ProductsInCartListState createState() => _ProductsInCartListState();
+}
+
+class _ProductsInCartListState extends State<ProductsInCartList> {
+  final _listViewScrollController = ScrollController();
+  bool _isSwapping = false;
+
+  @override
   Widget build(BuildContext context) {
-    ProductsData productsData = Provider.of<ProductsData>(context);
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: false);
     Function removeFromCart = (userId, productId) => productsData.removeFromCart(userId, productId);
 
     // CartItemsData cartItemsData = Provider.of<CartItemsData>(context);
 
-    return FutureBuilder(
-        future: Future.wait([
-          productsData.thoseInTheCartByUserId(userId),
-          // cartItemsData.byUserId(userId),
-        ]),
-        builder: (ctx, snapshot) {
-          List<Product> productsInTheCart = [];
-          // List<CartItem> cartItems = [];
-          if (snapshot.data != null) {
-            productsInTheCart = snapshot.data[0];
-            // cartItems = snapshot.data[1];
-          }
+    return ListView.builder(
+      padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
+      controller: _listViewScrollController,
+      itemCount: widget.productsInTheCart.length,
+      // itemCount: cartItems.length,
+      itemBuilder: (BuildContext context, int index) {
+        // final item = productsInTheCart[index];
+        final uuid = Uuid();
+        final uniqueKey = UniqueKey();
 
-          // Preserves the state:
-          // return ListView.custom(
-          //   padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
-          //   controller: _listViewScrollController,
-          //   childrenDelegate: SliverChildBuilderDelegate(
-          //     (BuildContext context, int index) {
-          //       return ChangeNotifierProvider.value(
-          //         value: productsInTheCart[index],
-          //         child: ProductInCartTile(
-          //           key: ValueKey(productsInTheCart[index].id),
-          //           userId: userId,
-          //         ),
-          //       );
-          //     },
-          //     childCount: productsInTheCart.length,
-          //     // This callback method is what allows to preserve the state:
-          //     findChildIndexCallback: (Key key) => findChildIndexCallback(key, productsInTheCart),
-          //   ),
-          // );
-
-          // Preserves the state ?:
-          // return ListView.builder(
-          //   padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
-          //   controller: _listViewScrollController,
-          //   itemCount: productsInTheCart.length,
-          //   itemBuilder: (BuildContext context, int index) {
-          //     return ChangeNotifierProvider.value(
-          //       value: productsInTheCart[index],
-          //       child: ProductInCartTile(
-          //         // key: ValueKey(productsInTheCart[index].id),
-          //         key: UniqueKey(),
-          //         userId: userId,
-          //       ),
-          //     );
-          //   },
-          // );
-
-          return ListView.builder(
-            padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
-            controller: _listViewScrollController,
-            itemCount: productsInTheCart.length,
-            // itemCount: cartItems.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Dismissible(
-                // Not blinking, but shows error:
-                // key: ValueKey(productsInTheCart[index].id),
-                // key: ValueKey(cartItems[index].id),
-                // Not initial error, but shows blinking:
-                key: UniqueKey(),
-                background: Container(
-                  child: Icon(
-                    Icons.delete,
-                    color: Colors.white,
-                    size: 32,
-                  ),
-                  alignment: Alignment.centerRight,
-                  padding: EdgeInsets.only(right: 20),
-                  margin: EdgeInsets.only(left: 8, right: 8, top: 4),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).errorColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                  ),
-                ),
-                onDismissed: (DismissDirection direction) {
-                  removeFromCart(userId, productsInTheCart[index].id);
-                },
-                child: ChangeNotifierProvider.value(
-                  value: productsInTheCart[index],
-                  child: ProductInCartTile(
-                    key: ValueKey(productsInTheCart[index].id),
-                    // key: ValueKey(cartItems[index].id),
-                    // key: UniqueKey(),
-                    userId: userId,
-                  ),
-                ),
-              );
-            },
-          );
-
-          // );
-        }
-        // },
+        return Dismissible(
+          // Not blinking, but shows error:
+          // key: ValueKey(productsInTheCart[index].id),
+          // key: ValueKey(cartItems[index].id),
+          // Not initial error, but shows blinking:
+          // key: UniqueKey(),
+          // key: ValueKey(uuid.v1()),
+          // Shows error fula
+          // key: ValueKey(productsInTheCart[index]),
+          // Worst error, persisting
+          // key: Key("$index"),
+          // key: uniqueKey,
+          key: _isSwapping ? uniqueKey : ValueKey(widget.productsInTheCart[index].id),
+          background: Container(
+            child: Icon(
+              Icons.delete,
+              color: Colors.white,
+              size: 32,
+            ),
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.only(right: 20),
+            margin: EdgeInsets.only(left: 8, right: 8, top: 4),
+            decoration: BoxDecoration(
+              color: Theme.of(context).errorColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
+          ),
+          onDismissed: (DismissDirection direction) {
+            setState(() {
+              _isSwapping = true;
+            });
+            removeFromCart(widget.userId, widget.productsInTheCart[index].id).then((val) {
+              setState(() {
+                _isSwapping = false;
+              });
+            });
+          },
+          child: ChangeNotifierProvider.value(
+            value: widget.productsInTheCart[index],
+            child: ProductInCartTile(
+              key: ValueKey(widget.productsInTheCart[index].id),
+              // key: ValueKey(cartItems[index].id),
+              // key: UniqueKey(),
+              userId: widget.userId,
+            ),
+          ),
         );
+      },
+    );
+
+    // );
+    // },
   }
 
-  // This callback method is what allows to preserve the state:
   int findChildIndexCallback(Key key, List<Product> productsInTheCart) {
     final ValueKey valueKey = key as ValueKey;
     final int id = valueKey.value;

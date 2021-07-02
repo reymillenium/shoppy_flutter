@@ -129,11 +129,17 @@ class _CartItemIndexScreenState extends State<CartItemIndexScreen> with RouteAwa
     return FutureBuilder(
         future: Future.wait([
           productsData.thoseInTheCartByUserId(widget.userId, filtersList: selectedFilters),
+          productsData.priceTotalAmountInCart(widget.userId),
+          productsData.quantityTotalAmountInCart(widget.userId),
         ]),
         builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
           List<Product> productsInTheCart = [];
+          double priceTotalAmountInCart = 0;
+          int quantityTotalAmountInCart = 0;
           if (snapshot.data != null) {
             productsInTheCart = snapshot.data[0];
+            priceTotalAmountInCart = snapshot.data[1];
+            quantityTotalAmountInCart = snapshot.data[2];
           }
           int productsInTheCartAmount = productsInTheCart.length;
 
@@ -151,6 +157,9 @@ class _CartItemIndexScreenState extends State<CartItemIndexScreen> with RouteAwa
             // Products in Cart header:
             CartItemsDetailsHeader(
               userId: widget.userId,
+              priceTotalAmountInCart: priceTotalAmountInCart,
+              productsInTheCartAmount: productsInTheCartAmount,
+              quantityTotalAmountInCart: quantityTotalAmountInCart,
             ),
 
             // Products header:
@@ -162,6 +171,7 @@ class _CartItemIndexScreenState extends State<CartItemIndexScreen> with RouteAwa
             Expanded(
               child: ProductsInCartList(
                 userId: widget.userId,
+                productsInTheCart: productsInTheCart,
               ),
             ),
           ];

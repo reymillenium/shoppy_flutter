@@ -42,8 +42,8 @@ class ProductInCartTile extends StatelessWidget {
 
     Color primaryColor = Theme.of(context).primaryColor;
     var uuid = Uuid();
-    ProductsData productsData = Provider.of<ProductsData>(context, listen: false);
-    Function removeFromCart = (userId, productId) => productsData.removeFromCart(userId, productId);
+    // ProductsData productsData = Provider.of<ProductsData>(context, listen: false);
+    // Function removeFromCart = (userId, productId) => productsData.removeFromCart(userId, productId);
 
     // return Dismissible(
     //   // Shows error: A dismissed Dismissible widget is still part of the tree.
@@ -179,13 +179,13 @@ class ProductInCartTile extends StatelessWidget {
                 ],
               ),
               subtitle: Text(perItemPriceLabel),
-              // trailing: AddProductToCartSmallButton(),
-              trailing: Consumer<Product>(
-                builder: (context, product, child) {
-                  return child;
-                },
-                child: AddProductToCartSmallButton(),
-              ),
+              trailing: AddProductToCartSmallButton(),
+              // trailing: Consumer<Product>(
+              //   builder: (context, product, child) {
+              //     return child;
+              //   },
+              //   child: AddProductToCartSmallButton(),
+              // ),
             ),
           ),
         ],

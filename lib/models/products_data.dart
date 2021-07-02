@@ -271,7 +271,7 @@ class ProductsData with ChangeNotifier {
 
     if (isInCart) {
       CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == productId);
-      cartItemsData.updateCartItem(cartItem.id, cartItem.quantity + 1);
+      await cartItemsData.updateCartItem(cartItem.id, cartItem.quantity + 1);
     } else {
       await cartItemsData.addCartItem(userId: userId, productId: productId, quantity: quantity);
     }
@@ -290,7 +290,7 @@ class ProductsData with ChangeNotifier {
       if (hasOneInCart) {
         await cartItemsData.deleteCartItemWithoutConfirm(userId, productId);
       } else {
-        cartItemsData.updateCartItem(cartItem.id, cartItem.quantity - 1);
+        await cartItemsData.updateCartItem(cartItem.id, cartItem.quantity - 1);
       }
     }
     await refresh();

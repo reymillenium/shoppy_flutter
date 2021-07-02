@@ -33,14 +33,19 @@ class ProductsInCartList extends StatelessWidget {
     ProductsData productsData = Provider.of<ProductsData>(context);
     Function removeFromCart = (userId, productId) => productsData.removeFromCart(userId, productId);
 
+    // CartItemsData cartItemsData = Provider.of<CartItemsData>(context);
+
     return FutureBuilder(
         future: Future.wait([
           productsData.thoseInTheCartByUserId(userId),
+          // cartItemsData.byUserId(userId),
         ]),
         builder: (ctx, snapshot) {
           List<Product> productsInTheCart = [];
+          // List<CartItem> cartItems = [];
           if (snapshot.data != null) {
             productsInTheCart = snapshot.data[0];
+            // cartItems = snapshot.data[1];
           }
 
           // Preserves the state:
@@ -84,10 +89,12 @@ class ProductsInCartList extends StatelessWidget {
             padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
             controller: _listViewScrollController,
             itemCount: productsInTheCart.length,
+            // itemCount: cartItems.length,
             itemBuilder: (BuildContext context, int index) {
               return Dismissible(
                 // Not blinking, but shows error:
                 // key: ValueKey(productsInTheCart[index].id),
+                // key: ValueKey(cartItems[index].id),
                 // Not initial error, but shows blinking:
                 key: UniqueKey(),
                 background: Container(
@@ -116,6 +123,7 @@ class ProductsInCartList extends StatelessWidget {
                   value: productsInTheCart[index],
                   child: ProductInCartTile(
                     key: ValueKey(productsInTheCart[index].id),
+                    // key: ValueKey(cartItems[index].id),
                     // key: UniqueKey(),
                     userId: userId,
                   ),

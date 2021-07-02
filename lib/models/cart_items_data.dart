@@ -191,4 +191,44 @@ class CartItemsData with ChangeNotifier {
     _removeWhere(userId, productId);
     refresh();
   }
+
+  // Trying new ways:
+  // Add to Cart feature:
+  Future<void> addToCart(int userId, int productId, int quantity) async {
+    // CartItemsData cartItemsData = CartItemsData();
+    // List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    List<CartItem> cartItems = await this.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == productId);
+      // cartItemsData.updateCartItem(cartItem.id, cartItem.quantity + 1);
+      await this.updateCartItem(cartItem.id, cartItem.quantity + 1);
+    } else {
+      // await cartItemsData.addCartItem(userId: userId, productId: productId, quantity: quantity);
+      await this.addCartItem(userId: userId, productId: productId, quantity: quantity);
+    }
+    await refresh();
+  }
+
+  Future<void> decreaseFromCart(int userId, int productId) async {
+    bool hasOneInCart = false;
+    // CartItemsData cartItemsData = CartItemsData();
+    // List<CartItem> cartItems = await cartItemsData.byUserId(userId);
+    List<CartItem> cartItems = await this.byUserId(userId);
+    bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
+
+    if (isInCart) {
+      CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == productId);
+      hasOneInCart = (cartItem.quantity == 1 ? true : false);
+      if (hasOneInCart) {
+        // await cartItemsData.deleteCartItemWithoutConfirm(userId, productId);
+        await this.deleteCartItemWithoutConfirm(userId, productId);
+      } else {
+        // await cartItemsData.updateCartItem(cartItem.id, cartItem.quantity - 1);
+        await this.updateCartItem(cartItem.id, cartItem.quantity - 1);
+      }
+    }
+    await refresh();
+  }
 }

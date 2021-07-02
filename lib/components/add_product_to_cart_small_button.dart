@@ -54,13 +54,19 @@ class AddProductToCartSmallButton extends StatelessWidget {
   // Works too:
   Widget build(BuildContext context) {
     Product product = Provider.of<Product>(context);
+    Function addToCartOnProduct = (userId, quantity) => product.addToCart(userId, quantity);
+    Function decreaseFromCartOnProduct = (userId) => product.decreaseFromCart(userId);
+
+    print('lib/components/add_product_to_cart_small_button.dart => build');
     // Works
-    ProductsData productsData = Provider.of<ProductsData>(context);
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: false);
     Function addToCart = (userId, productId, quantity) => productsData.addToCart(userId, productId, quantity);
     Function decreaseFromCart = (userId, productId) => productsData.decreaseFromCart(userId, productId);
     // Works too...
-    // CartItemsData cartItemsData = Provider.of<CartItemsData>(context);
+    CartItemsData cartItemsData = Provider.of<CartItemsData>(context, listen: false);
     // Function addCartItem = (userId, productId, quantity) => cartItemsData.addCartItem(userId: userId, productId: productId, quantity: quantity);
+    Function addToCartOnCartItemsData = (userId, productId, quantity) => cartItemsData.addToCart(userId, productId, quantity);
+    Function decreaseFromCartOnCartItemsData = (userId, productId) => cartItemsData.decreaseFromCart(userId, productId);
 
     return FutureBuilder(
       future: Future.wait([product.isInCart(userId), product.quantityAmountInCart(userId)]),
@@ -91,9 +97,9 @@ class AddProductToCartSmallButton extends StatelessWidget {
                     color: isInCart ? Colors.red : Colors.white,
                     size: 14,
                   ),
+                  // onPressed: () => addToCartOnProduct(widget.userId, 1), // Works
                   onPressed: () => addToCart(userId, product.id, 1), // Works
-                  // onPressed: () => addToCart(userId, 1), // Do not Works
-                  // onPressed: () => addCartItem(userId, product.id, 1), // Works
+                  // onPressed: () => addToCartOnCartItemsData(widget.userId, product.id, 1), // Works
                 ),
               )
             : Container(
@@ -125,7 +131,20 @@ class AddProductToCartSmallButton extends StatelessWidget {
                               size: 14,
                             ),
                           ),
+                          // onTap: () => decreaseFromCartOnProduct(widget.userId),
+                          // onTap: () {
+                          //   super.setState(() {});
+                          //   setState(() {
+                          //     decreaseFromCartOnProduct(widget.userId);
+                          //   });
+                          // },
                           onTap: () => decreaseFromCart(userId, product.id),
+                          // onTap: () => decreaseFromCartOnCartItemsData(widget.userId, product.id),
+                          // onTap: () {
+                          //   setState(() {
+                          //     decreaseFromCartOnCartItemsData(widget.userId, product.id);
+                          //   });
+                          // },
                         )),
 
                     verticalDivider,
@@ -157,7 +176,9 @@ class AddProductToCartSmallButton extends StatelessWidget {
                             size: 14,
                           ),
                         ),
+                        // onTap: () => addToCartOnProduct(widget.userId, 1),
                         onTap: () => addToCart(userId, product.id, 1),
+                        // onTap: () => addToCartOnCartItemsData(widget.userId, product.id, 1),
                       ),
                     ),
                   ],

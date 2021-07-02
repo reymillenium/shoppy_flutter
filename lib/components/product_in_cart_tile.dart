@@ -35,7 +35,7 @@ class ProductInCartTile extends StatelessWidget {
   Widget build(BuildContext context) {
     Product product = Provider.of<Product>(context, listen: false);
 
-    AppData appData = Provider.of<AppData>(context, listen: true);
+    AppData appData = Provider.of<AppData>(context, listen: false);
     Map currentCurrency = appData.currentCurrency;
     final String perItemPriceLabel = '${currentCurrency['symbol']}${currencyFormat.format(NumericHelper.roundDouble(product.price, 2))}';
     // final double amountFontSize = (84 / perItemPriceLabel.length);
@@ -179,7 +179,13 @@ class ProductInCartTile extends StatelessWidget {
                 ],
               ),
               subtitle: Text(perItemPriceLabel),
-              trailing: AddProductToCartSmallButton(),
+              // trailing: AddProductToCartSmallButton(),
+              trailing: Consumer<Product>(
+                builder: (context, product, child) {
+                  return child;
+                },
+                child: AddProductToCartSmallButton(),
+              ),
             ),
           ),
         ],

@@ -57,7 +57,7 @@ class AddProductToCartSmallButton extends StatelessWidget {
     Function addToCartOnProduct = (userId, quantity) => product.addToCart(userId, quantity);
     Function decreaseFromCartOnProduct = (userId) => product.decreaseFromCart(userId);
 
-    print('lib/components/add_product_to_cart_small_button.dart => build');
+    // print('lib/components/add_product_to_cart_small_button.dart => build');
     // Works
     ProductsData productsData = Provider.of<ProductsData>(context, listen: false);
     Function addToCart = (userId, productId, quantity) => productsData.addToCart(userId, productId, quantity);

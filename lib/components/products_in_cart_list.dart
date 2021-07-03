@@ -96,6 +96,7 @@ class _ProductsInCartListState extends State<ProductsInCartList> {
               });
             });
           },
+          direction: DismissDirection.endToStart,
           child: ChangeNotifierProvider.value(
             value: widget.productsInTheCart[index],
             child: ProductInCartTile(

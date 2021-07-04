@@ -19,10 +19,12 @@ import '../utilities/_utilities.dart';
 
 class AddProductToCartSmallButton extends StatelessWidget {
   final int userId;
+  final bool listenProductsData;
 
   const AddProductToCartSmallButton({
     Key key,
     this.userId = 1,
+    this.listenProductsData = false,
   }) : super(key: key);
 
   @override
@@ -59,7 +61,7 @@ class AddProductToCartSmallButton extends StatelessWidget {
 
     // print('lib/components/add_product_to_cart_small_button.dart => build');
     // Works
-    ProductsData productsData = Provider.of<ProductsData>(context, listen: false);
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: listenProductsData);
     Function addToCart = (userId, productId, quantity) => productsData.addToCart(userId, productId, quantity);
     Function decreaseFromCart = (userId, productId) => productsData.decreaseFromCart(userId, productId);
     // Works too...
@@ -93,16 +95,16 @@ class AddProductToCartSmallButton extends StatelessWidget {
             ? Tooltip(
                 padding: EdgeInsets.all(0),
                 message: 'Add product to cart',
-                child: IconButton(
-                  padding: EdgeInsets.all(0),
-                  icon: Icon(
-                    Icons.shopping_cart_outlined,
-                    color: Colors.white,
-                    size: 14,
+                child: GestureDetector(
+                  child: Container(
+                    margin: EdgeInsets.only(right: 32, top: 6, bottom: 6),
+                    child: Icon(
+                      Icons.shopping_cart_outlined,
+                      color: Colors.black,
+                      size: 14,
+                    ),
                   ),
-                  // onPressed: () => addToCartOnProduct(widget.userId, 1), // Works
-                  onPressed: () => addToCart(userId, product.id, 1), // Works
-                  // onPressed: () => addToCartOnCartItemsData(widget.userId, product.id, 1), // Works
+                  onTap: () => addToCart(userId, product.id, 1),
                 ),
               )
             : Container(

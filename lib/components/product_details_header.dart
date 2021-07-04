@@ -108,17 +108,11 @@ class ProductDetailsHeader extends StatelessWidget {
                       ),
 
                       // Add to cart button:
-                      Tooltip(
-                        padding: EdgeInsets.all(0),
-                        message: 'Add to cart',
-                        child: IconButton(
-                          padding: EdgeInsets.all(0),
-                          icon: Icon(
-                            Icons.shopping_cart_outlined,
-                            color: Colors.black,
-                            size: 18,
-                          ),
-                          onPressed: () => {},
+                      ChangeNotifierProvider.value(
+                        value: productData,
+                        child: AddProductToCartSmallButton(
+                          userId: userId,
+                          listenProductsData: true,
                         ),
                       ),
                     ],

@@ -160,33 +160,35 @@ class ProductInCartTile extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: primaryColor,
-                radius: 30,
-                backgroundImage: NetworkImage(
-                  product.imageUrl,
-                ),
-              ),
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.title,
-                    style: Theme.of(context).textTheme.headline6,
-                    softWrap: true,
-                    overflow: TextOverflow.fade,
+                // Product image:
+                leading: CircleAvatar(
+                  backgroundColor: primaryColor,
+                  radius: 30,
+                  backgroundImage: NetworkImage(
+                    product.imageUrl,
                   ),
-                ],
-              ),
-              subtitle: Text(perItemPriceLabel),
-              trailing: AddProductToCartSmallButton(),
-              // trailing: Consumer<Product>(
-              //   builder: (context, product, child) {
-              //     return child;
-              //   },
-              //   child: AddProductToCartSmallButton(),
-              // ),
-            ),
+                ),
+
+                // Product title:
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.title,
+                      style: Theme.of(context).textTheme.headline6,
+                      softWrap: true,
+                      overflow: TextOverflow.fade,
+                    ),
+                  ],
+                ),
+
+                // Price label:
+                subtitle: Text(perItemPriceLabel),
+
+                // Increase/Reduce on Cart button:
+                trailing: AddProductToCartSmallButton(
+                  listenProductsData: false,
+                )),
           ),
         ],
       ),

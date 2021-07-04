@@ -122,6 +122,10 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
     );
   }
 
+  void goToCart(BuildContext context) {
+    Navigator.pushNamed(context, CartItemIndexScreen.screenId, arguments: {'appTitle': 'Cart'});
+  }
+
   @override
   Widget build(BuildContext context) {
     // ProductsData productsData = Provider.of<ProductsData>(context);
@@ -160,6 +164,7 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
       appBarActionIcon: Icons.filter_alt_outlined,
       onPressedBarActionIcon: () => _openFilterDialog(context),
       onPressedFAB: () => _showModalNewFoodRecipe(context),
+      onPressedGoToCart: () => goToCart(context),
     );
   }
 

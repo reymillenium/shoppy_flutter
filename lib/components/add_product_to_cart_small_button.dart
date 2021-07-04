@@ -135,19 +135,8 @@ class AddProductToCartSmallButton extends StatelessWidget {
                             ),
                           ),
                           // onTap: () => decreaseFromCartOnProduct(widget.userId),
-                          // onTap: () {
-                          //   super.setState(() {});
-                          //   setState(() {
-                          //     decreaseFromCartOnProduct(widget.userId);
-                          //   });
-                          // },
                           onTap: () => decreaseFromCart(userId, product.id),
                           // onTap: () => decreaseFromCartOnCartItemsData(widget.userId, product.id),
-                          // onTap: () {
-                          //   setState(() {
-                          //     decreaseFromCartOnCartItemsData(widget.userId, product.id);
-                          //   });
-                          // },
                         )),
 
                     verticalDivider,

@@ -123,9 +123,14 @@ class _ProductIndexScreenState extends State<ProductIndexScreen> with RouteAware
       ],
       objectsLength: amountTotalProducts,
       objectName: 'product',
-      onPressedBarActionIcon: () => DialogHelper.openFilterDialog(context, availableFilters, selectedFilters, onApplyButtonClick),
-      appBarActionIcon: Icons.filter_alt_outlined,
+      // Floating action button:
       onPressedFAB: () => _showModalNewProduct(context),
+      // First action button (filter):
+      showFirstActionButton: true,
+      appBarActionIcon: Icons.filter_alt_outlined,
+      onPressedBarActionIcon: () => DialogHelper.openFilterDialog(context, availableFilters, selectedFilters, onApplyButtonClick),
+      // Second action button (Cart):
+      cartIcon: Icons.shopping_cart_outlined,
       onPressedGoToCart: () => goToCart(context),
     );
   }

@@ -162,7 +162,7 @@ class _ProductShowScreenState extends State<ProductShowScreen> with RouteAware, 
       objectsLength: 0,
       objectName: 'product',
       appBarActionIcon: Icons.filter_alt_outlined,
-      onPressedBarActionIcon: () => _openFilterDialog(context),
+      // onPressedBarActionIcon: () => _openFilterDialog(context),
       onPressedFAB: () => _showModalNewFoodRecipe(context),
       onPressedGoToCart: () => goToCart(context),
     );

@@ -96,9 +96,9 @@ class ProductDetailsHeader extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Price
+                      // Product price:
                       Padding(
-                        padding: const EdgeInsets.only(left: 6),
+                        padding: const EdgeInsets.only(left: 0),
                         child: Text(
                           '$amountLabel',
                           style: TextStyle(
@@ -119,6 +119,8 @@ class ProductDetailsHeader extends StatelessWidget {
                   ),
                 ],
               ),
+
+              // Created_at field:
               subtitle: Text(formattedDate),
             ),
           ),

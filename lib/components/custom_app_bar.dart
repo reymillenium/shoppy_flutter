@@ -22,6 +22,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final int userId;
   final String objectName;
 
+  final bool showFirstActionButton;
   final IconData actionIcon;
   final Function onPressedAdd;
 
@@ -33,6 +34,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     this.appTitle,
     this.userId = 1,
     this.objectName,
+    this.showFirstActionButton = false,
     this.actionIcon = Icons.add,
     this.onPressedAdd,
     this.cartIcon = Icons.shopping_cart_outlined,
@@ -57,12 +59,15 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             ),
       ),
       actions: [
-        IconButton(
-          iconSize: 32,
-          icon: Icon(actionIcon),
-          tooltip: 'Add ${objectName.inCaps}',
-          onPressed: onPressedAdd,
-        ),
+        if (showFirstActionButton) ...[
+          IconButton(
+            iconSize: 32,
+            icon: Icon(actionIcon),
+            tooltip: 'Add ${objectName.inCaps}',
+            onPressed: onPressedAdd,
+          ),
+        ],
+
         // IconButton(
         //   iconSize: 32,
         //   icon: Icon(cartIcon),

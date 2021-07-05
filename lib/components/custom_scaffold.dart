@@ -22,15 +22,19 @@ class CustomScaffold extends StatefulWidget {
   final bool _showPortraitOnly = false;
   final String appTitle;
   final Function onPressedFAB;
-  final Function onPressedBarActionIcon;
   final String objectName;
   final int objectsLength;
   final List<Widget> innerWidgets;
   final int activeIndex;
   final bool isAdditionFAB;
   final IconData iconFAB;
-  final IconData appBarActionIcon;
 
+  // First action button (Filter):
+  final bool showFirstActionButton;
+  final IconData appBarActionIcon;
+  final Function onPressedBarActionIcon;
+
+  // Second action button (Cart):
   final IconData cartIcon;
   final Function onPressedGoToCart;
 
@@ -39,14 +43,17 @@ class CustomScaffold extends StatefulWidget {
     Key key,
     this.appTitle,
     this.onPressedFAB,
-    this.onPressedBarActionIcon,
     this.objectName,
     this.objectsLength,
     this.innerWidgets,
     this.activeIndex,
     this.isAdditionFAB = true,
     this.iconFAB = FontAwesomeIcons.plus,
+    // First action button (Filter):
+    this.showFirstActionButton = false,
     this.appBarActionIcon = Icons.add,
+    this.onPressedBarActionIcon,
+    // Second action button (Cart):
     this.cartIcon = Icons.shopping_cart_outlined,
     this.onPressedGoToCart,
   }) : super(key: key);
@@ -108,9 +115,12 @@ class _CustomScaffoldState extends State<CustomScaffold> {
 
     CustomAppBar appBar = CustomAppBar(
       appTitle: widget.appTitle,
-      onPressedAdd: widget.onPressedBarActionIcon ?? widget.onPressedFAB,
       objectName: widget.objectName,
+      // First action button (filter)
+      showFirstActionButton: widget.showFirstActionButton,
       actionIcon: widget.appBarActionIcon,
+      onPressedAdd: widget.onPressedBarActionIcon ?? widget.onPressedFAB,
+      // Second action button (Cart);
       cartIcon: widget.cartIcon,
       onPressedGoToCart: widget.onPressedGoToCart,
     );

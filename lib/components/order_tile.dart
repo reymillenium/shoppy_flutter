@@ -28,7 +28,8 @@ class OrderTile extends StatelessWidget {
   }) : super(key: key);
 
   // Runtime constants:
-  final DateFormat formatter = DateFormat().add_yMMMMd();
+  final DateFormat dateFormatter = DateFormat().add_yMMMMd(); // July 6, 2021
+  final DateFormat timeFormatter = DateFormat().add_jm(); // 12:04 PM
   final currencyFormat = new NumberFormat("#,##0.00", "en_US");
 
   @override
@@ -39,6 +40,8 @@ class OrderTile extends StatelessWidget {
     Map currentCurrency = appData.currentCurrency;
     final String taxesAmountLabel = '${currentCurrency['symbol']}${currencyFormat.format(NumericHelper.roundDouble(order.taxesAmount, 2))}';
     // final double amountFontSize = (84 / perItemPriceLabel.length);
+    final String createdAtDateLabel = dateFormatter.format(order.createdAt);
+    final String createdAtTimeLabel = timeFormatter.format(order.createdAt);
 
     Color primaryColor = Theme.of(context).primaryColor;
 
@@ -80,7 +83,7 @@ class OrderTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'title',
+                    '$createdAtDateLabel',
                     style: Theme.of(context).textTheme.headline6,
                     softWrap: true,
                     overflow: TextOverflow.fade,
@@ -91,8 +94,8 @@ class OrderTile extends StatelessWidget {
               // taxesAmountLabel label:
               subtitle: Text(taxesAmountLabel),
 
-              // ??:
-              trailing: Text('trailing'),
+              // CreatedAt Label:
+              trailing: Text(createdAtTimeLabel),
             ),
           ),
         ],

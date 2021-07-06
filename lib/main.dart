@@ -48,6 +48,16 @@ void main() {
       ChangeNotifierProvider<CartItemsData>(
         create: (context) => CartItemsData(),
       ),
+
+      // Data related to the Order objects: (sqlite DB)
+      ChangeNotifierProvider<OrdersData>(
+        create: (context) => OrdersData(),
+      ),
+
+      // Data related to the OrderedItem objects: (sqlite DB)
+      ChangeNotifierProvider<OrderedItemsData>(
+        create: (context) => OrderedItemsData(),
+      ),
     ],
     child: InitialSplashScreen(),
   ));

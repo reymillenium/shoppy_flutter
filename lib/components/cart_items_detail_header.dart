@@ -25,6 +25,7 @@ class CartItemsDetailsHeader extends StatelessWidget {
   final int productsInTheCartAmount;
   final double priceTotalAmountInCart;
   final int quantityTotalAmountInCart;
+  final List<CartItem> cartItems;
 
   // Constructor:
   CartItemsDetailsHeader({
@@ -33,6 +34,7 @@ class CartItemsDetailsHeader extends StatelessWidget {
     this.productsInTheCartAmount,
     this.priceTotalAmountInCart,
     this.quantityTotalAmountInCart,
+    this.cartItems,
   }) : super(key: key);
 
   // Runtime constants:
@@ -43,6 +45,8 @@ class CartItemsDetailsHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     AppData appData = Provider.of<AppData>(context);
     Map currentCurrency = appData.currentCurrency;
+    OrdersData ordersData = Provider.of<OrdersData>(context, listen: false);
+    Function addOrder = (userId, taxesAmount, cartItems) => ordersData.addOrder(userId: userId, taxesAmount: taxesAmount, cartItems: cartItems);
 
     // Subtotal:
     double priceTotalAmountInCartRounded = NumericHelper.roundDouble(priceTotalAmountInCart, 2);
@@ -138,9 +142,7 @@ class CartItemsDetailsHeader extends StatelessWidget {
 
                   // Order button:
                   ElevatedButton(
-                    onPressed: () {
-                      // Respond to button press
-                    },
+                    onPressed: () => addOrder(userId, taxesAmount, cartItems),
                     // style: TextButton.styleFrom(
                     //   padding: const EdgeInsets.all(2.0),
                     //   primary: Colors.white,

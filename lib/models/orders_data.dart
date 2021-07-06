@@ -131,6 +131,7 @@ class OrdersData with ChangeNotifier {
   }
 
   Future<Order> addOrder({int userId, double taxesAmount, List<CartItem> cartItems}) async {
+    print('Inside lib/models/orders_data.dart -> addOrder');
     DateTime now = DateTime.now();
     Order newOrder = Order(
       userId: userId,
@@ -142,10 +143,12 @@ class OrdersData with ChangeNotifier {
 
     ProductsData productsData = ProductsData();
     OrderedItemsData orderedItemsData = OrderedItemsData();
+    CartItemsData cartItemsData = CartItemsData();
 
     // Loop in a Future: Creates each one of the related OrderedItem objects:
     await Future.forEach(cartItems, (cartItem) async {
-      Product product = productsData.products.firstWhere((product) => product.id == cartItem.productId);
+      List<Product> products = await productsData.thoseInTheCartByUserId(userId);
+      Product product = products.firstWhere((product) => product.id == cartItem.productId);
 
       await orderedItemsData.addOrderedItem(
         orderId: order.id,
@@ -155,6 +158,9 @@ class OrdersData with ChangeNotifier {
         price: product.price,
         description: product.description,
       );
+
+      // And finally we destroy the CartItem object:
+      await cartItemsData.deleteCartItemWithoutConfirm(userId, product.id);
     });
 
     refresh();

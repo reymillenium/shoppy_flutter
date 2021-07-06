@@ -10,6 +10,9 @@ export './favorites_screen.dart';
 // CartItem objects related:
 export 'cart_item_index_screen.dart';
 
+// Order objects related:
+export 'order_index_screen.dart';
+
 // 404 page:
 export './unknown_screen.dart';
 

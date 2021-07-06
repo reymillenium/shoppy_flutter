@@ -104,6 +104,11 @@ class CustomDrawer extends StatelessWidget {
             title: 'Products',
             screenId: ProductIndexScreen.screenId,
           ),
+          CustomDrawerLink(
+            icon: FontAwesomeIcons.shippingFast,
+            title: 'Orders',
+            screenId: OrderIndexScreen.screenId,
+          ),
 
           // Drawer options: (Expansion Panels)
           ExpansionPanelList(

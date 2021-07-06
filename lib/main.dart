@@ -161,7 +161,7 @@ class MyApp extends StatelessWidget {
         FavoritesScreen.screenId: (context) => FavoritesScreen(),
         ProductNewScreen.screenId: (context) => ProductNewScreen(),
         // ProductEditScreen.screenId: (context) => ProductEditScreen(),
-        // FavoritesScreen.screenId: (context) => FavoritesScreen(),
+        OrderIndexScreen.screenId: (context) => OrderIndexScreen(appTitle: 'Orders'),
       },
 
       // Named Routes with extra arguments:

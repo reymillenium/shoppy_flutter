@@ -37,3 +37,7 @@ export 'add_product_to_cart_upper_left_styled.dart';
 export 'cart_items_detail_header.dart';
 export 'products_in_cart_list.dart';
 export 'product_in_cart_tile.dart';
+
+// Orders related:
+export 'orders_list.dart';
+export 'order_tile.dart';

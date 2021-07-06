@@ -19,15 +19,15 @@ import '../utilities/_utilities.dart';
 class OrderedItemsData with ChangeNotifier {
   // Properties:
   static const sqliteTable = {
-    'table_plural_name': 'orderedItemed_items',
-    'table_singular_name': 'orderedItemed_item',
+    'table_plural_name': 'ordered_items',
+    'table_singular_name': 'ordered_item',
     'fields': [
       {
         'field_name': 'id',
         'field_type': 'INTEGER',
       },
       {
-        'field_name': 'orderedItem_id',
+        'field_name': 'order_id',
         'field_type': 'INTEGER',
       },
       {
@@ -47,11 +47,11 @@ class OrderedItemsData with ChangeNotifier {
         'field_type': 'INTEGER',
       },
       {
-        'field_name': 'created_at',
+        'field_name': 'image_url',
         'field_type': 'TEXT',
       },
       {
-        'field_name': 'image_url',
+        'field_name': 'created_at',
         'field_type': 'TEXT',
       },
       {
@@ -219,27 +219,27 @@ class OrderedItemsData with ChangeNotifier {
     return orderedItemsList;
   }
 
-  // Future<int> quantityTotalInOrderedItemedItems(int userId, int orderedItemId) async {
-  //   int quantityTotalInOrderedItemedItems = 0;
-  //   OrderedItemedItemsData orderedItemedItemsData = OrderedItemedItemsData();
-  //   List<OrderedItemedItem> orderedItemedItems = await orderedItemedItemsData.byUserId(userId).map((orderedItemedItem) => orderedItemedItem.orderedItemId == orderedItemId).toList();
-  //
-  //   orderedItemedItems.forEach((orderedItemedItem) {
-  //     quantityTotalInOrderedItemedItems += orderedItemedItem.quantity;
-  //   });
-  //
-  //   return quantityTotalInOrderedItemedItems;
-  // }
+// Future<int> quantityTotalInOrderedItemedItems(int userId, int orderedItemId) async {
+//   int quantityTotalInOrderedItemedItems = 0;
+//   OrderedItemedItemsData orderedItemedItemsData = OrderedItemedItemsData();
+//   List<OrderedItemedItem> orderedItemedItems = await orderedItemedItemsData.byUserId(userId).map((orderedItemedItem) => orderedItemedItem.orderedItemId == orderedItemId).toList();
+//
+//   orderedItemedItems.forEach((orderedItemedItem) {
+//     quantityTotalInOrderedItemedItems += orderedItemedItem.quantity;
+//   });
+//
+//   return quantityTotalInOrderedItemedItems;
+// }
 
-  // Future<double> priceTotalInOrderedItemedItems(int userId, int orderedItemId) async {
-  //   double priceTotalInOrderedItemedItems = 0;
-  //   OrderedItemedItemsData orderedItemedItemsData = OrderedItemedItemsData();
-  //   List<OrderedItemedItem> orderedItemedItems = await orderedItemedItemsData.byUserId(userId).map((orderedItemedItem) => orderedItemedItem.orderedItemId == orderedItemId).toList();
-  //
-  //   orderedItemedItems.forEach((orderedItemedItem) {
-  //     priceTotalInOrderedItemedItems += orderedItemedItem.price;
-  //   });
-  //
-  //   return priceTotalInOrderedItemedItems;
-  // }
+// Future<double> priceTotalInOrderedItemedItems(int userId, int orderedItemId) async {
+//   double priceTotalInOrderedItemedItems = 0;
+//   OrderedItemedItemsData orderedItemedItemsData = OrderedItemedItemsData();
+//   List<OrderedItemedItem> orderedItemedItems = await orderedItemedItemsData.byUserId(userId).map((orderedItemedItem) => orderedItemedItem.orderedItemId == orderedItemId).toList();
+//
+//   orderedItemedItems.forEach((orderedItemedItem) {
+//     priceTotalInOrderedItemedItems += orderedItemedItem.price;
+//   });
+//
+//   return priceTotalInOrderedItemedItems;
+// }
 }

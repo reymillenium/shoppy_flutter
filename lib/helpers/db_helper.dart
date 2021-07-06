@@ -50,6 +50,14 @@ class DBHelper {
     Map<String, Object> cartItemsTable = CartItemsData.sqliteTable;
     await _createTable(db, 1, cartItemsTable);
 
+    // orders table:
+    Map<String, Object> ordersTable = OrdersData.sqliteTable;
+    await _createTable(db, 1, ordersTable);
+
+    // ordered_items table:
+    Map<String, Object> orderItemsTable = OrderedItemsData.sqliteTable;
+    await _createTable(db, 1, orderItemsTable);
+
     // products_food_recipes table:
     // Map<String, Object> productsFoodRecipesTable = ProductsFoodRecipesData.sqliteTable;
     // await _onCreateManyToManyTablePlus(db, 1, productsFoodRecipesTable, productsTable, foodRecipesTable);

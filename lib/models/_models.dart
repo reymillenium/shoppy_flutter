@@ -8,3 +8,9 @@ export './favorite_products_data.dart';
 
 export 'cart_item.dart';
 export 'cart_items_data.dart';
+
+export 'order.dart';
+export 'orders_data.dart';
+
+export 'ordered_item.dart';
+export 'ordered_items_data.dart';

@@ -131,7 +131,6 @@ class OrdersData with ChangeNotifier {
   }
 
   Future<Order> addOrder({int userId, double taxesAmount, List<CartItem> cartItems}) async {
-    print('Inside lib/models/orders_data.dart -> addOrder');
     DateTime now = DateTime.now();
     Order newOrder = Order(
       userId: userId,
@@ -140,10 +139,10 @@ class OrdersData with ChangeNotifier {
       updatedAt: now,
     );
     Order order = await _create(newOrder, sqliteTable);
-
+    // ProductsData productsData = Provider.of<ProductsData>(context, listen: false); // Lets try this way later (could solve triggering of notifyListeners() remotely)
     ProductsData productsData = ProductsData();
     OrderedItemsData orderedItemsData = OrderedItemsData();
-    CartItemsData cartItemsData = CartItemsData();
+    // CartItemsData cartItemsData = CartItemsData();
 
     // Loop in a Future: Creates each one of the related OrderedItem objects:
     await Future.forEach(cartItems, (cartItem) async {
@@ -159,8 +158,8 @@ class OrdersData with ChangeNotifier {
         description: product.description,
       );
 
-      // And finally we destroy the CartItem object:
-      await cartItemsData.deleteCartItemWithoutConfirm(userId, product.id);
+      // And finally we destroy the CartItem object: (will be triggered directly on ProductsData, so the widget tree gets updated)
+      // await cartItemsData.deleteCartItemWithoutConfirm(userId, product.id);
     });
 
     refresh();

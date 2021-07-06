@@ -308,6 +308,20 @@ class ProductsData with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> removeAllFromCart(int userId, List<CartItem> cartItems) async {
+    CartItemsData cartItemsData = CartItemsData();
+    // Loop in a Future: Creates each one of the related OrderedItem objects:
+    await Future.forEach(cartItems, (cartItem) async {
+      List<Product> products = await this.thoseInTheCartByUserId(userId);
+      Product product = products.firstWhere((product) => product.id == cartItem.productId);
+
+      // We destroy the CartItem object:
+      await cartItemsData.deleteCartItemWithoutConfirm(userId, product.id);
+    });
+    await refresh();
+    // notifyListeners();
+  }
+
   Future<void> updateOnCart(int userId, int productId, int quantity) async {
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);

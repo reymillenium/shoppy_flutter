@@ -48,6 +48,9 @@ class CartItemsDetailsHeader extends StatelessWidget {
     OrdersData ordersData = Provider.of<OrdersData>(context, listen: false);
     Function addOrder = (userId, taxesAmount, cartItems) => ordersData.addOrder(userId: userId, taxesAmount: taxesAmount, cartItems: cartItems);
 
+    ProductsData productsData = Provider.of<ProductsData>(context, listen: false);
+    Function removeAllFromCart = (userId, cartItems) => productsData.removeAllFromCart(userId, cartItems);
+
     // Subtotal:
     double priceTotalAmountInCartRounded = NumericHelper.roundDouble(priceTotalAmountInCart, 2);
     final String priceTotalAmountInCartRoundedLabel = '${currentCurrency['symbol']}${currencyFormat.format(priceTotalAmountInCartRounded)}';
@@ -142,7 +145,11 @@ class CartItemsDetailsHeader extends StatelessWidget {
 
                   // Order button:
                   ElevatedButton(
-                    onPressed: () => addOrder(userId, taxesAmount, cartItems),
+                    onPressed: () {
+                      addOrder(userId, taxesAmount, cartItems).then((value) {
+                        removeAllFromCart(userId, cartItems);
+                      });
+                    },
                     // style: TextButton.styleFrom(
                     //   padding: const EdgeInsets.all(2.0),
                     //   primary: Colors.white,

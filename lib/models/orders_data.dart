@@ -111,16 +111,15 @@ class OrdersData with ChangeNotifier {
     }
   }
 
-  void _removeWhere(int orderId, int userId) async {
-    // bool isFavorite = await this.isFavorite(userId, orderId);
-    // if (isFavorite) {
-    //   await this.setAsNotFavorite(userId, orderId);
-    // }
-    // bool isInCart = await this.isInCart(userId, orderId);
-    // if (isInCart) {
-    //   CartItemsData cartItemsData = CartItemsData();
-    //   await cartItemsData.deleteCartItemWithoutConfirm(userId, orderId);
-    // }
+  void _removeWhere(int orderId) async {
+    // First mwe must eliminate the related OrderedItem object from the database:
+    OrderedItemsData orderedItemsData = OrderedItemsData();
+    List<OrderedItem> orderedItems = orderedItemsData.orderedItems.where((orderedItem) => orderedItem.orderId == orderId);
+    // Loop in a Future: Destroys each one of the related OrderedItem objects:
+    await Future.forEach(orderedItems, (orderedItem) async {
+      await orderedItemsData.deleteOrderedItemWithoutConfirm(orderedItem.id);
+    });
+
     await _destroy(orderId, sqliteTable);
     await refresh();
   }
@@ -131,7 +130,7 @@ class OrdersData with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Order> addOrder({int userId, double taxesAmount}) async {
+  Future<Order> addOrder({int userId, double taxesAmount, List<CartItem> cartItems}) async {
     DateTime now = DateTime.now();
     Order newOrder = Order(
       userId: userId,
@@ -140,6 +139,24 @@ class OrdersData with ChangeNotifier {
       updatedAt: now,
     );
     Order order = await _create(newOrder, sqliteTable);
+
+    ProductsData productsData = ProductsData();
+    OrderedItemsData orderedItemsData = OrderedItemsData();
+
+    // Loop in a Future: Creates each one of the related OrderedItem objects:
+    await Future.forEach(cartItems, (cartItem) async {
+      Product product = productsData.products.firstWhere((product) => product.id == cartItem.productId);
+
+      await orderedItemsData.addOrderedItem(
+        orderId: order.id,
+        title: product.title,
+        imageUrl: product.imageUrl,
+        quantity: cartItem.quantity,
+        price: product.price,
+        description: product.description,
+      );
+    });
+
     refresh();
     return order;
   }
@@ -156,14 +173,14 @@ class OrdersData with ChangeNotifier {
   }
 
   Future<void> deleteOrderWithConfirm(int orderId, BuildContext context, int userId) {
-    DialogHelper.showDialogPlus(orderId, context, () => _removeWhere(orderId, userId)).then((value) {
+    DialogHelper.showDialogPlus(orderId, context, () => _removeWhere(orderId)).then((value) {
       (context as Element).reassemble();
       refresh();
     });
   }
 
   void deleteOrderWithoutConfirm(int id, int userId) {
-    _removeWhere(id, userId);
+    _removeWhere(id);
     refresh();
   }
 

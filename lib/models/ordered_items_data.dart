@@ -132,7 +132,7 @@ class OrderedItemsData with ChangeNotifier {
     }
   }
 
-  void _removeWhere(int orderedItemId, int orderId) async {
+  void _removeWhere(int orderedItemId) async {
     // bool isFavorite = await this.isFavorite(userId, orderedItemId);
     // if (isFavorite) {
     //   await this.setAsNotFavorite(userId, orderedItemId);
@@ -185,14 +185,14 @@ class OrderedItemsData with ChangeNotifier {
   }
 
   Future<void> deleteOrderedItemWithConfirm(int orderedItemId, BuildContext context, int orderId) {
-    DialogHelper.showDialogPlus(orderedItemId, context, () => _removeWhere(orderedItemId, orderId)).then((value) {
+    DialogHelper.showDialogPlus(orderedItemId, context, () => _removeWhere(orderedItemId)).then((value) {
       (context as Element).reassemble();
       refresh();
     });
   }
 
-  void deleteOrderedItemWithoutConfirm(int id, int userId) {
-    _removeWhere(id, userId);
+  void deleteOrderedItemWithoutConfirm(int id) {
+    _removeWhere(id);
     refresh();
   }
 

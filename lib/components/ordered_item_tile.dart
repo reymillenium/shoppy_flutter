@@ -39,9 +39,9 @@ class OrderedItemTile extends StatelessWidget {
     AppData appData = Provider.of<AppData>(context, listen: false);
     Map currentCurrency = appData.currentCurrency;
     final String priceLabel = '${currentCurrency['symbol']}${currencyFormat.format(NumericHelper.roundDouble(orderedItem.price, 2))}';
-    // final double amountFontSize = (84 / perItemPriceLabel.length);
-    final String createdAtDateLabel = dateFormatter.format(orderedItem.createdAt);
-    final String createdAtTimeLabel = timeFormatter.format(orderedItem.createdAt);
+
+    final int quantity = orderedItem.quantity;
+    final String quantityLabel = quantity.toString() + ' item${quantity == 1 ? '' : 's'}';
 
     Color primaryColor = Theme.of(context).primaryColor;
 
@@ -63,28 +63,21 @@ class OrderedItemTile extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
-              // Product image:
-              // leading: CircleAvatar(
-              //   backgroundColor: primaryColor,
-              //   radius: 30,
-              //   backgroundImage: NetworkImage(
-              //     product.imageUrl,
-              //   ),
-              // ),
-              // Order taxesAmountLabel:
+              // OrderedItem image:
               leading: CircleAvatar(
                 backgroundColor: primaryColor,
                 radius: 30,
-                // child: Text('$priceLabel'),
-                child: Text('${orderedItem.quantity}'),
+                backgroundImage: NetworkImage(
+                  orderedItem.imageUrl,
+                ),
               ),
 
-              // Order title:
+              // OrderedItem title:
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '$createdAtDateLabel',
+                    orderedItem.title,
                     style: Theme.of(context).textTheme.headline6,
                     softWrap: true,
                     overflow: TextOverflow.fade,
@@ -92,11 +85,11 @@ class OrderedItemTile extends StatelessWidget {
                 ],
               ),
 
-              // taxesAmountLabel label:
+              // OrderedItem label:
               subtitle: Text(priceLabel),
 
-              // CreatedAt Label:
-              trailing: Text(createdAtTimeLabel),
+              // OrderedItem quantity label:
+              trailing: Text(quantityLabel),
             ),
           ),
         ],

@@ -66,6 +66,8 @@ class _OrderedItemsListState extends State<OrderedItemsList> {
         }
 
         return ExpansionTile(
+          // tilePadding: EdgeInsets.only(bottom: 10, left: 2),
+          childrenPadding: EdgeInsets.only(bottom: 6),
           title: Row(
             children: [
               Text(

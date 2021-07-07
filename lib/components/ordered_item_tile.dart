@@ -48,7 +48,7 @@ class OrderedItemTile extends StatelessWidget {
     return Card(
       elevation: 2,
       color: Colors.white70,
-      margin: EdgeInsets.only(left: 8, right: 8, top: 4),
+      margin: EdgeInsets.only(left: 0, right: 0, top: 4),
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.white70, width: 1),
         borderRadius: BorderRadius.only(

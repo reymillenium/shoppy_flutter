@@ -20,6 +20,7 @@ import '../utilities/_utilities.dart';
 class OrderedItemsList extends StatefulWidget {
   // Properties:
   final int userId;
+
   // final Order order;
 
   // Constructor:
@@ -40,76 +41,113 @@ class OrderedItemsList extends StatefulWidget {
 
 class _OrderedItemsListState extends State<OrderedItemsList> {
   final _listViewScrollController = ScrollController();
-  // bool _isSwapping = false;
 
   @override
   Widget build(BuildContext context) {
+    AppData appData = Provider.of<AppData>(context, listen: false);
+    Map currentCurrency = appData.currentCurrency;
+
     Order order = Provider.of<Order>(context, listen: false);
-    // OrdersData ordersData = Provider.of<OrdersData>(context, listen: false);
+
     OrderedItemsData orderedItemsData = Provider.of<OrderedItemsData>(context, listen: false);
     final String createdAtDateLabel = widget.dateFormatter.format(order.createdAt);
     final String createdAtTimeLabel = widget.timeFormatter.format(order.createdAt);
 
+    OrdersData ordersData = Provider.of<OrdersData>(context, listen: false);
+
     return FutureBuilder(
       future: Future.wait([
-        // orderedItemsData.byUserId(widget.userId),
         orderedItemsData.byOrderId(order.id),
+        ordersData.priceTotalInOrderedItems(widget.userId, order.id),
+        ordersData.quantityTotalInOrderedItems(widget.userId, order.id),
       ]),
       builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
-        // bool isInCart = false;
-        // int quantityAmountInCart = 0;
         List<OrderedItem> orderedItems = [];
+        double priceTotalInOrderedItems = 0;
+        int quantityTotalInOrderedItems = 0;
         if (snapshot.data != null) {
-          // isInCart = snapshot.data[0];
-          // quantityAmountInCart = snapshot.data[1];
           orderedItems = snapshot.data[0];
+          priceTotalInOrderedItems = snapshot.data[1];
+          quantityTotalInOrderedItems = snapshot.data[2];
         }
 
-        return ExpansionTile(
-          // tilePadding: EdgeInsets.only(bottom: 10, left: 2),
-          childrenPadding: EdgeInsets.only(bottom: 6),
-          title: Row(
+        final String priceTotalInOrderedItemsLabel = '${currentCurrency['symbol']}${widget.currencyFormat.format(NumericHelper.roundDouble(priceTotalInOrderedItems, 2))}';
+        final String quantityTotalInOrderedItemsLabel = quantityTotalInOrderedItems.toString() + ' item${quantityTotalInOrderedItems == 1 ? '' : 's'}';
+
+        return Card(
+          elevation: 2,
+          color: Colors.white70,
+          margin: EdgeInsets.only(left: 8, right: 8, top: 4),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white70, width: 1),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+          child: Column(
             children: [
-              Text(
-                createdAtDateLabel,
-                style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Text(
-                createdAtTimeLabel,
-                style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Theme(
+                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    // tilePadding: EdgeInsets.only(bottom: 10, left: 2),
+                    childrenPadding: EdgeInsets.only(bottom: 4),
+                    // leading: Text('leading'),
+                    title: Row(
+                      children: [
+                        Text(
+                          createdAtDateLabel,
+                          style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          createdAtTimeLabel,
+                          style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    ),
+                    subtitle: Text(priceTotalInOrderedItemsLabel),
+
+                    trailing: Text('$quantityTotalInOrderedItemsLabel'),
+
+                    children: <Widget>[
+                      // new Column(
+                      //   children: _buildExpandableContent(orders[index]),
+                      // ),
+                      // new Column(children: [
+                      //   ChangeNotifierProvider.value(
+                      //     value: orders[index],
+                      //     child: OrderTile(
+                      //       key: ValueKey(orders[index].id),
+                      //       userId: 1,
+                      //     ),
+                      //   ),
+                      // ]),
+
+                      // ChangeNotifierProvider.value(
+                      //   value: orders[index],
+                      //   child: OrderedItemsList(
+                      //     userId: 1,
+                      //     // order: orders[index],
+                      //     key: ValueKey(orders[index].id),
+                      //   ),
+                      // ),
+                      new Column(
+                        children: buildOrderedItemsTiles(orderedItems),
+                        // children: [],
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
-          children: <Widget>[
-            // new Column(
-            //   children: _buildExpandableContent(orders[index]),
-            // ),
-            // new Column(children: [
-            //   ChangeNotifierProvider.value(
-            //     value: orders[index],
-            //     child: OrderTile(
-            //       key: ValueKey(orders[index].id),
-            //       userId: 1,
-            //     ),
-            //   ),
-            // ]),
-
-            // ChangeNotifierProvider.value(
-            //   value: orders[index],
-            //   child: OrderedItemsList(
-            //     userId: 1,
-            //     // order: orders[index],
-            //     key: ValueKey(orders[index].id),
-            //   ),
-            // ),
-            new Column(
-              children: buildOrderedItemsTiles(orderedItems),
-              // children: [],
-            ),
-          ],
         );
       },
     );

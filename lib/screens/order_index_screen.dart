@@ -134,28 +134,15 @@ class _OrderIndexScreenState extends State<OrderIndexScreen> with RouteAware, Ro
 
     return FutureBuilder(
         future: Future.wait([
-          // productsData.thoseInTheCartByUserId(widget.userId, filtersList: selectedFilters),
-          // productsData.priceTotalAmountInCart(widget.userId),
-          // productsData.quantityTotalAmountInCart(widget.userId),
-          // cartItemsData.byUserId(widget.userId),
           ordersData.byUserId(widget.userId),
         ]),
         builder: (ctx, AsyncSnapshot<List<dynamic>> snapshot) {
-          // List<Product> productsInTheCart = [];
-          // double priceTotalAmountInCart = 0;
-          // int quantityTotalAmountInCart = 0;
-          // List<CartItem> cartItems = [];
           List<Order> ordersByUser = [];
           if (snapshot.data != null) {
-            // productsInTheCart = snapshot.data[0];
-            // priceTotalAmountInCart = snapshot.data[1];
-            // quantityTotalAmountInCart = snapshot.data[2];
-            // cartItems = snapshot.data[3];
             ordersByUser = snapshot.data[0];
           }
-          // int productsInTheCartAmount = productsInTheCart.length;
           int ordersByUserAmount = ordersByUser.length;
-          print('ordersByUserAmount = $ordersByUserAmount');
+          final String ordersByUserAmountLabel = ordersByUserAmount.toString() + ' order${ordersByUserAmount == 1 ? '' : 's'}';
 
           List<Widget> noOrdersWidgets = [
             Expanded(
@@ -168,21 +155,12 @@ class _OrderIndexScreenState extends State<OrderIndexScreen> with RouteAware, Ro
           ];
 
           List<Widget> ordersWidgets = [
-            // Products in Cart header:
-            // CartItemsDetailsHeader(
-            //   userId: widget.userId,
-            //   priceTotalAmountInCart: priceTotalAmountInCart,
-            //   productsInTheCartAmount: productsInTheCartAmount,
-            //   quantityTotalAmountInCart: quantityTotalAmountInCart,
-            //   cartItems: cartItems,
-            // ),
-
             // Orders header:
             SimpleListHeader(
-              listHeader: 'Orders',
+              listHeader: ordersByUserAmountLabel,
             ),
 
-            // Orders in Cart List
+            // Orders Expansion List:
             // Expanded(
             //   child: OrdersList(
             //     userId: widget.userId,
@@ -190,6 +168,7 @@ class _OrderIndexScreenState extends State<OrderIndexScreen> with RouteAware, Ro
             //   ),
             // ),
 
+            // Orders Expansion List:
             Expanded(
               child: OrdersExpansionPanelList(
                 orders: ordersByUser,

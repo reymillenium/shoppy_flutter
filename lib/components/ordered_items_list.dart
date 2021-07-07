@@ -55,6 +55,9 @@ class _OrderedItemsListState extends State<OrderedItemsList> {
 
     OrdersData ordersData = Provider.of<OrdersData>(context, listen: false);
 
+    Color primaryColor = Theme.of(context).primaryColor;
+    Color accentColor = Theme.of(context).accentColor;
+
     return FutureBuilder(
       future: Future.wait([
         orderedItemsData.byOrderId(order.id),
@@ -92,7 +95,10 @@ class _OrderedItemsListState extends State<OrderedItemsList> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Theme(
-                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                  data: Theme.of(context).copyWith(
+                    dividerColor: Colors.transparent,
+                    unselectedWidgetColor: accentColor, // Color of the arrow icon, when not expanded
+                  ),
                   child: ExpansionTile(
                     // tilePadding: EdgeInsets.only(bottom: 10, left: 2),
                     childrenPadding: EdgeInsets.only(bottom: 4),
@@ -101,48 +107,44 @@ class _OrderedItemsListState extends State<OrderedItemsList> {
                       children: [
                         Text(
                           createdAtDateLabel,
-                          style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                          style: new TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.black,
+                          ),
                         ),
                         SizedBox(
                           width: 20,
                         ),
                         Text(
                           createdAtTimeLabel,
-                          style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                          style: new TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.black,
+                          ),
                         ),
                       ],
                     ),
-                    subtitle: Text(priceTotalInOrderedItemsLabel),
-
-                    trailing: Text('$quantityTotalInOrderedItemsLabel'),
-
-                    children: <Widget>[
-                      // new Column(
-                      //   children: _buildExpandableContent(orders[index]),
-                      // ),
-                      // new Column(children: [
-                      //   ChangeNotifierProvider.value(
-                      //     value: orders[index],
-                      //     child: OrderTile(
-                      //       key: ValueKey(orders[index].id),
-                      //       userId: 1,
-                      //     ),
-                      //   ),
-                      // ]),
-
-                      // ChangeNotifierProvider.value(
-                      //   value: orders[index],
-                      //   child: OrderedItemsList(
-                      //     userId: 1,
-                      //     // order: orders[index],
-                      //     key: ValueKey(orders[index].id),
-                      //   ),
-                      // ),
-                      new Column(
-                        children: buildOrderedItemsTiles(orderedItems),
-                        // children: [],
+                    // subtitle: Text('$priceTotalInOrderedItemsLabel ($quantityTotalInOrderedItemsLabel)'),
+                    subtitle: Text(
+                      // '$priceTotalInOrderedItemsLabel ($quantityTotalInOrderedItemsLabel)',
+                      '$priceTotalInOrderedItemsLabel  /  $quantityTotalInOrderedItemsLabel',
+                      style: TextStyle(
+                        color: Colors.black,
                       ),
-                    ],
+                    ),
+
+                    // children: <Widget>[
+                    //   new Column(
+                    //     children: buildOrderedItemsTiles(orderedItems),
+                    //     // children: [],
+                    //   ),
+                    // ],
+
+                    children: buildOrderedItemsTiles(orderedItems),
                   ),
                 ),
               ),
@@ -165,6 +167,24 @@ class _OrderedItemsListState extends State<OrderedItemsList> {
         .toList();
 
     return orderedItemsTiles;
+  }
+
+  Widget buildOrderedItemsTilesList(List<OrderedItem> orderedItems) {
+    return ListView.builder(
+      padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
+      controller: _listViewScrollController,
+      itemCount: orderedItems.length,
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemBuilder: (BuildContext context, int index) {
+        return ChangeNotifierProvider.value(
+            value: orderedItems[index],
+            child: OrderedItemTile(
+              key: ValueKey(orderedItems[index].id),
+              userId: widget.userId,
+            ));
+      },
+    );
   }
 
   int findChildIndexCallback(Key key, List<Order> orders) {

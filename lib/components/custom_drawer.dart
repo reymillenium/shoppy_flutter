@@ -105,6 +105,16 @@ class CustomDrawer extends StatelessWidget {
             screenId: ProductIndexScreen.screenId,
           ),
           CustomDrawerLink(
+            icon: FontAwesomeIcons.star,
+            title: 'Favorites',
+            screenId: FavoritesScreen.screenId,
+          ),
+          CustomDrawerLink(
+            icon: FontAwesomeIcons.shoppingCart,
+            title: 'Shopping Cart',
+            screenId: CartItemIndexScreen.screenId,
+          ),
+          CustomDrawerLink(
             icon: FontAwesomeIcons.shippingFast,
             title: 'Orders',
             screenId: OrderIndexScreen.screenId,

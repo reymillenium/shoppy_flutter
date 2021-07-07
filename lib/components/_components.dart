@@ -41,8 +41,8 @@ export 'product_in_cart_tile.dart';
 // Orders related:
 export 'orders_list.dart';
 export 'order_tile.dart';
-export 'orders_expansion_panel_list.dart';
+export 'orders_list_nested.dart';
 
 // OrderedItem related:
-export 'ordered_items_list.dart';
+export 'ordered_items_expansion_list.dart';
 export 'ordered_item_tile.dart';

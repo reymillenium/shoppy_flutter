@@ -170,7 +170,7 @@ class _OrderIndexScreenState extends State<OrderIndexScreen> with RouteAware, Ro
 
             // Orders Expansion List:
             Expanded(
-              child: OrdersExpansionPanelList(
+              child: OrdersListNested(
                 orders: ordersByUser,
               ),
             ),

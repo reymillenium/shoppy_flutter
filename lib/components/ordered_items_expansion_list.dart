@@ -17,14 +17,14 @@ import '../helpers/_helpers.dart';
 // Utilities:
 import '../utilities/_utilities.dart';
 
-class OrderedItemsList extends StatefulWidget {
+class OrderedItemsExpansionList extends StatefulWidget {
   // Properties:
   final int userId;
 
   // final Order order;
 
   // Constructor:
-  OrderedItemsList({
+  OrderedItemsExpansionList({
     Key key,
     this.userId = 1,
     // this.order,
@@ -36,10 +36,10 @@ class OrderedItemsList extends StatefulWidget {
   final currencyFormat = new NumberFormat("#,##0.00", "en_US");
 
   @override
-  _OrderedItemsListState createState() => _OrderedItemsListState();
+  _OrderedItemsExpansionListState createState() => _OrderedItemsExpansionListState();
 }
 
-class _OrderedItemsListState extends State<OrderedItemsList> {
+class _OrderedItemsExpansionListState extends State<OrderedItemsExpansionList> {
   final _listViewScrollController = ScrollController();
 
   @override

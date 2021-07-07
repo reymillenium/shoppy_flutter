@@ -1,5 +1,5 @@
 // Packages:
-import 'package:shoppy_flutter/components/ordered_items_list.dart';
+import 'package:shoppy_flutter/components/ordered_items_expansion_list.dart';
 
 import '../_inner_packages.dart';
 import '../_external_packages.dart';
@@ -19,12 +19,12 @@ import '../helpers/_helpers.dart';
 // Utilities:
 import '../utilities/_utilities.dart';
 
-class OrdersExpansionPanelList extends StatelessWidget {
+class OrdersListNested extends StatelessWidget {
   // Properties:
   final List<Order> orders;
   final _listViewScrollController = ScrollController();
 
-  OrdersExpansionPanelList({
+  OrdersListNested({
     Key key,
     this.orders,
   }) : super(key: key);
@@ -40,7 +40,7 @@ class OrdersExpansionPanelList extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return ChangeNotifierProvider.value(
           value: orders[index],
-          child: OrderedItemsList(
+          child: OrderedItemsExpansionList(
             userId: 1,
             key: ValueKey(orders[index].id),
           ),

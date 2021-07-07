@@ -269,7 +269,7 @@ class _CustomScaffoldState extends State<CustomScaffold> {
           children: [
             IconButton(
               color: _activeIndex == 0 ? Colors.red : contrastingColor,
-              icon: Icon(FontAwesomeIcons.productHunt),
+              icon: Icon(FontAwesomeIcons.shoppingBag),
               tooltip: 'Categories',
               onPressed: () => onTapSelectNavigation(0, context),
             ),

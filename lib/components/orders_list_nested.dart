@@ -1,6 +1,4 @@
 // Packages:
-import 'package:shoppy_flutter/components/ordered_items_expansion_list.dart';
-
 import '../_inner_packages.dart';
 import '../_external_packages.dart';
 

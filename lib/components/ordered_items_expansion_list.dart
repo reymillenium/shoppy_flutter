@@ -144,7 +144,8 @@ class _OrderedItemsExpansionListState extends State<OrderedItemsExpansionList> {
                     //   ),
                     // ],
 
-                    children: buildOrderedItemsTiles(orderedItems),
+                    // children: buildOrderedItemsTiles(orderedItems),
+                    children: [buildOrderedItemsTilesList(orderedItems)],
                   ),
                 ),
               ),

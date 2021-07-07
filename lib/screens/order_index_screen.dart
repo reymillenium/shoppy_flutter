@@ -128,8 +128,6 @@ class _OrderIndexScreenState extends State<OrderIndexScreen> with RouteAware, Ro
 
   @override
   Widget build(BuildContext context) {
-    ProductsData productsData = Provider.of<ProductsData>(context);
-    CartItemsData cartItemsData = Provider.of<CartItemsData>(context);
     OrdersData ordersData = Provider.of<OrdersData>(context);
 
     return FutureBuilder(

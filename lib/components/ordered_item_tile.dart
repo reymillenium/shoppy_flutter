@@ -63,7 +63,7 @@ class OrderedItemTile extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
-              // OrderedItem image:
+              // OrderedItem Image:
               leading: CircleAvatar(
                 backgroundColor: primaryColor,
                 radius: 30,
@@ -72,7 +72,7 @@ class OrderedItemTile extends StatelessWidget {
                 ),
               ),
 
-              // OrderedItem title:
+              // OrderedItem Title:
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -85,10 +85,10 @@ class OrderedItemTile extends StatelessWidget {
                 ],
               ),
 
-              // OrderedItem label:
+              // OrderedItem Price label:
               subtitle: Text(priceLabel),
 
-              // OrderedItem quantity label:
+              // OrderedItem Quantity label:
               trailing: Text(quantityLabel),
             ),
           ),

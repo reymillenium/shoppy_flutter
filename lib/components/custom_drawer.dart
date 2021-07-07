@@ -100,12 +100,12 @@ class CustomDrawer extends StatelessWidget {
 
           // Links:
           CustomDrawerLink(
-            icon: FontAwesomeIcons.productHunt,
+            icon: FontAwesomeIcons.shoppingBag,
             title: 'Products',
             screenId: ProductIndexScreen.screenId,
           ),
           CustomDrawerLink(
-            icon: FontAwesomeIcons.star,
+            icon: FontAwesomeIcons.heart,
             title: 'Favorites',
             screenId: FavoritesScreen.screenId,
           ),

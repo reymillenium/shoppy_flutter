@@ -47,6 +47,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     Map currentThemeFont = appData.currentThemeFont;
 
     return AppBar(
+      centerTitle: true,
       title: Text(
         appTitle,
         // style: TextStyle(
@@ -75,7 +76,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         //   onPressed: onPressedAddToCart,
         // ),
 
-        if (objectName == 'product' || objectName == 'favoriteProduct') ...[
+        if (objectName == 'product' || objectName == 'favoriteProduct' || objectName == 'order') ...[
           ProductCartBadge(
             userId: userId,
             objectName: objectName,

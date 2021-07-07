@@ -122,6 +122,10 @@ class _OrderIndexScreenState extends State<OrderIndexScreen> with RouteAware, Ro
     );
   }
 
+  void goToCart(BuildContext context) {
+    Navigator.pushNamed(context, CartItemIndexScreen.screenId, arguments: {'appTitle': 'Cart'});
+  }
+
   @override
   Widget build(BuildContext context) {
     ProductsData productsData = Provider.of<ProductsData>(context);
@@ -173,7 +177,7 @@ class _OrderIndexScreenState extends State<OrderIndexScreen> with RouteAware, Ro
             //   cartItems: cartItems,
             // ),
 
-            // Products header:
+            // Orders header:
             SimpleListHeader(
               listHeader: 'Orders',
             ),
@@ -197,11 +201,17 @@ class _OrderIndexScreenState extends State<OrderIndexScreen> with RouteAware, Ro
             activeIndex: _activeTab,
             appTitle: widget.appTitle,
             innerWidgets: ordersByUserAmount > 0 ? ordersWidgets : noOrdersWidgets,
-            objectsLength: 0,
-            objectName: 'product',
-            appBarActionIcon: Icons.filter_alt_outlined,
-            onPressedBarActionIcon: () => _openFilterDialog(context),
+            objectsLength: ordersByUser.length,
+            objectName: 'order',
+            // Floating Action Button (FAB):
             onPressedFAB: () => _showModalNewFoodRecipe(context),
+            // First action button (filter):
+            showFirstActionButton: true,
+            appBarActionIcon: Icons.filter_alt_outlined,
+            onPressedBarActionIcon: () {},
+            // Second action button (Shopping Cart):
+            cartIcon: Icons.shopping_cart_outlined,
+            onPressedGoToCart: () => goToCart(context),
           );
         });
   }

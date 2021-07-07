@@ -160,7 +160,8 @@ class _CustomScaffoldState extends State<CustomScaffold> {
             left: safeAreaLeft,
             right: safeAreaRight,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: widget.innerWidgets,
             ),

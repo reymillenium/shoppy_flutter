@@ -196,7 +196,7 @@ class OrderedItemsData with ChangeNotifier {
     refresh();
   }
 
-  Future<List<OrderedItem>> byUserId(int userId, {List<String> filtersList}) async {
+  Future<List<OrderedItem>> byOrderId(int orderId, {List<String> filtersList}) async {
     var dbClient = await dbHelper.dbPlus();
     List<OrderedItem> orderedItemsList = [];
     filtersList = filtersList ?? [];
@@ -207,7 +207,7 @@ class OrderedItemsData with ChangeNotifier {
     String orderedItemsTableName = orderedItemsTable['table_plural_name'];
     List<Map> orderedItemsTableFields = orderedItemsTable['fields'];
     // List<Map> orderedItemsMaps = await dbClient.query(orderedItemsTableName, columns: orderedItemsTableFields.map<String>((field) => field['field_name']).toList(), where: 'user_id = ?', whereArgs: [userId]);
-    List<Map> orderedItemsMaps = await dbClient.query(orderedItemsTableName, columns: orderedItemsTableFields.map<String>((field) => field['field_name']).toList(), where: '${filteringString}user_id = ?', whereArgs: [userId]);
+    List<Map> orderedItemsMaps = await dbClient.query(orderedItemsTableName, columns: orderedItemsTableFields.map<String>((field) => field['field_name']).toList(), where: '${filteringString}order_id = ?', whereArgs: [orderId]);
 
     // Conversion into OrderedItem objects:
     if (orderedItemsMaps.length > 0) {

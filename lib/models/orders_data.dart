@@ -215,7 +215,7 @@ class OrdersData with ChangeNotifier {
   Future<int> quantityTotalInOrderedItems(int userId, int orderId) async {
     int quantityTotalInOrderedItems = 0;
     OrderedItemsData orderedItemsData = OrderedItemsData();
-    List<OrderedItem> orderedItemsByUser = await orderedItemsData.byUserId(userId);
+    List<OrderedItem> orderedItemsByUser = await orderedItemsData.byOrderId(orderId);
     List<OrderedItem> orderedItemsByUserAndOrder = orderedItemsByUser.where((orderedItem) => orderedItem.orderId == orderId).toList();
 
     orderedItemsByUserAndOrder.forEach((orderedItem) {
@@ -228,7 +228,7 @@ class OrdersData with ChangeNotifier {
   Future<double> priceTotalInOrderedItems(int userId, int orderId) async {
     double priceTotalInOrderedItems = 0;
     OrderedItemsData orderedItemsData = OrderedItemsData();
-    List<OrderedItem> orderedItemsByUser = await orderedItemsData.byUserId(userId);
+    List<OrderedItem> orderedItemsByUser = await orderedItemsData.byOrderId(orderId);
     List<OrderedItem> orderedItemsByUserAndOrder = orderedItemsByUser.where((orderedItem) => orderedItem.orderId == orderId).toList();
 
     orderedItemsByUserAndOrder.forEach((orderedItem) {

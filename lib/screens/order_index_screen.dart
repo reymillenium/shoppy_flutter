@@ -178,11 +178,15 @@ class _OrderIndexScreenState extends State<OrderIndexScreen> with RouteAware, Ro
             ),
 
             // Orders in Cart List
-            Expanded(
-              child: OrdersList(
-                userId: widget.userId,
-                orders: ordersByUser,
-              ),
+            // Expanded(
+            //   child: OrdersList(
+            //     userId: widget.userId,
+            //     orders: ordersByUser,
+            //   ),
+            // ),
+
+            OrdersExpansionPanelList(
+              orders: ordersByUser,
             ),
           ];
 

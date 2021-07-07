@@ -47,8 +47,8 @@ class _OrderedItemsListState extends State<OrderedItemsList> {
     Order order = Provider.of<Order>(context, listen: false);
     // OrdersData ordersData = Provider.of<OrdersData>(context, listen: false);
     OrderedItemsData orderedItemsData = Provider.of<OrderedItemsData>(context, listen: false);
-    // final String createdAtDateLabel = widget.dateFormatter.format(order.createdAt);
-    // final String createdAtTimeLabel = widget.timeFormatter.format(order.createdAt);
+    final String createdAtDateLabel = widget.dateFormatter.format(order.createdAt);
+    final String createdAtTimeLabel = widget.timeFormatter.format(order.createdAt);
 
     return FutureBuilder(
       future: Future.wait([
@@ -65,24 +65,66 @@ class _OrderedItemsListState extends State<OrderedItemsList> {
           orderedItems = snapshot.data[0];
         }
 
-        return ListView.builder(
-          padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
-          controller: _listViewScrollController,
-          itemCount: orderedItems.length,
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            return ChangeNotifierProvider.value(
-              value: orderedItems[index],
-              child: OrderedItemTile(
-                key: ValueKey(orderedItems[index].id),
-                userId: widget.userId,
+        return ExpansionTile(
+          title: Row(
+            children: [
+              Text(
+                createdAtDateLabel,
+                style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
               ),
-            );
-          },
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                createdAtTimeLabel,
+                style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+          children: <Widget>[
+            // new Column(
+            //   children: _buildExpandableContent(orders[index]),
+            // ),
+            // new Column(children: [
+            //   ChangeNotifierProvider.value(
+            //     value: orders[index],
+            //     child: OrderTile(
+            //       key: ValueKey(orders[index].id),
+            //       userId: 1,
+            //     ),
+            //   ),
+            // ]),
+
+            // ChangeNotifierProvider.value(
+            //   value: orders[index],
+            //   child: OrderedItemsList(
+            //     userId: 1,
+            //     // order: orders[index],
+            //     key: ValueKey(orders[index].id),
+            //   ),
+            // ),
+            new Column(
+              children: buildOrderedItemsTiles(orderedItems),
+              // children: [],
+            ),
+          ],
         );
       },
     );
+  }
+
+  List<Widget> buildOrderedItemsTiles(List<OrderedItem> orderedItems) {
+    List<Widget> orderedItemsTiles = [];
+    orderedItemsTiles = orderedItems
+        .map((orderedItem) => ChangeNotifierProvider.value(
+            value: orderedItem,
+            child: OrderedItemTile(
+              key: ValueKey(orderedItem.id),
+              userId: widget.userId,
+            )))
+        .toList();
+
+    return orderedItemsTiles;
   }
 
   int findChildIndexCallback(Key key, List<Order> orders) {

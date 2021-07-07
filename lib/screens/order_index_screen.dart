@@ -151,6 +151,7 @@ class _OrderIndexScreenState extends State<OrderIndexScreen> with RouteAware, Ro
           }
           // int productsInTheCartAmount = productsInTheCart.length;
           int ordersByUserAmount = ordersByUser.length;
+          print('ordersByUserAmount = $ordersByUserAmount');
 
           List<Widget> noOrdersWidgets = [
             Expanded(
@@ -185,8 +186,10 @@ class _OrderIndexScreenState extends State<OrderIndexScreen> with RouteAware, Ro
             //   ),
             // ),
 
-            OrdersExpansionPanelList(
-              orders: ordersByUser,
+            Expanded(
+              child: OrdersExpansionPanelList(
+                orders: ordersByUser,
+              ),
             ),
           ];
 

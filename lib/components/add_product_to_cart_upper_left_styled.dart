@@ -77,7 +77,15 @@ class AddProductToCartUpperLeftStyled extends StatelessWidget {
                       color: isInCart ? Colors.red : Colors.white,
                       size: 14,
                     ),
-                    onPressed: () => addToCart(userId, product.id, 1), // Works
+                    onPressed: () {
+                      addToCart(userId, product.id, 1); // Works
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      final snackBar = DialogHelper.buildSnackBar(
+                        snackBarMessage: 'The product has being added to the Cart',
+                        actionOnPressed: () => decreaseFromCart(userId, product.id),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    },
                   ),
                 )
               : Container(
@@ -98,7 +106,15 @@ class AddProductToCartUpperLeftStyled extends StatelessWidget {
                                 size: 14,
                               ),
                             ),
-                            onTap: () => decreaseFromCart(userId, product.id),
+                            onTap: () {
+                              decreaseFromCart(userId, product.id);
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              final snackBar = DialogHelper.buildSnackBar(
+                                snackBarMessage: 'The product has being removed from the Cart',
+                                actionOnPressed: () => addToCart(userId, product.id, 1),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            },
                           )),
 
                       verticalDivider,
@@ -130,7 +146,15 @@ class AddProductToCartUpperLeftStyled extends StatelessWidget {
                               size: 14,
                             ),
                           ),
-                          onTap: () => addToCart(userId, product.id, 1),
+                          onTap: () {
+                            addToCart(userId, product.id, 1);
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            final snackBar = DialogHelper.buildSnackBar(
+                              snackBarMessage: 'The product has being added to the Cart',
+                              actionOnPressed: () => decreaseFromCart(userId, product.id),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          },
                         ),
                       ),
                     ],

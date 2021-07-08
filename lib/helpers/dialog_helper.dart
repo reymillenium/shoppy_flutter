@@ -155,6 +155,10 @@ class DialogHelper {
     @required Function actionOnPressed,
   }) {
     return SnackBar(
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Colors.white70, width: 1),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
       action: SnackBarAction(
         label: snackBarActionLabel,
         onPressed: actionOnPressed ?? () {},

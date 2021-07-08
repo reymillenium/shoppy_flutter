@@ -55,6 +55,8 @@ class FavoriteProductSmallButton extends StatelessWidget {
                   inFavoriteScreen ? toggleFavoriteProductsData(userId, product.id) : product.toggleFavorite(userId);
                   // Opens the Drawer of the closest Scaffold (if it has one):
                   // Scaffold.of(context).openDrawer();
+                  // Hides the current SnackBar, if there is any:
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
                   final snackBar = DialogHelper.buildSnackBar(
                     snackBarMessage: 'The product has being marked as favorite!',

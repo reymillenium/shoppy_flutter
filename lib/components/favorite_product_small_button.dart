@@ -50,7 +50,19 @@ class FavoriteProductSmallButton extends StatelessWidget {
                   size: 14,
                 ),
                 tooltip: 'Favorite',
-                onPressed: () => inFavoriteScreen ? toggleFavoriteProductsData(userId, product.id) : product.toggleFavorite(userId),
+                // onPressed: () => inFavoriteScreen ? toggleFavoriteProductsData(userId, product.id) : product.toggleFavorite(userId),
+                onPressed: () {
+                  inFavoriteScreen ? toggleFavoriteProductsData(userId, product.id) : product.toggleFavorite(userId);
+                  // Opens the Drawer of the closest Scaffold (if it has one):
+                  // Scaffold.of(context).openDrawer();
+
+                  final snackBar = DialogHelper.buildSnackBar(
+                    snackBarMessage: 'The product has being marked as favorite!',
+                    actionOnPressed: () => inFavoriteScreen ? toggleFavoriteProductsData(userId, product.id) : product.toggleFavorite(userId),
+                  );
+                  // Shows a SnackBar in the bottom:
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
               );
             });
         // return IconButton(

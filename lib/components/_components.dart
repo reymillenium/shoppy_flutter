@@ -13,8 +13,8 @@ export './custom_drawer.dart';
 export './custom_drawer_switch.dart';
 export './custom_drawer_link.dart';
 
-// Empty widget to show when there is no resources to list:
-export './custom_empty_widget.dart';
+// Others
+export './custom_empty_widget.dart'; // Empty widget to show when there is no resources to list:
 
 // Multiplatform custom SelectBoxes (not used yet):
 export './multi_platform_select_box.dart';

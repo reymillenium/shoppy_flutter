@@ -147,4 +147,25 @@ class DialogHelper {
       useRootNavigator: false,
     );
   }
+
+  static SnackBar buildSnackBar({
+    @required String snackBarMessage,
+    String snackBarActionLabel = 'Undo',
+    int durationInSeconds = 3,
+    @required Function actionOnPressed,
+  }) {
+    return SnackBar(
+      action: SnackBarAction(
+        label: snackBarActionLabel,
+        onPressed: actionOnPressed ?? () {},
+      ),
+      behavior: SnackBarBehavior.floating,
+      duration: Duration(seconds: durationInSeconds),
+      content: Row(
+        children: [
+          Text(snackBarMessage),
+        ],
+      ),
+    );
+  }
 }

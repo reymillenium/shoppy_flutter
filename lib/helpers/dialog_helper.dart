@@ -8,7 +8,7 @@ import '../helpers/_helpers.dart';
 // Utilities:
 
 class DialogHelper {
-  static Future<void> showDialogWithActionPlus(int id, BuildContext context, Function onAcceptPressed) async {
+  static Future<void> showDialogWithActionPlus(BuildContext context, Function onAcceptPressed) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // The user must tap the buttons!

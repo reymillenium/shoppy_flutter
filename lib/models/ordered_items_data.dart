@@ -185,7 +185,7 @@ class OrderedItemsData with ChangeNotifier {
   }
 
   Future<void> deleteOrderedItemWithConfirm(int orderedItemId, BuildContext context, int orderId) {
-    DialogHelper.showDialogWithActionPlus(orderedItemId, context, () => _removeWhere(orderedItemId)).then((value) {
+    DialogHelper.showDialogWithActionPlus(context, () => _removeWhere(orderedItemId)).then((value) {
       (context as Element).reassemble();
       refresh();
     });

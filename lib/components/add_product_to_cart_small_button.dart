@@ -131,13 +131,15 @@ class AddProductToCartSmallButton extends StatelessWidget {
                           child: Container(
                             // margin: EdgeInsets.only(right: 8),
                             child: Icon(
-                              Icons.remove,
+                              quantityAmountInCart == 1 ? Icons.delete : Icons.remove,
+                              // Icons.remove,
                               color: Colors.white,
                               size: 14,
                             ),
                           ),
                           // onTap: () => decreaseFromCartOnProduct(widget.userId),
-                          onTap: () => decreaseFromCart(userId, product.id),
+                          // onTap: () => decreaseFromCart(userId, product.id),
+                          onTap: () => quantityAmountInCart == 1 ? DialogHelper.showDialogWithActionPlus(context, () => decreaseFromCart(userId, product.id)) : decreaseFromCart(userId, product.id),
                           // onTap: () => decreaseFromCartOnCartItemsData(widget.userId, product.id),
                         )),
 

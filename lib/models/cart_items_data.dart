@@ -180,7 +180,7 @@ class CartItemsData with ChangeNotifier {
   }
 
   Future<void> deleteCartItemWithConfirm(int userId, int productId, BuildContext context) {
-    DialogHelper.showDialogPlus(productId, context, () => _removeWhere(userId, productId)).then((value) {
+    DialogHelper.showDialogWithActionPlus(productId, context, () => _removeWhere(userId, productId)).then((value) {
       // This commenting, fixes an exception when deleting
       // (context as Element).reassemble();
       refresh();

@@ -86,6 +86,9 @@ class _ProductsInCartListState extends State<ProductsInCartList> {
               ),
             ),
           ),
+          confirmDismiss: (DismissDirection direction) {
+            return DialogHelper.showDialogDecisionPlus(context);
+          },
           onDismissed: (DismissDirection direction) {
             setState(() {
               _isSwapping = true;

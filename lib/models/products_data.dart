@@ -170,7 +170,7 @@ class ProductsData with ChangeNotifier {
   }
 
   Future<void> deleteProductWithConfirm(int productId, BuildContext context, int userId) {
-    DialogHelper.showDialogPlus(productId, context, () => _removeWhere(productId, userId)).then((value) {
+    DialogHelper.showDialogWithActionPlus(productId, context, () => _removeWhere(productId, userId)).then((value) {
       (context as Element).reassemble();
       refresh();
     });

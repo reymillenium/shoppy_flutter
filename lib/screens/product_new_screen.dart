@@ -122,6 +122,7 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
                       ),
                     ),
                   ),
+                  textInputAction: TextInputAction.next,
                   style: TextStyle(),
                   onChanged: (String newText) {
                     setState(() {
@@ -158,6 +159,7 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
                       ),
                     ),
                   ),
+                  textInputAction: TextInputAction.next,
                   style: TextStyle(),
                   onChanged: (String newText) {
                     setState(() {

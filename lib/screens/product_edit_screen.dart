@@ -46,6 +46,9 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
   final _oneHundredYearsFromNow = DateHelper.timeFromNow(years: 100);
   final NumberFormat _currencyFormat = new NumberFormat("#,##0.00", "en_US");
 
+  final _priceFocusNode = FocusNode();
+  final _descriptionFocusNode = FocusNode();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -55,6 +58,15 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
     _description = widget.product.description;
     _price = widget.product.price;
     _imageUrl = widget.product.imageUrl;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    // Free up the memory. Prevents the focusNodes to stick around in memory and to lead to a memory leak):
+    _priceFocusNode.dispose();
+    _descriptionFocusNode.dispose();
   }
 
   // void changeColor(Color color) => setState(() => _color = color);
@@ -88,6 +100,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
     return SafeArea(
       bottom: false,
       child: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom), // !important
         child: Container(
           // padding: const EdgeInsets.only(left: 20, top: 0, right: 20),
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -117,7 +130,8 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                   autofocus: true,
                   autocorrect: false,
                   decoration: InputDecoration(
-                    hintText: 'Title',
+                    labelText: 'Title',
+                    // hintText: 'Title',
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(
                         // color: kLightBlueBackground,
@@ -139,13 +153,17 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                       ),
                     ),
                   ),
+                  textInputAction: TextInputAction.next,
                   style: TextStyle(),
                   onChanged: (String newText) {
                     setState(() {
                       _title = newText;
                     });
                   },
-                  onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
+                  // onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
+                  onFieldSubmitted: (String inputValue) {
+                    FocusScope.of(context).requestFocus(_priceFocusNode);
+                  },
                 ),
 
                 // Price Input
@@ -153,9 +171,9 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                   initialValue: _price.toString(),
                   autofocus: true,
                   autocorrect: false,
-                  keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
                   decoration: InputDecoration(
-                    hintText: 'Price',
+                    labelText: 'Price',
+                    // hintText: 'Price',
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(
                         // color: kLightBlueBackground,
@@ -177,13 +195,19 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                       ),
                     ),
                   ),
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
+                  focusNode: _priceFocusNode,
                   style: TextStyle(),
                   onChanged: (String newText) {
                     setState(() {
                       _price = NumericHelper.roundDouble(newText.parseDoubleOrZero, 2);
                     });
                   },
-                  onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
+                  // onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
+                  onFieldSubmitted: (String inputValue) {
+                    FocusScope.of(context).requestFocus(_descriptionFocusNode);
+                  },
                 ),
 
                 // Description Input
@@ -191,10 +215,10 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                   initialValue: _description,
                   autofocus: true,
                   autocorrect: false,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
+                  maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: 'Description',
+                    // hintText: 'Description',
+                    labelText: 'Description',
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(
                         // color: kLightBlueBackground,
@@ -216,13 +240,15 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                       ),
                     ),
                   ),
+                  keyboardType: TextInputType.multiline,
+                  focusNode: _descriptionFocusNode,
                   style: TextStyle(),
                   onChanged: (String newText) {
                     setState(() {
                       _description = newText;
                     });
                   },
-                  onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
+                  // onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
                 ),
 
                 // Update button:

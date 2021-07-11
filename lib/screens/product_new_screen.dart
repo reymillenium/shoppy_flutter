@@ -28,7 +28,7 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
   String _title = '';
   String _description = '';
   double _price = 0;
-  String _imageUrl = ListHelper.randomFromList(DUMMY_FOOD_IMAGE_URLS);
+  String _imageUrl = ListHelper.randomFromList(DUMMY_PRODUCT_IMAGE_URLS);
   Color _color = Colors.orangeAccent;
 
   void changeColor(Color color) => setState(() => _color = color);
@@ -38,7 +38,7 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
     AppData appData = Provider.of<AppData>(context);
 
     ProductsData productsData = Provider.of<ProductsData>(context, listen: false);
-    Function onAddProductHandler = (title, color) => productsData.addProduct(title: _title, description: _description, price: _price, imageUrl: _imageUrl);
+    Function onAddProductHandler = (title, description, price, imageUrl) => productsData.addProduct(title: _title, description: _description, price: _price, imageUrl: _imageUrl);
 
     Color primaryColor = Theme.of(context).primaryColor;
     Color accentColor = Theme.of(context).accentColor;
@@ -73,6 +73,7 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
     return SafeArea(
       bottom: false,
       child: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom), // !important
         child: Container(
           // padding: const EdgeInsets.only(left: 20, top: 0, right: 20),
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -129,14 +130,13 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
                       _title = newText;
                     });
                   },
-                  onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
+                  // onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
                 ),
 
                 // Price Input
                 TextField(
                   autofocus: true,
                   autocorrect: false,
-                  keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
                   decoration: InputDecoration(
                     hintText: 'Price',
                     border: UnderlineInputBorder(
@@ -160,21 +160,21 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
                     ),
                   ),
                   textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
                   style: TextStyle(),
                   onChanged: (String newText) {
                     setState(() {
                       _price = NumericHelper.roundDouble(newText.parseDoubleOrZero, 2);
                     });
                   },
-                  onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
+                  // onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
                 ),
 
                 // Description Input
                 TextField(
                   autofocus: true,
                   autocorrect: false,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
+                  maxLines: 3,
                   decoration: InputDecoration(
                     hintText: 'Description',
                     border: UnderlineInputBorder(
@@ -197,13 +197,14 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
                       ),
                     ),
                   ),
+                  keyboardType: TextInputType.multiline,
                   style: TextStyle(),
                   onChanged: (String newText) {
                     setState(() {
                       _description = newText;
                     });
                   },
-                  onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
+                  // onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
                 ),
 
                 // Add button:
@@ -267,8 +268,7 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
 
   void _submitData(BuildContext context, Function onAddProduct) {
     if (_hasValidData()) {
-      // onAddProduct(_title, _description, _price, _imageUrl);
-      onAddProduct();
+      onAddProduct(_title, _description, _price, _imageUrl);
     }
     Navigator.pop(context);
   }

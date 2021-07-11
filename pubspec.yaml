@@ -53,6 +53,8 @@ dependencies:
   route_observer_mixin: ^1.5.0+1
   # Filter_list Package is designed to make single/multiple item selection from a list of string/object. Allows to search/filter on the basis of single/multiple selection from a provided dynamic list.
   filter_list: ^1.0.0
+  # A flutter library to show images from the internet and keep them in the cache directory.
+  cached_network_image: ^3.0.0
 
 dev_dependencies:
   flutter_test:

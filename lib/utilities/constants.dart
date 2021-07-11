@@ -28,6 +28,7 @@ final double kToolBarHeight = 56.0;
 // *                        * * *  D U M M Y  D A T A  * * *                         *
 // ***********************************************************************************
 
+const String PRODUCT_PLACEHOLDER_IMAGE = 'https://lallahoriye.com/wp-content/uploads/2019/04/Product_Lg_Type.jpg';
 // const DUMMY_FOOD_IMAGE_URLS = const [
 //   'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Spaghetti_Bolognese_mit_Parmesan_oder_Grana_Padano.jpg/800px-Spaghetti_Bolognese_mit_Parmesan_oder_Grana_Padano.jpg',
 //   'https://cdn.pixabay.com/photo/2018/07/11/21/51/toast-3532016_1280.jpg',

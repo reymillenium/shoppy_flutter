@@ -38,7 +38,8 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
   String _title = '';
   String _description = '';
   double _price = 0;
-  String _imageUrl = ListHelper.randomFromList(DUMMY_FOOD_IMAGE_URLS);
+  // String _imageUrl = ListHelper.randomFromList(DUMMY_FOOD_IMAGE_URLS);
+  String _imageUrl = PRODUCT_PLACEHOLDER_IMAGE;
 
   // Run time constants:
   DateTime now = DateTime.now();
@@ -48,6 +49,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
 
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
+  final _imageUrlController = TextEditingController();
 
   @override
   void initState() {
@@ -67,6 +69,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
     // Free up the memory. Prevents the focusNodes to stick around in memory and to lead to a memory leak):
     _priceFocusNode.dispose();
     _descriptionFocusNode.dispose();
+    _imageUrlController.dispose();
   }
 
   // void changeColor(Color color) => setState(() => _color = color);

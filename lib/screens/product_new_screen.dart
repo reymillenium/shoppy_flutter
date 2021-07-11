@@ -31,7 +31,32 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
   String _imageUrl = ListHelper.randomFromList(DUMMY_PRODUCT_IMAGE_URLS);
   Color _color = Colors.orangeAccent;
 
-  void changeColor(Color color) => setState(() => _color = color);
+  final _imageUrlController = TextEditingController();
+  final _imageUrlFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _imageUrlFocusNode.addListener(_updateImageUrl);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _imageUrlFocusNode.removeListener(_updateImageUrl);
+    _imageUrlController.dispose();
+    _imageUrlFocusNode.dispose();
+  }
+  // void changeColor(Color color) => setState(() => _color = color);
+
+  void _updateImageUrl() {
+    if (!_imageUrlFocusNode.hasFocus) {
+      print('_imageUrlFocusNode lost the focus');
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -207,6 +232,76 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
                   // onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
                 ),
 
+                // imageUrl Input & Image Preview:
+                Column(
+                  children: [
+                    // imageUrl Input:
+                    TextField(
+                      autofocus: true,
+                      autocorrect: false,
+                      // maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: 'Image',
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              // color: kLightBlueBackground,
+                              // width: 30,
+                              ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: primaryColor,
+                            width: 4.0,
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: accentColor,
+                            // color: Colors.red,
+                            width: 6.0,
+                          ),
+                        ),
+                      ),
+                      keyboardType: TextInputType.url,
+                      textInputAction: TextInputAction.done,
+                      controller: _imageUrlController,
+                      focusNode: _imageUrlFocusNode,
+                      style: TextStyle(),
+                      onChanged: (String newText) {
+                        setState(() {
+                          _imageUrl = newText;
+                        });
+                        // setState(() {});
+                      },
+                      onEditingComplete: () {
+                        setState(() {});
+                      },
+                      // onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
+                    ),
+
+                    // imageUrl Preview:
+                    Container(
+                      height: 100,
+                      // width: 100,
+                      margin: EdgeInsets.only(
+                        top: 8,
+                        right: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      child: FittedBox(
+                        fit: BoxFit.cover,
+                        child: buildCachedNetworkImage(imageUrl: _imageUrlController.text),
+                        // child: buildNetworkImagePlus(imageUrl: _imageUrlController.text),
+                      ),
+                    ),
+                  ],
+                ),
+
                 // Add button:
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 30.0),
@@ -258,15 +353,61 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
     );
   }
 
+  Widget buildCachedNetworkImage({
+    String imageUrl,
+    String defaultUrl = PRODUCT_PLACEHOLDER_IMAGE,
+  }) {
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      placeholder: (context, url) => CircularProgressIndicator(
+        color: Colors.blue,
+      ),
+      // errorWidget: (context, url, error) => new Icon(Icons.error),
+      errorWidget: (context, url, error) {
+        print('Inside buildCachedNetworkImage error = $error');
+        return Image.network(defaultUrl);
+      },
+    );
+  }
+
   bool _hasValidData() {
     bool result = false;
+    bool isValidUrl = Uri.parse(_imageUrl).isAbsolute;
+    _imageUrl = isValidUrl ? _imageUrl : PRODUCT_PLACEHOLDER_IMAGE;
     if (_title.isNotEmpty && _description.isNotEmpty && _price > 0 && _imageUrl.isNotEmpty) {
       result = true;
     }
     return result;
   }
 
+//   Future<bool> isValidImageUrl(String imageIUrl) async {
+//     print('Inside isValidImageUrl');
+//     bool isValidUrl = Uri.parse(_imageUrl).isAbsolute;
+//     // bool isImage = true;
+//     // var image = CachedNetworkImage(
+//     //   imageUrl: _imageUrl,
+//     //   placeholder: (context, url) => CircularProgressIndicator(),
+//     //   errorWidget: (context, url, error) {
+//     //     print('the error is: $error');
+//     //     isImage = false;
+//     //     return Icon(Icons.error);
+//     //   },
+//     // );
+//
+//     final ByteData imageData = await NetworkAssetBundle(Uri.parse(imageIUrl)).load("");
+//     final bytes = imageData.buffer.asUint8List();
+// // display it with the Image.memory widget
+//     Image.memory(bytes);
+//     // print('bytes = $bytes');
+//     print('Image.memory(bytes) = ${Image.memory(bytes)}');
+//     print('imageData.buffer.lengthInBytes = ${imageData.buffer.lengthInBytes}');
+//
+//     // return (isValidUrl & isImage);
+//     return (isValidUrl);
+//   }
+
   void _submitData(BuildContext context, Function onAddProduct) {
+    print('Inside _submitData');
     if (_hasValidData()) {
       onAddProduct(_title, _description, _price, _imageUrl);
     }

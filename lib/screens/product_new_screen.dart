@@ -365,6 +365,7 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
       // errorWidget: (context, url, error) => new Icon(Icons.error),
       errorWidget: (context, url, error) {
         print('Inside buildCachedNetworkImage error = $error');
+        _imageUrl = PRODUCT_PLACEHOLDER_IMAGE;
         return Image.network(defaultUrl);
       },
     );
@@ -372,8 +373,8 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
 
   bool _hasValidData() {
     bool result = false;
-    bool isValidUrl = Uri.parse(_imageUrl).isAbsolute;
-    _imageUrl = isValidUrl ? _imageUrl : PRODUCT_PLACEHOLDER_IMAGE;
+    // bool isValidUrl = Uri.parse(_imageUrl).isAbsolute;
+    // _imageUrl = isValidUrl ? _imageUrl : PRODUCT_PLACEHOLDER_IMAGE;
     if (_title.isNotEmpty && _description.isNotEmpty && _price > 0 && _imageUrl.isNotEmpty) {
       result = true;
     }

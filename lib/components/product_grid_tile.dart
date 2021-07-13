@@ -44,10 +44,10 @@ class ProductGridTile extends StatelessWidget {
     ProductsData productsData = Provider.of<ProductsData>(context);
     Function onDeleteProductHandler = (productId, context, userId) => productsData.deleteProductWithConfirm(productId, context, userId);
 
-    Product productData = Provider.of<Product>(context, listen: false);
-    // Function toggleFavorite = (userId) => productData.toggleFavorite(userId);
+    Product product = Provider.of<Product>(context, listen: false);
+    // Function toggleFavorite = (userId) => product.toggleFavorite(userId);
 
-    final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(productData.price)}';
+    final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(product.price)}';
     final double priceFontSize = (84 / amountLabel.length);
 
     Color primaryColor = Theme.of(context).primaryColor;
@@ -63,13 +63,13 @@ class ProductGridTile extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(10)),
               child: GestureDetector(
                 child: Image.network(
-                  productData.imageUrl,
+                  product.imageUrl,
                   height: 250,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
                 onTap: () {
-                  selectProduct(context, productData, userId);
+                  selectProduct(context, product, userId);
                 },
               ),
             ),
@@ -114,7 +114,7 @@ class ProductGridTile extends StatelessWidget {
                                 size: 14,
                               ),
                             ),
-                            onTap: () => onDeleteProductHandler(productData.id, context, userId),
+                            onTap: () => onDeleteProductHandler(product.id, context, userId),
                           )),
                       Tooltip(
                         message: 'Edit',
@@ -133,7 +133,7 @@ class ProductGridTile extends StatelessWidget {
                               isScrollControlled: true,
                               context: context,
                               builder: (context) => ProductEditScreen(
-                                product: productData,
+                                product: product,
                               ),
                             );
                           },
@@ -168,7 +168,7 @@ class ProductGridTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  productData.title,
+                  product.title,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                 ),

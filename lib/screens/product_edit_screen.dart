@@ -446,7 +446,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
       errorWidget: (context, url, error) {
         _imageUrlErrors = error.toString();
         print('Inside buildCachedNetworkImage error = $error');
-        _imageUrl = PRODUCT_PLACEHOLDER_IMAGE;
+        _imageUrl = defaultUrl;
         print('_imageUrlErrors = $_imageUrlErrors');
         return Image.network(defaultUrl);
       },

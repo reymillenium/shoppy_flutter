@@ -28,11 +28,11 @@ class FavoriteProductBigButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Product productData = Provider.of<Product>(context);
-    Function toggleFavorite = (userId) => productData.toggleFavorite(userId);
+    Product product = Provider.of<Product>(context);
+    Function toggleFavorite = (userId) => product.toggleFavorite(userId);
 
     return FutureBuilder(
-        future: productData.isFavorite(userId),
+        future: product.isFavorite(userId),
         builder: (ctx, AsyncSnapshot<bool> snapshot) {
           bool isFavorite = false;
           if (snapshot.data != null) {

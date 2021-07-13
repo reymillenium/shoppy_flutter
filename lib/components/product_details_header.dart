@@ -38,10 +38,10 @@ class ProductDetailsHeader extends StatelessWidget {
     AppData appData = Provider.of<AppData>(context);
     Map currentCurrency = appData.currentCurrency;
 
-    Product productData = Provider.of<Product>(context, listen: false);
+    Product product = Provider.of<Product>(context, listen: false);
 
-    final String formattedDate = formatter.format(productData.createdAt);
-    final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(productData.price)}';
+    final String formattedDate = formatter.format(product.createdAt);
+    final String amountLabel = '${currentCurrency['symbol']}${currencyFormat.format(product.price)}';
 
     return Card(
       elevation: 2,
@@ -61,7 +61,7 @@ class ProductDetailsHeader extends StatelessWidget {
                   topRight: Radius.circular(10),
                 ),
                 child: Image.network(
-                  productData.imageUrl,
+                  product.imageUrl,
                   height: 250,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -86,7 +86,7 @@ class ProductDetailsHeader extends StatelessWidget {
                 children: [
                   // Title
                   Text(
-                    productData.title,
+                    product.title,
                     style: Theme.of(context).textTheme.headline6,
                     softWrap: true,
                     overflow: TextOverflow.fade,
@@ -109,7 +109,7 @@ class ProductDetailsHeader extends StatelessWidget {
 
                       // Add to cart button:
                       ChangeNotifierProvider.value(
-                        value: productData,
+                        value: product,
                         child: AddProductToCartSmallButton(
                           userId: userId,
                           listenProductsData: true,

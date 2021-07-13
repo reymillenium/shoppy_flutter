@@ -152,7 +152,7 @@ extension ReturnsBoolFromStringExtension on String {
     return double.tryParse(this) != null;
   }
 
-  // Checks if a string is a integer.
+  // Checks if a string is an integer.
   bool get isInteger {
     if (this == null) {
       return false;
@@ -258,7 +258,7 @@ class StringHelper {
     return double.tryParse(text) != null;
   }
 
-  // Checks if a string is a integer.
+  // Checks if a string is an integer.
   static bool isInteger(String text) {
     if (text == null) {
       return false;

@@ -224,7 +224,9 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                     // More or less:
                     // inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'(^\d*\.?\d*)'))], // Works more or less (But at some point allows a dot at the beginning)
                     // inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'(^\d*\.?\d*)'))], // Works more or less (But at some point allows a dot at the beginning)
-                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'^(\d+)\.?\d{0,2}'))], // // Works more or less
+                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'^(\d+)\.?\d{0,2}'))], // Works more or less. Allows up to two digits after the comma (not a bad thing really)
+                    // inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'(^\-?\d*\.?\d*)'))], // test. More or less Allows negative numbers. (But at some point allows a dot at the beginning)
+                    // inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'(^\d*\.?\d*)'))], // test.  (But at some point allows a dot at the beginning)
 
                     style: TextStyle(),
                     onChanged: (String value) {

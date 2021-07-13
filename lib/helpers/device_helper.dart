@@ -128,4 +128,10 @@ class DeviceHelper {
   static bool deviceIsAnyOf(BuildContext context, List<TargetPlatform> platformsList) {
     return platformsList.contains(Theme.of(context).platform);
   }
+
+  // Temporal method to determine if a url is valid. Needs testing. Probably is incomplete or wrong:
+  static bool isValidUrl(String url) {
+    String urlPattern = r"(https?|ftp)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?";
+    return RegExp(urlPattern, caseSensitive: false).hasMatch(url);
+  }
 }

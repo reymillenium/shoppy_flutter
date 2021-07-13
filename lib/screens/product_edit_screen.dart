@@ -66,13 +66,11 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    // Free up the memory. Prevents the focusNodes to stick around in memory and to lead to a memory leak):
+    // Frees up the memory. Prevents the focusNodes to stick around in memory and to lead to a memory leak):
     _priceFocusNode.dispose();
     _descriptionFocusNode.dispose();
     _imageUrlController.dispose();
   }
-
-  // void changeColor(Color color) => setState(() => _color = color);
 
   @override
   Widget build(BuildContext context) {
@@ -85,27 +83,11 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
     Color primaryColor = Theme.of(context).primaryColor;
     Color accentColor = Theme.of(context).accentColor;
 
-    // var foregroundColor = ColorHelper.contrastingColor(_color);
-    // final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-    //   onPrimary: foregroundColor,
-    //   primary: _color,
-    //   elevation: 3,
-    //   textStyle: TextStyle(
-    //     color: Colors.red,
-    //   ),
-    //   minimumSize: Size(double.infinity, 36),
-    //   padding: EdgeInsets.symmetric(horizontal: 16),
-    //   shape: const RoundedRectangleBorder(
-    //     borderRadius: BorderRadius.all(Radius.circular(2)),
-    //   ),
-    // );
-
     return SafeArea(
       bottom: false,
       child: SingleChildScrollView(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom), // !important
         child: Container(
-          // padding: const EdgeInsets.only(left: 20, top: 0, right: 20),
           padding: const EdgeInsets.symmetric(horizontal: 20),
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
@@ -134,12 +116,9 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                   autocorrect: false,
                   decoration: InputDecoration(
                     labelText: 'Title',
-                    // hintText: 'Title',
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(
-                        // color: kLightBlueBackground,
                         color: Colors.red,
-                        // width: 30,
                       ),
                     ),
                     enabledBorder: UnderlineInputBorder(
@@ -151,7 +130,6 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: accentColor,
-                        // color: Colors.red,
                         width: 6.0,
                       ),
                     ),
@@ -176,12 +154,9 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                   autocorrect: false,
                   decoration: InputDecoration(
                     labelText: 'Price',
-                    // hintText: 'Price',
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(
-                        // color: kLightBlueBackground,
                         color: Colors.red,
-                        // width: 30,
                       ),
                     ),
                     enabledBorder: UnderlineInputBorder(
@@ -193,7 +168,6 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: accentColor,
-                        // color: Colors.red,
                         width: 6.0,
                       ),
                     ),
@@ -220,13 +194,10 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                   autocorrect: false,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    // hintText: 'Description',
                     labelText: 'Description',
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(
-                        // color: kLightBlueBackground,
                         color: Colors.red,
-                        // width: 30,
                       ),
                     ),
                     enabledBorder: UnderlineInputBorder(
@@ -238,7 +209,6 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: accentColor,
-                        // color: Colors.red,
                         width: 6.0,
                       ),
                     ),
@@ -259,12 +229,10 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                   padding: EdgeInsets.symmetric(vertical: 30.0),
                   child: Material(
                     color: _hasValidData() ? primaryColor : Colors.grey,
-                    // borderRadius: BorderRadius.circular(12.0),
                     elevation: 5.0,
                     child: MaterialButton(
                       disabledColor: Colors.grey,
                       onPressed: _hasValidData() ? () => _updateData(context, onUpdateProductsHandler) : null,
-                      // minWidth: 300.0,
                       minWidth: double.infinity,
                       height: 42.0,
                       child: Text(
@@ -293,7 +261,6 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
   void _updateData(BuildContext context, Function onUpdateProductsHandler) {
     if (_hasValidData()) {
       onUpdateProductsHandler(_id, _title, _description, _price, _imageUrl);
-      // onUpdateProductsHandler();
     }
     Navigator.pop(context);
   }

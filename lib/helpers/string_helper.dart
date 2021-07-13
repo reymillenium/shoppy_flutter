@@ -143,6 +143,22 @@ extension ReturnsBoolFromStringExtension on String {
   bool get isUpperCase {
     return this == this.toUpperCase();
   }
+
+  // Checks if a string is a double.
+  bool get isDouble {
+    if (this == null) {
+      return false;
+    }
+    return double.tryParse(this) != null;
+  }
+
+  // Checks if a string is a integer.
+  bool get isInteger {
+    if (this == null) {
+      return false;
+    }
+    return int.tryParse(this) != null;
+  }
 }
 
 extension ReturnsIntFromStringExtension on String {
@@ -228,6 +244,26 @@ class StringHelper {
       result = 0;
     }
     return result;
+  }
+
+// ***********************************************************************************
+// *                 * * *  N U M B E R S  P A R S I N G  * * *                      *
+// ***********************************************************************************
+
+  // Checks if a string is a double.
+  static bool isDouble(String text) {
+    if (text == null) {
+      return false;
+    }
+    return double.tryParse(text) != null;
+  }
+
+  // Checks if a string is a integer.
+  static bool isInteger(String text) {
+    if (text == null) {
+      return false;
+    }
+    return int.tryParse(text) != null;
   }
 
 // ***********************************************************************************

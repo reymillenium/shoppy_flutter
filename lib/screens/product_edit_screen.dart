@@ -35,13 +35,13 @@ class ProductEditScreen extends StatefulWidget {
 
 class _ProductEditScreenState extends State<ProductEditScreen> {
   // Local State Properties:
+  final _formGlobalKey = GlobalKey<FormState>();
   int _id;
   String _title = '';
   String _description = '';
   double _price = 0;
-
-  // String _imageUrl = ListHelper.randomFromList(DUMMY_FOOD_IMAGE_URLS);
-  String _imageUrl = PRODUCT_PLACEHOLDER_IMAGE;
+  String _imageUrl = '';
+  String _imageUrlErrors = '';
 
   // Run time constants:
   DateTime now = DateTime.now();
@@ -51,6 +51,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
 
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
+  final _imageUrlFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
 
   @override
@@ -71,7 +72,19 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
     // Frees up the memory. Prevents the focusNodes to stick around in memory and to lead to a memory leak):
     _priceFocusNode.dispose();
     _descriptionFocusNode.dispose();
+    _imageUrlFocusNode.dispose();
     _imageUrlController.dispose();
+  }
+
+  void _saveForm() {
+    final isValid = _formGlobalKey.currentState.validate();
+    // If is not valid the form's content it stops the function execution
+    if (!isValid) {
+      print('Is not valid. We have errors');
+      return;
+    }
+    print('Is valid. We do not have errors!!');
+    _formGlobalKey.currentState.save();
   }
 
   @override
@@ -90,6 +103,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
       child: SingleChildScrollView(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom), // !important
         child: Form(
+          key: _formGlobalKey,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             width: MediaQuery.of(context).size.width,
@@ -139,14 +153,23 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                     ),
                     textInputAction: TextInputAction.next,
                     style: TextStyle(),
-                    onChanged: (String newText) {
-                      setState(() {
-                        _title = newText;
-                      });
-                    },
-                    // onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
                     onFieldSubmitted: (String inputValue) {
                       FocusScope.of(context).requestFocus(_priceFocusNode);
+                    },
+                    onSaved: (String value) {
+                      setState(() {
+                        _title = value;
+                      });
+                    },
+                    validator: (String value) {
+                      List<dynamic> errors = [];
+                      if (value.isEmpty) {
+                        errors.add('The title can not be empty');
+                      }
+                      if (value.length < 2) {
+                        errors.add('The title can not be smaller that 2 letters');
+                      }
+                      return (errors.isEmpty ? null : errors.first);
                     },
                   ),
 
@@ -179,14 +202,24 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                     keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
                     focusNode: _priceFocusNode,
                     style: TextStyle(),
-                    onChanged: (String newText) {
-                      setState(() {
-                        _price = NumericHelper.roundDouble(newText.parseDoubleOrZero, 2);
-                      });
-                    },
-                    // onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
                     onFieldSubmitted: (String inputValue) {
                       FocusScope.of(context).requestFocus(_descriptionFocusNode);
+                    },
+                    onSaved: (String value) {
+                      setState(() {
+                        _price = NumericHelper.roundDouble(value.parseDoubleOrZero, 2);
+                      });
+                    },
+                    validator: (String value) {
+                      double price = NumericHelper.roundDouble(value.parseDoubleOrZero, 2);
+                      List<dynamic> errors = [];
+                      if (price.isNaN) {
+                        errors.add('The price mus be a number');
+                      }
+                      if (price == 0) {
+                        errors.add('The price can not be zero');
+                      }
+                      return (errors.isEmpty ? null : errors.first);
                     },
                   ),
 
@@ -219,12 +252,109 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                     keyboardType: TextInputType.multiline,
                     focusNode: _descriptionFocusNode,
                     style: TextStyle(),
-                    onChanged: (String newText) {
+                    // onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
+                    onSaved: (String value) {
                       setState(() {
-                        _description = newText;
+                        _description = value;
                       });
                     },
-                    // onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
+                    validator: (String value) {
+                      List<dynamic> errors = [];
+                      if (value.isEmpty) {
+                        errors.add('The description can not be empty');
+                      }
+                      if (value.length < 2) {
+                        errors.add('The description can not be smaller that 2 letters');
+                      }
+                      return (errors.isEmpty ? null : errors.first);
+                    },
+                  ),
+
+                  // imageUrl Input & Image Preview:
+                  Column(
+                    children: [
+                      // imageUrl Input:
+                      TextFormField(
+                        initialValue: _imageUrl,
+                        autofocus: true,
+                        autocorrect: false,
+                        // maxLines: null,
+                        decoration: InputDecoration(
+                          labelText: 'Image',
+                          border: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                // color: kLightBlueBackground,
+                                // width: 30,
+                                ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: primaryColor,
+                              width: 4.0,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: accentColor,
+                              // color: Colors.red,
+                              width: 6.0,
+                            ),
+                          ),
+                        ),
+                        keyboardType: TextInputType.url,
+                        textInputAction: TextInputAction.done,
+                        // controller: _imageUrlController,
+                        focusNode: _imageUrlFocusNode,
+                        style: TextStyle(),
+                        onChanged: (String newText) {
+                          setState(() {
+                            _imageUrl = newText;
+                          });
+                          // setState(() {});
+                        },
+                        onEditingComplete: () {
+                          setState(() {});
+                        },
+                        // onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
+                        onSaved: (String value) {
+                          setState(() {
+                            _imageUrl = value;
+                          });
+                        },
+                        validator: (String value) {
+                          List<dynamic> errors = [];
+                          // bool isValidUrl = Uri.parse(value).isAbsolute;
+                          // if (!isValidUrl) {
+                          //   errors.add('The url must be valid');
+                          // }
+                          if (_imageUrlErrors.isNotEmpty) {
+                            errors.add(_imageUrlErrors);
+                          }
+                          return (errors.isEmpty ? null : errors.first);
+                        },
+                      ),
+
+                      // imageUrl Preview:
+                      Container(
+                        height: 100,
+                        // width: 100,
+                        margin: EdgeInsets.only(
+                          top: 8,
+                          right: 10,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: buildCachedNetworkImage(imageUrl: _imageUrl),
+                          // child: buildNetworkImagePlus(imageUrl: _imageUrlController.text),
+                        ),
+                      ),
+                    ],
                   ),
 
                   // Update button:
@@ -235,7 +365,8 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                       elevation: 5.0,
                       child: MaterialButton(
                         disabledColor: Colors.grey,
-                        onPressed: _hasValidData() ? () => _updateData(context, onUpdateProductsHandler) : null,
+                        // onPressed: _hasValidData() ? () => _updateData(context, onUpdateProductsHandler) : null,
+                        onPressed: _saveForm,
                         minWidth: double.infinity,
                         height: 42.0,
                         child: Text(
@@ -255,6 +386,27 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildCachedNetworkImage({
+    String imageUrl,
+    String defaultUrl = PRODUCT_PLACEHOLDER_IMAGE,
+  }) {
+    setState(() {
+      _imageUrlErrors = '';
+    });
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      placeholder: (context, url) => CircularProgressIndicator(
+        color: Colors.blue,
+      ),
+      errorWidget: (context, url, error) {
+        _imageUrlErrors = error.toString();
+        print('Inside buildCachedNetworkImage error = $error');
+        _imageUrl = PRODUCT_PLACEHOLDER_IMAGE;
+        return Image.network(defaultUrl);
+      },
     );
   }
 

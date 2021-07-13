@@ -76,7 +76,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
     _imageUrlController.dispose();
   }
 
-  void _saveForm() {
+  void _saveForm(BuildContext context, Function onUpdateProductsHandler) {
     final isValid = _formGlobalKey.currentState.validate();
     // If is not valid the form's content it stops the function execution
     if (!isValid) {
@@ -85,6 +85,9 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
     }
     print('Is valid. We do not have errors!!');
     _formGlobalKey.currentState.save();
+
+    onUpdateProductsHandler(_id, _title, _description, _price, _imageUrl);
+    Navigator.pop(context);
   }
 
   @override
@@ -104,6 +107,8 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom), // !important
         child: Form(
           key: _formGlobalKey,
+          autovalidate: true,
+          // autovalidateMode: ,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             width: MediaQuery.of(context).size.width,
@@ -156,6 +161,11 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                     onFieldSubmitted: (String inputValue) {
                       FocusScope.of(context).requestFocus(_priceFocusNode);
                     },
+                    onChanged: (String value) {
+                      setState(() {
+                        _title = value;
+                      });
+                    },
                     onSaved: (String value) {
                       setState(() {
                         _title = value;
@@ -201,7 +211,27 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
                     focusNode: _priceFocusNode,
+                    // inputFormatters: [WhitelistingTextInputFormatter.digitsOnly], // deprecated and allows only digits (no dots)
+                    // inputFormatters: [FilteringTextInputFormatter.digitsOnly], // Only numbers. No dots = no doubles (NOT)
+                    // inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9.,]+'))], // Allows many dots (wrong)
+                    // inputFormatters: [FilteringTextInputFormatter.allow(RegExp('^([0-9]+(\.[0-9]+)?)'))], // Do not allows any dot
+                    // inputFormatters: [FilteringTextInputFormatter.allow(RegExp('([0-9]+(\.[0-9]+)?)'))], // Nope. Do not allows dots
+                    // inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^ ?\d*'))], // testing (nope) Do not allows dots
+                    // inputFormatters: [WhitelistingTextInputFormatter(RegExp("[0-9]+.[0-9]"))], // Not working. Does not allows to type anything new
+                    // inputFormatters: [FilteringTextInputFormatter(RegExp("[0-9]+.[0-9]"))], // Not working. IT BREAKS THE APP!
+                    // inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))], // Not properly
+                    // inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'/^\d{0,2}(\.\d{1,2})?$/'))], // Do not allows anything
+                    // More or less:
+                    // inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'(^\d*\.?\d*)'))], // Works more or less (But at some point allows a dot at the beginning)
+                    // inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'(^\d*\.?\d*)'))], // Works more or less (But at some point allows a dot at the beginning)
+                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'^(\d+)\.?\d{0,2}'))], // // Works more or less
+
                     style: TextStyle(),
+                    onChanged: (String value) {
+                      setState(() {
+                        _price = NumericHelper.roundDouble(value.parseDoubleOrZero, 2);
+                      });
+                    },
                     onFieldSubmitted: (String inputValue) {
                       FocusScope.of(context).requestFocus(_descriptionFocusNode);
                     },
@@ -253,6 +283,11 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                     focusNode: _descriptionFocusNode,
                     style: TextStyle(),
                     // onFieldSubmitted: !_hasValidData() ? null : (_) => () => _updateData(context, onUpdateProductsHandler),
+                    onChanged: (String value) {
+                      setState(() {
+                        _description = value;
+                      });
+                    },
                     onSaved: (String value) {
                       setState(() {
                         _description = value;
@@ -307,31 +342,33 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                         focusNode: _imageUrlFocusNode,
                         style: TextStyle(),
                         onChanged: (String newText) {
-                          setState(() {
-                            _imageUrl = newText;
-                          });
-                          // setState(() {});
+                          if (_imageUrlErrors.isEmpty) {
+                            setState(() {
+                              _imageUrl = newText;
+                            });
+                          }
                         },
                         onEditingComplete: () {
                           setState(() {});
                         },
                         // onSubmitted: !_hasValidData() ? null : (_) => () => _submitData(context, onAddProductHandler),
-                        onSaved: (String value) {
-                          setState(() {
-                            _imageUrl = value;
-                          });
-                        },
-                        validator: (String value) {
-                          List<dynamic> errors = [];
-                          // bool isValidUrl = Uri.parse(value).isAbsolute;
-                          // if (!isValidUrl) {
-                          //   errors.add('The url must be valid');
-                          // }
-                          if (_imageUrlErrors.isNotEmpty) {
-                            errors.add(_imageUrlErrors);
-                          }
-                          return (errors.isEmpty ? null : errors.first);
-                        },
+                        // onSaved: (String value) {
+                        //   setState(() {
+                        //     _imageUrl = value;
+                        //   });
+                        // },
+                        // validator: (String value) {
+                        //   List<dynamic> errors = [];
+                        //   // bool isValidUrl = Uri.parse(value).isAbsolute;
+                        //   // if (!isValidUrl) {
+                        //   //   errors.add('The url must be valid');
+                        //   // }
+                        //   if (_imageUrlErrors.isNotEmpty) {
+                        //     errors.add(_imageUrlErrors);
+                        //   }
+                        //   print('And here _imageUrlErrors = $_imageUrlErrors');
+                        //   return (errors.isEmpty ? null : errors.first);
+                        // },
                       ),
 
                       // imageUrl Preview:
@@ -366,7 +403,8 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                       child: MaterialButton(
                         disabledColor: Colors.grey,
                         // onPressed: _hasValidData() ? () => _updateData(context, onUpdateProductsHandler) : null,
-                        onPressed: _saveForm,
+                        // onPressed: _saveForm,
+                        onPressed: () => _saveForm(context, onUpdateProductsHandler),
                         minWidth: double.infinity,
                         height: 42.0,
                         child: Text(
@@ -393,9 +431,11 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
     String imageUrl,
     String defaultUrl = PRODUCT_PLACEHOLDER_IMAGE,
   }) {
-    setState(() {
-      _imageUrlErrors = '';
-    });
+    print('Inside buildCachedNetworkImage: _imageUrlErrors = $_imageUrlErrors');
+    // setState(() {
+    //   _imageUrlErrors = '';
+    // });
+    _imageUrlErrors = '';
     return CachedNetworkImage(
       imageUrl: imageUrl,
       placeholder: (context, url) => CircularProgressIndicator(
@@ -405,6 +445,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
         _imageUrlErrors = error.toString();
         print('Inside buildCachedNetworkImage error = $error');
         _imageUrl = PRODUCT_PLACEHOLDER_IMAGE;
+        print('_imageUrlErrors = $_imageUrlErrors');
         return Image.network(defaultUrl);
       },
     );

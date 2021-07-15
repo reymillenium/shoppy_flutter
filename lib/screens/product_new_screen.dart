@@ -28,7 +28,7 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
   String _title = '';
   String _description = '';
   double _price = 0;
-  String _imageUrl = ListHelper.randomFromList(DUMMY_PRODUCT_IMAGE_URLS);
+  String _imageUrl = PRODUCT_PLACEHOLDER_IMAGE;
   Color _color = Colors.orangeAccent;
 
   final _imageUrlController = TextEditingController();
@@ -295,8 +295,8 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
                       ),
                       child: FittedBox(
                         fit: BoxFit.cover,
-                        child: buildCachedNetworkImage(imageUrl: _imageUrlController.text),
-                        // child: buildNetworkImagePlus(imageUrl: _imageUrlController.text),
+                        // child: buildCachedNetworkImage(imageUrl: _imageUrlController.text),
+                        child: buildCachedNetworkImage(imageUrl: _imageUrl),
                       ),
                     ),
                   ],
@@ -365,7 +365,7 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
       // errorWidget: (context, url, error) => new Icon(Icons.error),
       errorWidget: (context, url, error) {
         print('Inside buildCachedNetworkImage error = $error');
-        _imageUrl = PRODUCT_PLACEHOLDER_IMAGE;
+        _imageUrl = defaultUrl;
         return Image.network(defaultUrl);
       },
     );

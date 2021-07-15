@@ -36,3 +36,5 @@ export 'package:route_observer_mixin/route_observer_mixin.dart'; // RouteObserve
 export 'package:filter_list/filter_list.dart'; // Allows to search/filter on the basis of single/multiple selection from a provided dynamic list.
 
 export 'package:cached_network_image/cached_network_image.dart'; // A flutter library to show images from the internet and keep them in the cache directory.
+
+export 'package:http/http.dart'; // This package contains a set of high-level functions and classes that make it easy to consume HTTP resources. It's multi-platform, and supports mobile, desktop, and the browser.

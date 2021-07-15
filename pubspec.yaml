@@ -55,6 +55,8 @@ dependencies:
   filter_list: ^1.0.0
   # A flutter library to show images from the internet and keep them in the cache directory.
   cached_network_image: ^3.0.0
+  # This package contains a set of high-level functions and classes that make it easy to consume HTTP resources. It's multi-platform, and supports mobile, desktop, and the browser.
+  http: ^0.13.3
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,7 @@
 // Dart files:
 export 'dart:math'; // Allows to use: random
 
-export 'dart:convert'; // Allows to use: base64UrlEncode
+export 'dart:convert'; // Allows to use: base64UrlEncode. Provides tools to convert data
 
 export 'dart:collection'; // Allows to use UnmodifiableListView
 

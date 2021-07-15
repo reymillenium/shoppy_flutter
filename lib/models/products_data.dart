@@ -1,5 +1,7 @@
 // Packages:
 
+import 'package:shoppy_flutter/helpers/firebase_realtime_db_helper.dart';
+
 import '../_inner_packages.dart';
 import '../_external_packages.dart';
 
@@ -75,8 +77,17 @@ class ProductsData with ChangeNotifier {
 
   // SQLite DB CRUD:
   Future<Product> _create(Product product, Map<String, dynamic> table) async {
+    // SQLite
     var dbClient = await dbHelper.dbPlus();
     product.id = await dbClient.insert(table['table_plural_name'], product.toMap());
+    // Firebase Realtime DB:
+    FirebaseRealtimeDBHelper firebaseRealtimeDBHelper = FirebaseRealtimeDBHelper();
+    await firebaseRealtimeDBHelper.postData(
+      protocol: 'https',
+      authority: firebaseRealtimeAuthorityURL,
+      unencodedPath: '/${sqliteTable['table_plural_name']}.json',
+      body: json.encode(product.toMap()),
+    );
     return product;
   }
 

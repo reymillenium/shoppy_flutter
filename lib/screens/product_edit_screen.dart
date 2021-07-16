@@ -107,8 +107,7 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom), // !important
         child: Form(
           key: _formGlobalKey,
-          autovalidate: true,
-          // autovalidateMode: ,
+          autovalidateMode: AutovalidateMode.always,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             width: MediaQuery.of(context).size.width,

@@ -408,7 +408,6 @@ class _ProductNewScreenState extends State<ProductNewScreen> {
 //   }
 
   void _submitData(BuildContext context, Function onAddProduct) {
-    print('Inside _submitData');
     if (_hasValidData()) {
       onAddProduct(_title, _description, _price, _imageUrl);
     }

@@ -151,7 +151,7 @@ class DialogHelper {
     );
   }
 
-  static Alert createAlert({int id, BuildContext context, String message = '', Function onAcceptPressed}) {
+  static Alert createAlert({dynamic id, BuildContext context, String message = '', Function onAcceptPressed}) {
     return Alert(
       context: context,
       type: AlertType.warning,

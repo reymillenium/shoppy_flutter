@@ -22,7 +22,7 @@ class OrderIndexScreen extends StatefulWidget {
 
   // Properties:
   final String appTitle;
-  final int userId;
+  final dynamic userId;
 
   const OrderIndexScreen({
     Key key,

@@ -18,9 +18,9 @@ import '../helpers/_helpers.dart';
 
 class CartItem with ChangeNotifier {
   // Properties:
-  int id;
-  int userId;
-  int productId;
+  dynamic id;
+  dynamic userId;
+  dynamic productId;
   int quantity;
   DateTime createdAt;
   DateTime updatedAt;

@@ -94,7 +94,7 @@ class CartItemsData with ChangeNotifier {
     return cartItemsList;
   }
 
-  Future<List<CartItem>> byUserId(int userId, {List<String> filtersList}) async {
+  Future<List<CartItem>> byUserId(dynamic userId, {List<String> filtersList}) async {
     var dbClient = await dbHelper.dbPlus();
     List<CartItem> cartItemsList = [];
     filtersList = filtersList ?? [];
@@ -116,7 +116,7 @@ class CartItemsData with ChangeNotifier {
     return cartItemsList;
   }
 
-  Future<int> _destroy(int userId, int productId, Map<String, dynamic> table) async {
+  Future<int> _destroy(dynamic userId, dynamic productId, Map<String, dynamic> table) async {
     var dbClient = await dbHelper.dbPlus();
     return await dbClient.delete(table['table_plural_name'], where: 'user_id = ? AND product_id = ?', whereArgs: [userId, productId]);
   }
@@ -128,7 +128,7 @@ class CartItemsData with ChangeNotifier {
 
   // Private methods:
 
-  Future<void> _removeWhere(int userId, int productId) async {
+  Future<void> _removeWhere(dynamic userId, dynamic productId) async {
     await _destroy(userId, productId, sqliteTable);
     await refresh();
   }
@@ -142,8 +142,8 @@ class CartItemsData with ChangeNotifier {
   }
 
   Future<CartItem> addCartItem({
-    int userId,
-    int productId,
+    dynamic userId,
+    dynamic productId,
     int quantity,
   }) async {
     DateTime now = DateTime.now();
@@ -162,9 +162,9 @@ class CartItemsData with ChangeNotifier {
   }
 
   Future<void> updateCartItem(
-    int id,
-    // int userId,
-    // int productId,
+    dynamic id,
+    // dynamic userId,
+    // dynamic productId,
     int quantity,
   ) async {
     DateTime now = DateTime.now();
@@ -179,7 +179,7 @@ class CartItemsData with ChangeNotifier {
     refresh();
   }
 
-  Future<void> deleteCartItemWithConfirm(int userId, int productId, BuildContext context) {
+  Future<void> deleteCartItemWithConfirm(dynamic userId, dynamic productId, BuildContext context) {
     DialogHelper.showDialogWithActionPlus(context, () => _removeWhere(userId, productId)).then((value) {
       // This commenting, fixes an exception when deleting
       // (context as Element).reassemble();
@@ -187,14 +187,14 @@ class CartItemsData with ChangeNotifier {
     });
   }
 
-  Future<void> deleteCartItemWithoutConfirm(int userId, int productId) {
+  Future<void> deleteCartItemWithoutConfirm(dynamic userId, dynamic productId) {
     _removeWhere(userId, productId);
     refresh();
   }
 
   // Trying new ways:
   // Add to Cart feature:
-  Future<void> addToCart(int userId, int productId, int quantity) async {
+  Future<void> addToCart(dynamic userId, dynamic productId, int quantity) async {
     // CartItemsData cartItemsData = CartItemsData();
     // List<CartItem> cartItems = await cartItemsData.byUserId(userId);
     List<CartItem> cartItems = await this.byUserId(userId);
@@ -211,7 +211,7 @@ class CartItemsData with ChangeNotifier {
     await refresh();
   }
 
-  Future<void> decreaseFromCart(int userId, int productId) async {
+  Future<void> decreaseFromCart(dynamic userId, dynamic productId) async {
     bool hasOneInCart = false;
     // CartItemsData cartItemsData = CartItemsData();
     // List<CartItem> cartItems = await cartItemsData.byUserId(userId);

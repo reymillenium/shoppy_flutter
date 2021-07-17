@@ -19,7 +19,7 @@ import '../utilities/_utilities.dart';
 
 class OrdersList extends StatefulWidget {
   // Properties:
-  final int userId;
+  final dynamic userId;
   final List<Order> orders;
 
   // Constructor:
@@ -59,7 +59,7 @@ class _OrdersListState extends State<OrdersList> {
 
   int findChildIndexCallback(Key key, List<Order> orders) {
     final ValueKey valueKey = key as ValueKey;
-    final int id = valueKey.value;
+    final dynamic id = valueKey.value;
     Order order;
     try {
       order = orders.firstWhere((order) => id == order.id);

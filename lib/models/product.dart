@@ -18,7 +18,7 @@ import '../helpers/_helpers.dart';
 
 class Product with ChangeNotifier {
   // Properties:
-  int id;
+  dynamic id;
   String title;
   String description;
   double price;
@@ -37,6 +37,7 @@ class Product with ChangeNotifier {
     @required this.updatedAt,
   });
 
+  // To use with Sqlite
   Product.fromMap(Map<String, dynamic> productMap) {
     id = productMap['id'];
     title = productMap['title'];
@@ -61,33 +62,40 @@ class Product with ChangeNotifier {
     return productMap;
   }
 
-  Future<void> setAsFavorite(int userId) async {
+  // To use with Firebase Realtime DB:
+  // Product.fromSnapshot(DataSnapshot snapshot)
+  //     : id = snapshot.key,
+  //       imageUrl = snapshot.value["imageUrl"],
+  //       caption = snapshot.value["caption"],
+  //       title = snapshot.value["postTitle"];
+
+  Future<void> setAsFavorite(dynamic userId) async {
     FavoriteProductsData favoriteProductsData = FavoriteProductsData();
     await favoriteProductsData.addFavoriteProduct(userId: userId, productId: id);
     // await refresh();
   }
 
-  Future<void> setAsNotFavorite(int userId) async {
+  Future<void> setAsNotFavorite(dynamic userId) async {
     FavoriteProductsData favoriteProductsData = FavoriteProductsData();
     await favoriteProductsData.deleteFavoriteProductWithoutConfirm(userId, id);
     // await refresh();
   }
 
-  Future<void> toggleFavorite(int userId) async {
+  Future<void> toggleFavorite(dynamic userId) async {
     bool isFavorite = await this.isFavorite(userId);
     await (isFavorite ? this.setAsNotFavorite(userId) : this.setAsFavorite(userId));
     // await refresh();
     notifyListeners();
   }
 
-  Future<bool> isFavorite(int userId) async {
+  Future<bool> isFavorite(dynamic userId) async {
     FavoriteProductsData favoriteProductsData = FavoriteProductsData();
     List<FavoriteProduct> favoriteProducts = await favoriteProductsData.byUserId(userId);
     return favoriteProducts.any((favoriteProduct) => favoriteProduct.productId == id);
   }
 
   // Add to Cart feature:
-  Future<void> addToCart(int userId, int quantity) async {
+  Future<void> addToCart(dynamic userId, int quantity) async {
     // print('Inside lib/models/product.dart => addToCart');
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
@@ -102,7 +110,7 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> decreaseFromCart(int userId) async {
+  Future<void> decreaseFromCart(dynamic userId) async {
     bool hasOneInCart = false;
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
@@ -121,7 +129,7 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> removeFromCart(int userId) async {
+  Future<void> removeFromCart(dynamic userId) async {
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
     bool isInCart = cartItems.any((cartItem) => cartItem.productId == id);
@@ -133,7 +141,7 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateOnCart(int userId, int quantity) async {
+  Future<void> updateOnCart(dynamic userId, int quantity) async {
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
     bool isInCart = cartItems.any((cartItem) => cartItem.productId == id);
@@ -146,13 +154,13 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> isInCart(int userId) async {
+  Future<bool> isInCart(dynamic userId) async {
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
     return cartItems.any((cartItem) => cartItem.productId == id);
   }
 
-  Future<bool> hasOneInCart(int userId) async {
+  Future<bool> hasOneInCart(dynamic userId) async {
     bool hasOneInCart = false;
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
@@ -166,7 +174,7 @@ class Product with ChangeNotifier {
     return hasOneInCart;
   }
 
-  Future<int> quantityAmountInCart(int userId) async {
+  Future<int> quantityAmountInCart(dynamic userId) async {
     int quantityAmountInCart = 0;
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
@@ -180,7 +188,7 @@ class Product with ChangeNotifier {
     return quantityAmountInCart;
   }
 
-  Future<double> priceAmountInCart(int userId) async {
+  Future<double> priceAmountInCart(dynamic userId) async {
     double priceAmountInCart = 0;
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);

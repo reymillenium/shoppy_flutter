@@ -22,7 +22,7 @@ class ProductShowScreen extends StatefulWidget {
 
   // Properties:
   final Product product;
-  final int userId;
+  final dynamic userId;
 
   const ProductShowScreen({
     Key key,

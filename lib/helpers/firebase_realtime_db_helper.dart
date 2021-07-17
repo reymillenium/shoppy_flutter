@@ -49,6 +49,29 @@ class FirebaseRealtimeDBHelper {
     }
   }
 
+  // Deletes data on a uri, from a given authority and unencodedPath:
+  Future<dynamic> deleteData({
+    String protocol = 'parse',
+    String authority,
+    String unencodedPath = '',
+    Map<String, dynamic> queryParameters = const {},
+    Map<String, String> headers,
+    Object body,
+    Encoding encoding,
+  }) async {
+    print('Inside deleteData');
+    Uri uri = _buildUri(protocol: protocol, authority: authority, unencodedPath: unencodedPath, queryParameters: queryParameters);
+    print('uri = $uri');
+    print('body = $body');
+    Response response = await delete(uri, headers: headers, body: body, encoding: encoding);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print(response.statusCode);
+    }
+  }
+
   Uri _buildUri({String protocol = 'parse', String authority, String unencodedPath = '', Map<String, dynamic> queryParameters = const {}}) {
     Uri uri;
     switch (protocol) {

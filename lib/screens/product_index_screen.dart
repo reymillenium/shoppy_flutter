@@ -32,7 +32,7 @@ class _ProductIndexScreenState extends State<ProductIndexScreen> with RouteAware
   int _activeTab = 0;
   List<String> availableFilters = ["favoriteProducts"];
   List<String> selectedFilters = [];
-  final int userId = 1;
+  final dynamic userId = 1;
 
   void onApplyButtonClick(list, BuildContext context) {
     if (list != null) {

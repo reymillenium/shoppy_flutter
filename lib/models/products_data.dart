@@ -26,7 +26,7 @@ class ProductsData with ChangeNotifier {
     'fields': [
       {
         'field_name': 'id',
-        'field_type': 'INTEGER',
+        'field_type': 'TEXT',
       },
       {
         'field_name': 'title',
@@ -57,14 +57,16 @@ class ProductsData with ChangeNotifier {
   final int _maxAmountDummyData = 12;
   List<Product> _products = [];
   DBHelper dbHelper;
+  FirebaseRealtimeDBHelper firebaseRealtimeDBHelper;
 
   // Constructor:
   ProductsData() {
-    dbHelper = DBHelper();
-    refresh();
+    // dbHelper = DBHelper();
+    firebaseRealtimeDBHelper = FirebaseRealtimeDBHelper();
 
     // dbHelper.deleteDb();
     // _generateDummyData();
+    refresh();
   }
 
   // Getters:
@@ -75,41 +77,79 @@ class ProductsData with ChangeNotifier {
     return UnmodifiableListView(_products);
   }
 
-  // SQLite DB CRUD:
+  // SQLite || Firebase Realtime DB CRUD:
   Future<Product> _create(Product product, Map<String, dynamic> table) async {
-    // SQLite
-    var dbClient = await dbHelper.dbPlus();
-    product.id = await dbClient.insert(table['table_plural_name'], product.toMap());
+    // SQLite DB:
+    // var dbClient = await dbHelper.dbPlus();
+    // product.id = await dbClient.insert(table['table_plural_name'], product.toMap());
+
     // Firebase Realtime DB:
-    FirebaseRealtimeDBHelper firebaseRealtimeDBHelper = FirebaseRealtimeDBHelper();
-    await firebaseRealtimeDBHelper.postData(
+    Map postResponseBody = await firebaseRealtimeDBHelper.postData(
       protocol: 'https',
       authority: firebaseRealtimeAuthorityURL,
       unencodedPath: '/${sqliteTable['table_plural_name']}.json',
       body: json.encode(product.toMap()),
     );
+    // print('postResponseBody = $postResponseBody');
+    product.id = postResponseBody['name'];
     return product;
   }
 
   Future<List<dynamic>> _index(Map<String, dynamic> table) async {
-    var dbClient = await dbHelper.dbPlus();
-    List<Map> tableFields = table['fields'];
-    List<Map> productsMaps = await dbClient.query(table['table_plural_name'], columns: tableFields.map<String>((field) => field['field_name']).toList());
-
     List<Product> productsList = [];
-    if (productsMaps.length > 0) {
-      for (int i = 0; i < productsMaps.length; i++) {
+    // SQLite DB:
+    // var dbClient = await dbHelper.dbPlus();
+    // List<Map> tableFields = table['fields'];
+    // List<Map> productsMaps = await dbClient.query(table['table_plural_name'], columns: tableFields.map<String>((field) => field['field_name']).toList());
+    // if (productsMaps.length > 0) {
+    //   for (int i = 0; i < productsMaps.length; i++) {
+    //     Product product;
+    //     product = Product.fromMap(productsMaps[i]);
+    //     productsList.add(product);
+    //   }
+    // }
+
+    // Firebase Realtime DB:
+    FirebaseRealtimeDBHelper firebaseRealtimeDBHelper = FirebaseRealtimeDBHelper();
+    Map<String, dynamic> getResponse = await firebaseRealtimeDBHelper.getData(
+      protocol: 'https',
+      authority: firebaseRealtimeAuthorityURL,
+      unencodedPath: '/${sqliteTable['table_plural_name']}.json',
+    );
+    // print('getResponse = $getResponse');
+    // print('getResponse.length = ${getResponse.length}');
+    if (getResponse.length > 0) {
+      getResponse.forEach((key, value) {
         Product product;
-        product = Product.fromMap(productsMaps[i]);
+        product = Product.fromMap(getResponse[key]);
+        product.id = key;
+        // print('key = $key');
+        // print('getResponse[key] = ${getResponse[key]}');
         productsList.add(product);
-      }
+      });
     }
     return productsList;
   }
 
-  Future<int> _destroy(int id, Map<String, dynamic> table) async {
-    var dbClient = await dbHelper.dbPlus();
-    return await dbClient.delete(table['table_plural_name'], where: 'id = ?', whereArgs: [id]);
+  Future<dynamic> _destroy(dynamic id, Map<String, dynamic> table) async {
+    // SQLite DB:
+    // var dbClient = await dbHelper.dbPlus();
+    // return await dbClient.delete(table['table_plural_name'], where: 'id = ?', whereArgs: [id]);
+
+    // Firebase Realtime DB:
+    // selectedDataId = _data[index].id  //new line
+    // _data.removeAt(index);
+    // notifyListeners();
+    //
+    // return http
+    //     .delete(
+    //     'https://*my address*/${selectedDataId}.json')
+    //     .then((http.Response response) {
+    //   return true;
+    // }).catchError((error) {
+    //   print(error);
+    //   return false;
+    // });
   }
 
   Future<int> _update(Product product, Map<String, dynamic> table) async {
@@ -131,7 +171,7 @@ class ProductsData with ChangeNotifier {
     }
   }
 
-  void _removeWhere(int productId, int userId) async {
+  void _removeWhere(dynamic productId, dynamic userId) async {
     bool isFavorite = await this.isFavorite(userId, productId);
     if (isFavorite) {
       await this.setAsNotFavorite(userId, productId);
@@ -166,7 +206,7 @@ class ProductsData with ChangeNotifier {
     return product;
   }
 
-  Future<void> updateProduct(int productId, String title, String description, double price, String imageUrl) async {
+  Future<void> updateProduct(dynamic productId, String title, String description, double price, String imageUrl) async {
     DateTime now = DateTime.now();
     Product updatingProduct = _products.firstWhere((product) => productId == product.id);
 
@@ -180,19 +220,19 @@ class ProductsData with ChangeNotifier {
     refresh();
   }
 
-  Future<void> deleteProductWithConfirm(int productId, BuildContext context, int userId) {
+  Future<void> deleteProductWithConfirm(dynamic productId, BuildContext context, dynamic userId) {
     DialogHelper.showDialogWithActionPlus(context, () => _removeWhere(productId, userId)).then((value) {
       (context as Element).reassemble();
       refresh();
     });
   }
 
-  void deleteProductWithoutConfirm(int id, int userId) {
+  void deleteProductWithoutConfirm(dynamic id, dynamic userId) {
     _removeWhere(id, userId);
     refresh();
   }
 
-  Future<List<Product>> thoseFavoritesByUserId(int userId, {List<String> filtersList}) async {
+  Future<List<Product>> thoseFavoritesByUserId(dynamic userId, {List<String> filtersList}) async {
     var dbClient = await dbHelper.dbPlus();
     List<Product> productsList = [];
     filtersList = filtersList ?? [];
@@ -221,7 +261,7 @@ class ProductsData with ChangeNotifier {
     return productsList;
   }
 
-  Future<List<Product>> thoseInTheCartByUserId(int userId, {List<String> filtersList}) async {
+  Future<List<Product>> thoseInTheCartByUserId(dynamic userId, {List<String> filtersList}) async {
     var dbClient = await dbHelper.dbPlus();
     List<Product> productsList = [];
     filtersList = filtersList ?? [];
@@ -250,32 +290,32 @@ class ProductsData with ChangeNotifier {
     return productsList;
   }
 
-  Future<void> setAsFavorite(int userId, int productId) async {
+  Future<void> setAsFavorite(dynamic userId, dynamic productId) async {
     FavoriteProductsData favoriteProductsData = FavoriteProductsData();
     await favoriteProductsData.addFavoriteProduct(userId: userId, productId: productId);
     // await refresh();
   }
 
-  Future<void> setAsNotFavorite(int userId, int productId) async {
+  Future<void> setAsNotFavorite(dynamic userId, dynamic productId) async {
     FavoriteProductsData favoriteProductsData = FavoriteProductsData();
     await favoriteProductsData.deleteFavoriteProductWithoutConfirm(userId, productId);
     // await refresh();
   }
 
-  Future<void> toggleFavorite(int userId, int productId) async {
+  Future<void> toggleFavorite(dynamic userId, dynamic productId) async {
     bool isFavorite = await this.isFavorite(userId, productId);
     await (isFavorite ? this.setAsNotFavorite(userId, productId) : this.setAsFavorite(userId, productId));
     await refresh();
   }
 
-  Future<bool> isFavorite(int userId, int productId) async {
+  Future<bool> isFavorite(dynamic userId, dynamic productId) async {
     FavoriteProductsData favoriteProductsData = FavoriteProductsData();
     List<FavoriteProduct> favoriteProducts = await favoriteProductsData.byUserId(userId);
     return favoriteProducts.any((favoriteProduct) => favoriteProduct.productId == productId);
   }
 
   // Add to Cart feature:
-  Future<void> addToCart(int userId, int productId, int quantity) async {
+  Future<void> addToCart(dynamic userId, dynamic productId, int quantity) async {
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
     bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
@@ -289,7 +329,7 @@ class ProductsData with ChangeNotifier {
     await refresh();
   }
 
-  Future<void> decreaseFromCart(int userId, int productId) async {
+  Future<void> decreaseFromCart(dynamic userId, dynamic productId) async {
     bool hasOneInCart = false;
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
@@ -307,7 +347,7 @@ class ProductsData with ChangeNotifier {
     await refresh();
   }
 
-  Future<void> removeFromCart(int userId, int productId) async {
+  Future<void> removeFromCart(dynamic userId, dynamic productId) async {
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
     bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
@@ -319,7 +359,7 @@ class ProductsData with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> removeAllFromCart(int userId, List<CartItem> cartItems) async {
+  Future<void> removeAllFromCart(dynamic userId, List<CartItem> cartItems) async {
     CartItemsData cartItemsData = CartItemsData();
     // Loop in a Future: Creates each one of the related OrderedItem objects:
     await Future.forEach(cartItems, (cartItem) async {
@@ -333,7 +373,7 @@ class ProductsData with ChangeNotifier {
     // notifyListeners();
   }
 
-  Future<void> updateOnCart(int userId, int productId, int quantity) async {
+  Future<void> updateOnCart(dynamic userId, dynamic productId, int quantity) async {
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
     bool isInCart = cartItems.any((cartItem) => cartItem.productId == productId);
@@ -346,13 +386,13 @@ class ProductsData with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> isInCart(int userId, int productId) async {
+  Future<bool> isInCart(dynamic userId, dynamic productId) async {
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
     return cartItems.any((cartItem) => cartItem.productId == productId);
   }
 
-  Future<bool> hasOneInCart(int userId, int productId) async {
+  Future<bool> hasOneInCart(dynamic userId, dynamic productId) async {
     bool hasOneInCart = false;
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
@@ -366,7 +406,7 @@ class ProductsData with ChangeNotifier {
     return hasOneInCart;
   }
 
-  Future<int> quantityAmountInCart(int userId, int productId) async {
+  Future<int> quantityAmountInCart(dynamic userId, dynamic productId) async {
     int quantityAmountInCart = 0;
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
@@ -380,7 +420,7 @@ class ProductsData with ChangeNotifier {
     return quantityAmountInCart;
   }
 
-  Future<int> quantityTotalAmountInCart(int userId) async {
+  Future<int> quantityTotalAmountInCart(dynamic userId) async {
     int quantityTotalAmountInCart = 0;
     List<Product> productsInCart = await this.thoseInTheCartByUserId(userId);
 
@@ -393,7 +433,7 @@ class ProductsData with ChangeNotifier {
     return quantityTotalAmountInCart;
   }
 
-  Future<double> priceAmountInCart(int userId, int productId) async {
+  Future<double> priceAmountInCart(dynamic userId, dynamic productId) async {
     double priceAmountInCart = 0;
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
@@ -408,7 +448,7 @@ class ProductsData with ChangeNotifier {
     return priceAmountInCart;
   }
 
-  Future<double> priceTotalAmountInCart(int userId) async {
+  Future<double> priceTotalAmountInCart(dynamic userId) async {
     double priceTotalAmountInCart = 0.0;
     List<Product> productsInCart = await this.thoseInTheCartByUserId(userId);
 

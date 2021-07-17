@@ -104,7 +104,7 @@ class OrderedItemsData with ChangeNotifier {
     return orderedItemsList;
   }
 
-  Future<int> _destroy(int id, Map<String, dynamic> table) async {
+  Future<int> _destroy(dynamic id, Map<String, dynamic> table) async {
     var dbClient = await dbHelper.dbPlus();
     return await dbClient.delete(table['table_plural_name'], where: 'id = ?', whereArgs: [id]);
   }
@@ -152,7 +152,7 @@ class OrderedItemsData with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<OrderedItem> addOrderedItem({int orderId, String title, String description, double price, int quantity, String imageUrl}) async {
+  Future<OrderedItem> addOrderedItem({dynamic orderId, String title, String description, double price, int quantity, String imageUrl}) async {
     DateTime now = DateTime.now();
     OrderedItem newOrderedItem = OrderedItem(
       orderId: orderId,
@@ -184,19 +184,19 @@ class OrderedItemsData with ChangeNotifier {
     refresh();
   }
 
-  Future<void> deleteOrderedItemWithConfirm(int orderedItemId, BuildContext context, int orderId) {
+  Future<void> deleteOrderedItemWithConfirm(int orderedItemId, BuildContext context, dynamic orderId) {
     DialogHelper.showDialogWithActionPlus(context, () => _removeWhere(orderedItemId)).then((value) {
       (context as Element).reassemble();
       refresh();
     });
   }
 
-  void deleteOrderedItemWithoutConfirm(int id) {
+  void deleteOrderedItemWithoutConfirm(dynamic id) {
     _removeWhere(id);
     refresh();
   }
 
-  Future<List<OrderedItem>> byOrderId(int orderId, {List<String> filtersList}) async {
+  Future<List<OrderedItem>> byOrderId(dynamic orderId, {List<String> filtersList}) async {
     var dbClient = await dbHelper.dbPlus();
     List<OrderedItem> orderedItemsList = [];
     filtersList = filtersList ?? [];
@@ -219,7 +219,7 @@ class OrderedItemsData with ChangeNotifier {
     return orderedItemsList;
   }
 
-// Future<int> quantityTotalInOrderedItemedItems(int userId, int orderedItemId) async {
+// Future<int> quantityTotalInOrderedItemedItems(dynamic userId, int orderedItemId) async {
 //   int quantityTotalInOrderedItemedItems = 0;
 //   OrderedItemedItemsData orderedItemedItemsData = OrderedItemedItemsData();
 //   List<OrderedItemedItem> orderedItemedItems = await orderedItemedItemsData.byUserId(userId).map((orderedItemedItem) => orderedItemedItem.orderedItemId == orderedItemId).toList();
@@ -231,7 +231,7 @@ class OrderedItemsData with ChangeNotifier {
 //   return quantityTotalInOrderedItemedItems;
 // }
 
-// Future<double> priceTotalInOrderedItemedItems(int userId, int orderedItemId) async {
+// Future<double> priceTotalInOrderedItemedItems(dynamic userId, int orderedItemId) async {
 //   double priceTotalInOrderedItemedItems = 0;
 //   OrderedItemedItemsData orderedItemedItemsData = OrderedItemedItemsData();
 //   List<OrderedItemedItem> orderedItemedItems = await orderedItemedItemsData.byUserId(userId).map((orderedItemedItem) => orderedItemedItem.orderedItemId == orderedItemId).toList();

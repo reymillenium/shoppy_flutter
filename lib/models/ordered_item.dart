@@ -18,8 +18,8 @@ import '../helpers/_helpers.dart';
 
 class OrderedItem with ChangeNotifier {
   // Properties:
-  int id;
-  int orderId;
+  dynamic id;
+  dynamic orderId;
 
   String title;
   String description;

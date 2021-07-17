@@ -88,7 +88,7 @@ class OrdersData with ChangeNotifier {
     return ordersList;
   }
 
-  Future<int> _destroy(int id, Map<String, dynamic> table) async {
+  Future<int> _destroy(dynamic id, Map<String, dynamic> table) async {
     var dbClient = await dbHelper.dbPlus();
     return await dbClient.delete(table['table_plural_name'], where: 'id = ?', whereArgs: [id]);
   }
@@ -111,7 +111,7 @@ class OrdersData with ChangeNotifier {
     }
   }
 
-  void _removeWhere(int orderId) async {
+  void _removeWhere(dynamic orderId) async {
     // First mwe must eliminate the related OrderedItem object from the database:
     OrderedItemsData orderedItemsData = OrderedItemsData();
     List<OrderedItem> orderedItems = orderedItemsData.orderedItems.where((orderedItem) => orderedItem.orderId == orderId);
@@ -130,7 +130,7 @@ class OrdersData with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Order> addOrder({int userId, double taxesAmount, List<CartItem> cartItems}) async {
+  Future<Order> addOrder({dynamic userId, double taxesAmount, List<CartItem> cartItems}) async {
     DateTime now = DateTime.now();
     Order newOrder = Order(
       userId: userId,
@@ -166,7 +166,7 @@ class OrdersData with ChangeNotifier {
     return order;
   }
 
-  Future<void> updateOrder(int orderId, double taxesAmount) async {
+  Future<void> updateOrder(dynamic orderId, double taxesAmount) async {
     DateTime now = DateTime.now();
     Order updatingOrder = _orders.firstWhere((order) => orderId == order.id);
 
@@ -177,19 +177,19 @@ class OrdersData with ChangeNotifier {
     refresh();
   }
 
-  Future<void> deleteOrderWithConfirm(int orderId, BuildContext context, int userId) {
+  Future<void> deleteOrderWithConfirm(dynamic orderId, BuildContext context, dynamic userId) {
     DialogHelper.showDialogWithActionPlus(context, () => _removeWhere(orderId)).then((value) {
       (context as Element).reassemble();
       refresh();
     });
   }
 
-  void deleteOrderWithoutConfirm(int id, int userId) {
+  void deleteOrderWithoutConfirm(dynamic id, dynamic userId) {
     _removeWhere(id);
     refresh();
   }
 
-  Future<List<Order>> byUserId(int userId, {List<String> filtersList}) async {
+  Future<List<Order>> byUserId(dynamic userId, {List<String> filtersList}) async {
     var dbClient = await dbHelper.dbPlus();
     List<Order> ordersList = [];
     filtersList = filtersList ?? [];
@@ -212,7 +212,7 @@ class OrdersData with ChangeNotifier {
     return ordersList;
   }
 
-  Future<int> quantityTotalInOrderedItems(int userId, int orderId) async {
+  Future<int> quantityTotalInOrderedItems(dynamic userId, dynamic orderId) async {
     int quantityTotalInOrderedItems = 0;
     OrderedItemsData orderedItemsData = OrderedItemsData();
     List<OrderedItem> orderedItemsByUser = await orderedItemsData.byOrderId(orderId);
@@ -225,7 +225,7 @@ class OrdersData with ChangeNotifier {
     return quantityTotalInOrderedItems;
   }
 
-  Future<double> priceTotalInOrderedItems(int userId, int orderId) async {
+  Future<double> priceTotalInOrderedItems(dynamic userId, dynamic orderId) async {
     double priceTotalInOrderedItems = 0;
     OrderedItemsData orderedItemsData = OrderedItemsData();
     List<OrderedItem> orderedItemsByUser = await orderedItemsData.byOrderId(orderId);

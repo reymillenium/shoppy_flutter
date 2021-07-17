@@ -19,7 +19,7 @@ import '../utilities/_utilities.dart';
 
 class ProductGridTile extends StatelessWidget {
   // Properties:
-  final int userId;
+  final dynamic userId;
   final bool inFavoriteScreen;
 
   ProductGridTile({
@@ -32,7 +32,7 @@ class ProductGridTile extends StatelessWidget {
   final DateFormat formatter = DateFormat().add_yMMMMd();
   final currencyFormat = new NumberFormat("#,##0.00", "en_US");
 
-  void selectProduct(BuildContext context, Product product, int userId) {
+  void selectProduct(BuildContext context, Product product, dynamic userId) {
     Navigator.pushNamed(context, ProductShowScreen.screenId, arguments: {'product': product, 'userId': userId});
   }
 

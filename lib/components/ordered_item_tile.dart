@@ -19,7 +19,7 @@ import '../utilities/_utilities.dart';
 
 class OrderedItemTile extends StatelessWidget {
   // Properties:
-  final int userId;
+  final dynamic userId;
 
   // Constructor:
   OrderedItemTile({

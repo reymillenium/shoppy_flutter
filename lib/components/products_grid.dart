@@ -18,7 +18,7 @@ import '../helpers/_helpers.dart';
 class ProductsGrid extends StatelessWidget {
   // Properties:
   final List<Product> products;
-  final int userId;
+  final dynamic userId;
   final bool inFavoriteScreen;
 
   const ProductsGrid({

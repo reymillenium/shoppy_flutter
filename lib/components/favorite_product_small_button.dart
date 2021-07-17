@@ -19,7 +19,7 @@ import '../utilities/_utilities.dart';
 
 class FavoriteProductSmallButton extends StatelessWidget {
   // Properties:
-  final int userId;
+  final dynamic userId;
   final bool inFavoriteScreen;
 
   const FavoriteProductSmallButton({

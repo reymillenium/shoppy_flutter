@@ -18,7 +18,7 @@ import '../helpers/_helpers.dart';
 
 class FavoriteProduct {
   // Properties:
-  int id;
+  dynamic id;
   int userId;
   int productId;
   DateTime updatedAt;

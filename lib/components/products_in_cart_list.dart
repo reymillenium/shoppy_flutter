@@ -19,7 +19,7 @@ import '../utilities/_utilities.dart';
 
 class ProductsInCartList extends StatefulWidget {
   // Properties:
-  final int userId;
+  final dynamic userId;
   final List<Product> productsInTheCart;
 
   // Constructor:
@@ -119,7 +119,7 @@ class _ProductsInCartListState extends State<ProductsInCartList> {
 
   int findChildIndexCallback(Key key, List<Product> productsInTheCart) {
     final ValueKey valueKey = key as ValueKey;
-    final int id = valueKey.value;
+    final dynamic id = valueKey.value;
     Product product;
     try {
       product = productsInTheCart.firstWhere((productInTheCart) => id == productInTheCart.id);

@@ -19,7 +19,7 @@ import '../utilities/_utilities.dart';
 
 class AddProductToCartUpperLeftStyled extends StatelessWidget {
   // Properties:
-  final int userId;
+  final dynamic userId;
 
   const AddProductToCartUpperLeftStyled({
     Key key,

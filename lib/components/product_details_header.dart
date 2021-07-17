@@ -21,7 +21,7 @@ import '../models/_models.dart';
 
 class ProductDetailsHeader extends StatelessWidget {
   // Properties:
-  final int userId;
+  final dynamic userId;
 
   // Constructor:
   ProductDetailsHeader({

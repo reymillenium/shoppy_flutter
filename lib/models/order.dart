@@ -18,8 +18,8 @@ import '../helpers/_helpers.dart';
 
 class Order with ChangeNotifier {
   // Properties:
-  int id;
-  int userId;
+  dynamic id;
+  dynamic userId;
 
   double taxesAmount;
 

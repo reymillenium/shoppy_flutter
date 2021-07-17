@@ -148,7 +148,7 @@ class FavoriteProductsData with ChangeNotifier {
   }
 
   Future<void> updateFavoriteProduct(
-    int id,
+    dynamic id,
     int userId,
     int productId,
   ) async {

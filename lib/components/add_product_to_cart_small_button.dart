@@ -18,7 +18,7 @@ import '../helpers/_helpers.dart';
 import '../utilities/_utilities.dart';
 
 class AddProductToCartSmallButton extends StatelessWidget {
-  final int userId;
+  final dynamic userId;
   final bool listenProductsData;
 
   const AddProductToCartSmallButton({

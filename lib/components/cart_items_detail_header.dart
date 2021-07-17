@@ -21,7 +21,7 @@ import '../utilities/_utilities.dart';
 
 class CartItemsDetailsHeader extends StatelessWidget {
   // Properties:
-  final int userId;
+  final dynamic userId;
   final int productsInTheCartAmount;
   final double priceTotalAmountInCart;
   final int quantityTotalAmountInCart;

@@ -19,7 +19,7 @@ import '../utilities/_utilities.dart';
 
 class OrderedItemsExpansionList extends StatefulWidget {
   // Properties:
-  final int userId;
+  final dynamic userId;
 
   // final Order order;
 
@@ -190,7 +190,7 @@ class _OrderedItemsExpansionListState extends State<OrderedItemsExpansionList> {
 
   int findChildIndexCallback(Key key, List<Order> orders) {
     final ValueKey valueKey = key as ValueKey;
-    final int id = valueKey.value;
+    final dynamic id = valueKey.value;
     Order order;
     try {
       order = orders.firstWhere((order) => id == order.id);

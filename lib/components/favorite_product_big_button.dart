@@ -19,7 +19,7 @@ import '../utilities/_utilities.dart';
 
 class FavoriteProductBigButton extends StatelessWidget {
   // Properties:
-  final int userId;
+  final dynamic userId;
 
   const FavoriteProductBigButton({
     Key key,

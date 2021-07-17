@@ -22,7 +22,7 @@ class CartItemIndexScreen extends StatefulWidget {
 
   // Properties:
   final String appTitle;
-  final int userId;
+  final dynamic userId;
 
   const CartItemIndexScreen({
     Key key,

@@ -1,5 +1,4 @@
 // Packages:
-
 import '../_inner_packages.dart';
 import '../_external_packages.dart';
 
@@ -46,7 +45,7 @@ class FavoriteProductsData with ChangeNotifier {
   };
   final int _maxAmountDummyData = 12;
   List<FavoriteProduct> _favoriteProducts = [];
-  DBHelper dbHelper;
+  // DBHelper dbHelper;
   FirebaseRealtimeDBHelper firebaseRealtimeDBHelper;
 
   // Constructor:
@@ -140,7 +139,7 @@ class FavoriteProductsData with ChangeNotifier {
       protocol: 'https',
       authority: firebaseRealtimeAuthorityURL,
       unencodedPath: '/${sqliteTable['table_plural_name']}.json',
-      queryParameters: {'userId': '$userId'},
+      queryParameters: {'user_id': '$userId'},
     );
     Map<String, dynamic> getResponseBody = {};
     getResponseBody = jsonDecode(getResponse.body);
@@ -162,7 +161,7 @@ class FavoriteProductsData with ChangeNotifier {
     // return await dbClient.delete(table['table_plural_name'], where: 'user_id = ? AND product_id = ?', whereArgs: [userId, productId]);
 
     // Firebase Realtime DB:
-    List<FavoriteProduct> favoriteProductsList = await _index(sqliteTable);
+    List<FavoriteProduct> favoriteProductsList = await byUserId(userId);
     // Gets the specific FavoriteProduct object:
     FavoriteProduct favoriteProduct = favoriteProductsList.firstWhere((favoriteProduct) => (favoriteProduct.userId == userId && favoriteProduct.productId == productId));
     Response deleteResponse = await firebaseRealtimeDBHelper.deleteData(

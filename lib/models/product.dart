@@ -101,7 +101,7 @@ class Product with ChangeNotifier {
     bool isInCart = cartItems.any((cartItem) => cartItem.productId == id);
     if (isInCart) {
       CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == id);
-      await cartItemsData.updateCartItem(cartItem.id, cartItem.quantity + 1);
+      await cartItemsData.updateCartItem(cartItem.id, userId, cartItem.quantity + 1);
     } else {
       await cartItemsData.addCartItem(userId: userId, productId: id, quantity: quantity);
     }
@@ -121,7 +121,7 @@ class Product with ChangeNotifier {
       if (hasOneInCart) {
         await cartItemsData.deleteCartItemWithoutConfirm(userId, id);
       } else {
-        await cartItemsData.updateCartItem(cartItem.id, cartItem.quantity - 1);
+        await cartItemsData.updateCartItem(cartItem.id, userId, cartItem.quantity - 1);
       }
     }
     // await refresh();
@@ -147,7 +147,7 @@ class Product with ChangeNotifier {
 
     if (isInCart) {
       CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == id);
-      await cartItemsData.updateCartItem(cartItem.id, quantity);
+      await cartItemsData.updateCartItem(cartItem.id, userId, quantity);
     }
     // await refresh();
     notifyListeners();

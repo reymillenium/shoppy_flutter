@@ -53,7 +53,7 @@ class ProductsData with ChangeNotifier {
   };
   final int _maxAmountDummyData = 12;
   List<Product> _products = [];
-  DBHelper dbHelper;
+  // DBHelper dbHelper;
   FirebaseRealtimeDBHelper firebaseRealtimeDBHelper;
 
   // Constructor:
@@ -274,28 +274,45 @@ class ProductsData with ChangeNotifier {
   }
 
   Future<List<Product>> thoseInTheCartByUserId(dynamic userId, {List<String> filtersList}) async {
-    var dbClient = await dbHelper.dbPlus();
     List<Product> productsList = [];
     filtersList = filtersList ?? [];
+    // SQLite DB:
+    // var dbClient = await dbHelper.dbPlus();
+    // CartItemsData cartItemsData = CartItemsData();
+    // // Gathering of the productsIdsList on the CartItem model table (cart_items) by the user_id:
+    // List<CartItem> cartItemsList = await cartItemsData.byUserId(userId);
+    //
+    // if (cartItemsList.isNotEmpty) {
+    //   List<int> productsIdsList = cartItemsList.map((cartItem) => cartItem.productId).toList();
+    //
+    //   Map<String, Object> productsTable = ProductsData.sqliteTable;
+    //   String productsTableName = productsTable['table_plural_name'];
+    //   List<Map> productsTableFields = productsTable['fields'];
+    //   String filteringString = (filtersList.isEmpty) ? '' : "(${filtersList.map((e) => "$e = 1").join(' OR ')}) AND ";
+    //   List<Map> productsMaps = await dbClient.query(productsTableName, columns: productsTableFields.map<String>((field) => field['field_name']).toList(), where: '${filteringString}id IN (${productsIdsList.map((e) => "'$e'").join(', ')})');
+    //
+    //   // Conversion into Product objects:
+    //   if (productsMaps.length > 0) {
+    //     for (int i = 0; i < productsMaps.length; i++) {
+    //       Product product = Product.fromMap(productsMaps[i]);
+    //       productsList.add(product);
+    //     }
+    //   }
+    // }
+
+    // Firebase Realtime DB:
     CartItemsData cartItemsData = CartItemsData();
-    // Gathering of the productsIdsList on the CartItemsData table (cart_items) by the user_id:
+    // Gathering of the productsIdsList on the CartItem model table (cart_items) by the user_id:
     List<CartItem> cartItemsList = await cartItemsData.byUserId(userId);
 
     if (cartItemsList.isNotEmpty) {
-      List<int> productsIdsList = cartItemsList.map((cartItem) => cartItem.productId).toList();
-
-      Map<String, Object> productsTable = ProductsData.sqliteTable;
-      String productsTableName = productsTable['table_plural_name'];
-      List<Map> productsTableFields = productsTable['fields'];
-      String filteringString = (filtersList.isEmpty) ? '' : "(${filtersList.map((e) => "$e = 1").join(' OR ')}) AND ";
-      List<Map> productsMaps = await dbClient.query(productsTableName, columns: productsTableFields.map<String>((field) => field['field_name']).toList(), where: '${filteringString}id IN (${productsIdsList.map((e) => "'$e'").join(', ')})');
-
-      // Conversion into Product objects:
-      if (productsMaps.length > 0) {
-        for (int i = 0; i < productsMaps.length; i++) {
-          Product product = Product.fromMap(productsMaps[i]);
-          productsList.add(product);
-        }
+      List<dynamic> productsIdsList = cartItemsList.map((cartItem) => cartItem.productId).toList();
+      if (products.length > 0) {
+        products.forEach((product) {
+          if (productsIdsList.contains(product.id)) {
+            productsList.add(product);
+          }
+        });
       }
     }
 
@@ -334,7 +351,7 @@ class ProductsData with ChangeNotifier {
 
     if (isInCart) {
       CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == productId);
-      await cartItemsData.updateCartItem(cartItem.id, cartItem.quantity + 1);
+      await cartItemsData.updateCartItem(cartItem.id, userId, cartItem.quantity + 1);
     } else {
       await cartItemsData.addCartItem(userId: userId, productId: productId, quantity: quantity);
     }
@@ -353,7 +370,7 @@ class ProductsData with ChangeNotifier {
       if (hasOneInCart) {
         await cartItemsData.deleteCartItemWithoutConfirm(userId, productId);
       } else {
-        await cartItemsData.updateCartItem(cartItem.id, cartItem.quantity - 1);
+        await cartItemsData.updateCartItem(cartItem.id, userId, cartItem.quantity - 1);
       }
     }
     await refresh();
@@ -392,7 +409,7 @@ class ProductsData with ChangeNotifier {
 
     if (isInCart) {
       CartItem cartItem = cartItems.firstWhere((cartItem) => cartItem.productId == productId);
-      cartItemsData.updateCartItem(cartItem.id, quantity);
+      cartItemsData.updateCartItem(cartItem.id, userId, quantity);
     }
     // await refresh();
     notifyListeners();

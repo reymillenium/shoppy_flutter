@@ -59,17 +59,22 @@ class FirebaseRealtimeDBHelper {
     Object body,
     Encoding encoding,
   }) async {
-    print('Inside deleteData');
     Uri uri = _buildUri(protocol: protocol, authority: authority, unencodedPath: unencodedPath, queryParameters: queryParameters);
-    print('uri = $uri');
-    print('body = $body');
+    print('Inside deleteData: uri = $uri');
+    print('Inside deleteData: body = $body');
     Response response = await delete(uri, headers: headers, body: body, encoding: encoding);
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      print(response.statusCode);
-    }
+    print('Inside deleteData: response = $response');
+    print('Inside deleteData: response.body = ${response.body}');
+    print('Inside deleteData: response.statusCode = ${response.statusCode}');
+
+    // if (response.statusCode == 200) {
+    //   return jsonDecode(response.body);
+    // } else {
+    //   print(response.statusCode);
+    // }
+
+    return response.statusCode == 200;
   }
 
   Uri _buildUri({String protocol = 'parse', String authority, String unencodedPath = '', Map<String, dynamic> queryParameters = const {}}) {

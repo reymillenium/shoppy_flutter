@@ -90,7 +90,6 @@ class ProductsData with ChangeNotifier {
       unencodedPath: '/${sqliteTable['table_plural_name']}.json',
       body: json.encode(product.toMap()),
     );
-    // print('postResponseBody = $postResponseBody');
     product.id = postResponseBody['name'];
     return product;
   }
@@ -116,15 +115,11 @@ class ProductsData with ChangeNotifier {
       authority: firebaseRealtimeAuthorityURL,
       unencodedPath: '/${sqliteTable['table_plural_name']}.json',
     );
-    // print('getResponse = $getResponse');
-    // print('getResponse.length = ${getResponse.length}');
     if (getResponse.length > 0) {
       getResponse.forEach((key, value) {
         Product product;
         product = Product.fromMap(getResponse[key]);
         product.id = key;
-        // print('key = $key');
-        // print('getResponse[key] = ${getResponse[key]}');
         productsList.add(product);
       });
     }
@@ -150,6 +145,15 @@ class ProductsData with ChangeNotifier {
     //   print(error);
     //   return false;
     // });
+
+    // Firebase Realtime DB:
+    bool deleteResponseStatusIs200 = await firebaseRealtimeDBHelper.deleteData(
+      protocol: 'https',
+      authority: firebaseRealtimeAuthorityURL,
+      unencodedPath: '/${sqliteTable['table_plural_name']}/$id.json',
+    );
+    print('Inside _destroy: deleteResponseStatusIs200 = $deleteResponseStatusIs200');
+    return deleteResponseStatusIs200;
   }
 
   Future<int> _update(Product product, Map<String, dynamic> table) async {

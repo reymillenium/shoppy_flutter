@@ -69,10 +69,7 @@ class ProductsData with ChangeNotifier {
     refresh();
   }
 
-  // Getters:
-  // get products {
-  //   return _products;
-  // }
+  // Getter:
   UnmodifiableListView<Product> get products {
     return UnmodifiableListView(_products);
   }
@@ -84,12 +81,13 @@ class ProductsData with ChangeNotifier {
     // product.id = await dbClient.insert(table['table_plural_name'], product.toMap());
 
     // Firebase Realtime DB:
-    Map postResponseBody = await firebaseRealtimeDBHelper.postData(
+    Response postResponse = await firebaseRealtimeDBHelper.postData(
       protocol: 'https',
       authority: firebaseRealtimeAuthorityURL,
       unencodedPath: '/${sqliteTable['table_plural_name']}.json',
       body: json.encode(product.toMap()),
     );
+    Map<String, dynamic> postResponseBody = jsonDecode(postResponse.body);
     product.id = postResponseBody['name'];
     return product;
   }
@@ -110,19 +108,21 @@ class ProductsData with ChangeNotifier {
 
     // Firebase Realtime DB:
     FirebaseRealtimeDBHelper firebaseRealtimeDBHelper = FirebaseRealtimeDBHelper();
-    Map<String, dynamic> getResponse = await firebaseRealtimeDBHelper.getData(
+    Response getResponse = await firebaseRealtimeDBHelper.getData(
       protocol: 'https',
       authority: firebaseRealtimeAuthorityURL,
       unencodedPath: '/${sqliteTable['table_plural_name']}.json',
     );
-    if (getResponse.length > 0) {
-      getResponse.forEach((key, value) {
+    Map<String, dynamic> getResponseBody = jsonDecode(getResponse.body);
+    if (getResponseBody.length > 0) {
+      getResponseBody.forEach((key, value) {
         Product product;
-        product = Product.fromMap(getResponse[key]);
+        product = Product.fromMap(getResponseBody[key]);
         product.id = key;
         productsList.add(product);
       });
     }
+
     return productsList;
   }
 
@@ -132,33 +132,27 @@ class ProductsData with ChangeNotifier {
     // return await dbClient.delete(table['table_plural_name'], where: 'id = ?', whereArgs: [id]);
 
     // Firebase Realtime DB:
-    // selectedDataId = _data[index].id  //new line
-    // _data.removeAt(index);
-    // notifyListeners();
-    //
-    // return http
-    //     .delete(
-    //     'https://*my address*/${selectedDataId}.json')
-    //     .then((http.Response response) {
-    //   return true;
-    // }).catchError((error) {
-    //   print(error);
-    //   return false;
-    // });
-
-    // Firebase Realtime DB:
-    bool deleteResponseStatusIs200 = await firebaseRealtimeDBHelper.deleteData(
+    Response deleteResponse = await firebaseRealtimeDBHelper.deleteData(
       protocol: 'https',
       authority: firebaseRealtimeAuthorityURL,
       unencodedPath: '/${sqliteTable['table_plural_name']}/$id.json',
     );
-    print('Inside _destroy: deleteResponseStatusIs200 = $deleteResponseStatusIs200');
-    return deleteResponseStatusIs200;
+    return deleteResponse.statusCode == 200;
   }
 
-  Future<int> _update(Product product, Map<String, dynamic> table) async {
-    var dbClient = await dbHelper.dbPlus();
-    return await dbClient.update(table['table_plural_name'], product.toMap(), where: 'id = ?', whereArgs: [product.id]);
+  Future<dynamic> _update(Product product, Map<String, dynamic> table) async {
+    // SQLite DB:
+    // var dbClient = await dbHelper.dbPlus();3
+    // return await dbClient.update(table['table_plural_name'], product.toMap(), where: 'id = ?', whereArgs: [product.id]);
+
+    // Firebase Realtime DB:
+    Response response = await firebaseRealtimeDBHelper.updateData(
+      protocol: 'https',
+      authority: firebaseRealtimeAuthorityURL,
+      unencodedPath: '/${sqliteTable['table_plural_name']}/${product.id}.json',
+      body: json.encode(product.toMap()),
+    );
+    return response.statusCode == 200;
   }
 
   // Private methods:

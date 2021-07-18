@@ -19,7 +19,7 @@ import '../utilities/constants.dart';
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   // Properties:
   final String appTitle;
-  final int userId;
+  final dynamic userId;
   final String objectName;
 
   final bool showFirstActionButton;

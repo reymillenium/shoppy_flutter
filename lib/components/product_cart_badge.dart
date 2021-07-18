@@ -18,7 +18,7 @@ import '../helpers/_helpers.dart';
 import '../utilities/_utilities.dart';
 
 class ProductCartBadge extends StatelessWidget {
-  final int userId;
+  final dynamic userId;
   final String objectName;
 
   final IconData cartIcon;

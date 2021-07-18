@@ -18,12 +18,7 @@ class FirebaseRealtimeDBHelper {
   }) async {
     Uri uri = _buildUri(protocol: protocol, authority: authority, unencodedPath: unencodedPath, queryParameters: queryParameters);
     Response response = await get(uri);
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      print(response.statusCode);
-    }
+    return response;
   }
 
   // Posts the data by a uri, from a given authority and unencodedPath:
@@ -36,17 +31,9 @@ class FirebaseRealtimeDBHelper {
     Object body,
     Encoding encoding,
   }) async {
-    print('Inside postData');
     Uri uri = _buildUri(protocol: protocol, authority: authority, unencodedPath: unencodedPath, queryParameters: queryParameters);
-    print('uri = $uri');
-    print('body = $body');
     Response response = await post(uri, headers: headers, body: body, encoding: encoding);
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      print(response.statusCode);
-    }
+    return response;
   }
 
   // Deletes data on a uri, from a given authority and unencodedPath:
@@ -60,21 +47,23 @@ class FirebaseRealtimeDBHelper {
     Encoding encoding,
   }) async {
     Uri uri = _buildUri(protocol: protocol, authority: authority, unencodedPath: unencodedPath, queryParameters: queryParameters);
-    print('Inside deleteData: uri = $uri');
-    print('Inside deleteData: body = $body');
     Response response = await delete(uri, headers: headers, body: body, encoding: encoding);
+    return response;
+  }
 
-    print('Inside deleteData: response = $response');
-    print('Inside deleteData: response.body = ${response.body}');
-    print('Inside deleteData: response.statusCode = ${response.statusCode}');
-
-    // if (response.statusCode == 200) {
-    //   return jsonDecode(response.body);
-    // } else {
-    //   print(response.statusCode);
-    // }
-
-    return response.statusCode == 200;
+  // Deletes data on a uri, from a given authority and unencodedPath:
+  Future<dynamic> updateData({
+    String protocol = 'parse',
+    String authority,
+    String unencodedPath = '',
+    Map<String, dynamic> queryParameters = const {},
+    Map<String, String> headers,
+    Object body,
+    Encoding encoding,
+  }) async {
+    Uri uri = _buildUri(protocol: protocol, authority: authority, unencodedPath: unencodedPath, queryParameters: queryParameters);
+    Response response = await put(uri, headers: headers, body: body, encoding: encoding);
+    return response;
   }
 
   Uri _buildUri({String protocol = 'parse', String authority, String unencodedPath = '', Map<String, dynamic> queryParameters = const {}}) {
@@ -90,7 +79,7 @@ class FirebaseRealtimeDBHelper {
         uri = Uri.https(authority, unencodedPath);
         break;
       default:
-        uri = Uri.parse(authority);
+        uri = Uri.parse('$authority$unencodedPath');
         break;
     }
     return uri;

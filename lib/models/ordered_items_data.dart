@@ -132,7 +132,7 @@ class OrderedItemsData with ChangeNotifier {
     }
   }
 
-  void _removeWhere(int orderedItemId) async {
+  void _removeWhere(dynamic orderedItemId) async {
     // bool isFavorite = await this.isFavorite(userId, orderedItemId);
     // if (isFavorite) {
     //   await this.setAsNotFavorite(userId, orderedItemId);

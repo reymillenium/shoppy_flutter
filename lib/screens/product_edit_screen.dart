@@ -36,7 +36,7 @@ class ProductEditScreen extends StatefulWidget {
 class _ProductEditScreenState extends State<ProductEditScreen> {
   // Local State Properties:
   final _formGlobalKey = GlobalKey<FormState>();
-  int _id;
+  dynamic _id;
   String _title = '';
   String _description = '';
   double _price = 0;

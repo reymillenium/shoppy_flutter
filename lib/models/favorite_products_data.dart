@@ -162,11 +162,13 @@ class FavoriteProductsData with ChangeNotifier {
     // return await dbClient.delete(table['table_plural_name'], where: 'user_id = ? AND product_id = ?', whereArgs: [userId, productId]);
 
     // Firebase Realtime DB:
+    List<FavoriteProduct> favoriteProductsList = await _index(sqliteTable);
+    // Gets the specific FavoriteProduct object:
+    FavoriteProduct favoriteProduct = favoriteProductsList.firstWhere((favoriteProduct) => (favoriteProduct.userId == userId && favoriteProduct.productId == productId));
     Response deleteResponse = await firebaseRealtimeDBHelper.deleteData(
       protocol: 'https',
       authority: firebaseRealtimeAuthorityURL,
-      unencodedPath: '/${sqliteTable['table_plural_name']}.json',
-      body: json.encode({'userId': '$userId', 'productId': '$productId'}),
+      unencodedPath: '/${sqliteTable['table_plural_name']}/${favoriteProduct.id}.json',
     );
     return deleteResponse.statusCode == 200;
   }
@@ -243,8 +245,8 @@ class FavoriteProductsData with ChangeNotifier {
     });
   }
 
-  Future<void> deleteFavoriteProductWithoutConfirm(dynamic userId, dynamic productId) {
-    _removeWhere(userId, productId);
+  Future<void> deleteFavoriteProductWithoutConfirm(dynamic userId, dynamic productId) async {
+    await _removeWhere(userId, productId);
     refresh();
   }
 }

@@ -96,7 +96,6 @@ class Product with ChangeNotifier {
 
   // Add to Cart feature:
   Future<void> addToCart(dynamic userId, int quantity) async {
-    // print('Inside lib/models/product.dart => addToCart');
     CartItemsData cartItemsData = CartItemsData();
     List<CartItem> cartItems = await cartItemsData.byUserId(userId);
     bool isInCart = cartItems.any((cartItem) => cartItem.productId == id);

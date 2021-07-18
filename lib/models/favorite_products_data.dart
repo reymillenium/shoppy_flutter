@@ -47,76 +47,148 @@ class FavoriteProductsData with ChangeNotifier {
   final int _maxAmountDummyData = 12;
   List<FavoriteProduct> _favoriteProducts = [];
   DBHelper dbHelper;
+  FirebaseRealtimeDBHelper firebaseRealtimeDBHelper;
 
   // Constructor:
   FavoriteProductsData() {
-    dbHelper = DBHelper();
+    // dbHelper = DBHelper();
+    firebaseRealtimeDBHelper = FirebaseRealtimeDBHelper();
     refresh();
     // _generateDummyData();
   }
 
+  // Getter:
   get favoriteProducts {
     return _favoriteProducts;
   }
 
-  // SQLite DB CRUD:
+  // SQLite DB || Firebase Realtime DB CRUD:
   Future<FavoriteProduct> _create(FavoriteProduct favoriteProduct, Map<String, dynamic> table) async {
-    var dbClient = await dbHelper.dbPlus();
-    favoriteProduct.id = await dbClient.insert(table['table_plural_name'], favoriteProduct.toMap());
+    // SQLite DB:
+    // var dbClient = await dbHelper.dbPlus();
+    // favoriteProduct.id = await dbClient.insert(table['table_plural_name'], favoriteProduct.toMap());
+
+    // Firebase Realtime DB:
+    Response postResponse = await firebaseRealtimeDBHelper.postData(
+      protocol: 'https',
+      authority: firebaseRealtimeAuthorityURL,
+      unencodedPath: '/${sqliteTable['table_plural_name']}.json',
+      body: json.encode(favoriteProduct.toMap()),
+    );
+    Map<String, dynamic> postResponseBody = jsonDecode(postResponse.body);
+    favoriteProduct.id = postResponseBody['name'];
     return favoriteProduct;
   }
 
   Future<List<dynamic>> _index(Map<String, dynamic> table) async {
-    var dbClient = await dbHelper.dbPlus();
-    List<Map> tableFields = table['fields'];
-    List<Map> favoriteProductsMaps = await dbClient.query(table['table_plural_name'], columns: tableFields.map<String>((field) => field['field_name']).toList());
-
     List<FavoriteProduct> favoriteProductsList = [];
-    if (favoriteProductsMaps.length > 0) {
-      for (int i = 0; i < favoriteProductsMaps.length; i++) {
+    // SQLite DB:
+    // var dbClient = await dbHelper.dbPlus();
+    // List<Map> tableFields = table['fields'];
+    // List<Map> favoriteProductsMaps = await dbClient.query(table['table_plural_name'], columns: tableFields.map<String>((field) => field['field_name']).toList());
+    //
+    // if (favoriteProductsMaps.length > 0) {
+    //   for (int i = 0; i < favoriteProductsMaps.length; i++) {
+    //     FavoriteProduct favoriteProduct;
+    //     favoriteProduct = FavoriteProduct.fromMap(favoriteProductsMaps[i]);
+    //     favoriteProductsList.add(favoriteProduct);
+    //   }
+    // }
+
+    // Firebase Realtime DB:
+    Response getResponse = await firebaseRealtimeDBHelper.getData(
+      protocol: 'https',
+      authority: firebaseRealtimeAuthorityURL,
+      unencodedPath: '/${sqliteTable['table_plural_name']}.json',
+    );
+    Map<String, dynamic> getResponseBody = jsonDecode(getResponse.body);
+    if (getResponseBody.length > 0) {
+      getResponseBody.forEach((key, value) {
         FavoriteProduct favoriteProduct;
-        favoriteProduct = FavoriteProduct.fromMap(favoriteProductsMaps[i]);
+        favoriteProduct = FavoriteProduct.fromMap(getResponseBody[key]);
+        favoriteProduct.id = key;
         favoriteProductsList.add(favoriteProduct);
-      }
+      });
     }
+
     return favoriteProductsList;
   }
 
-  Future<List<FavoriteProduct>> byUserId(int userId, {List<String> filtersList}) async {
-    var dbClient = await dbHelper.dbPlus();
+  Future<List<FavoriteProduct>> byUserId(dynamic userId, {List<String> filtersList}) async {
     List<FavoriteProduct> favoriteProductsList = [];
-    filtersList = filtersList ?? [];
-    String filteringString = (filtersList.isEmpty) ? '' : "(${filtersList.map((e) => "$e = 1").join(' OR ')}) AND ";
+    // SQLite DB:
+    // var dbClient = await dbHelper.dbPlus();
+    // filtersList = filtersList ?? [];
+    // String filteringString = (filtersList.isEmpty) ? '' : "(${filtersList.map((e) => "$e = 1").join(' OR ')}) AND ";
+    //
+    // // Gathering of the FavoriteProduct Maps based on the given userId:
+    // Map<String, Object> favoriteProductsTable = FavoriteProductsData.sqliteTable;
+    // String favoriteProductsTableName = favoriteProductsTable['table_plural_name'];
+    // List<Map> favoriteProductsTableFields = favoriteProductsTable['fields'];
+    // List<Map> favoriteProductsMaps = await dbClient.query(favoriteProductsTableName, columns: favoriteProductsTableFields.map<String>((field) => field['field_name']).toList(), where: 'user_id = ?', whereArgs: [userId]);
+    //
+    // // Conversion into FavoriteProduct objects:
+    // if (favoriteProductsMaps.length > 0) {
+    //   for (int i = 0; i < favoriteProductsMaps.length; i++) {
+    //     FavoriteProduct favoriteProduct = FavoriteProduct.fromMap(favoriteProductsMaps[i]);
+    //     favoriteProductsList.add(favoriteProduct);
+    //   }
+    // }
 
-    // Gathering of the FavoriteProduct Maps based on the given userId:
-    Map<String, Object> favoriteProductsTable = FavoriteProductsData.sqliteTable;
-    String favoriteProductsTableName = favoriteProductsTable['table_plural_name'];
-    List<Map> favoriteProductsTableFields = favoriteProductsTable['fields'];
-    List<Map> favoriteProductsMaps = await dbClient.query(favoriteProductsTableName, columns: favoriteProductsTableFields.map<String>((field) => field['field_name']).toList(), where: 'user_id = ?', whereArgs: [userId]);
-
-    // Conversion into FavoriteProduct objects:
-    if (favoriteProductsMaps.length > 0) {
-      for (int i = 0; i < favoriteProductsMaps.length; i++) {
-        FavoriteProduct favoriteProduct = FavoriteProduct.fromMap(favoriteProductsMaps[i]);
+    // Firebase Realtime DB:
+    Response getResponse = await firebaseRealtimeDBHelper.getData(
+      protocol: 'https',
+      authority: firebaseRealtimeAuthorityURL,
+      unencodedPath: '/${sqliteTable['table_plural_name']}.json',
+      queryParameters: {'userId': '$userId'},
+    );
+    Map<String, dynamic> getResponseBody = {};
+    getResponseBody = jsonDecode(getResponse.body);
+    if (getResponseBody != null && getResponseBody.length > 0) {
+      getResponseBody.forEach((key, value) {
+        FavoriteProduct favoriteProduct;
+        favoriteProduct = FavoriteProduct.fromMap(getResponseBody[key]);
+        favoriteProduct.id = key;
         favoriteProductsList.add(favoriteProduct);
-      }
+      });
     }
+
     return favoriteProductsList;
   }
 
-  Future<int> _destroy(int userId, int productId, Map<String, dynamic> table) async {
-    var dbClient = await dbHelper.dbPlus();
-    return await dbClient.delete(table['table_plural_name'], where: 'user_id = ? AND product_id = ?', whereArgs: [userId, productId]);
+  Future<dynamic> _destroy(dynamic userId, dynamic productId, Map<String, dynamic> table) async {
+    // SQLite DB:
+    // var dbClient = await dbHelper.dbPlus();
+    // return await dbClient.delete(table['table_plural_name'], where: 'user_id = ? AND product_id = ?', whereArgs: [userId, productId]);
+
+    // Firebase Realtime DB:
+    Response deleteResponse = await firebaseRealtimeDBHelper.deleteData(
+      protocol: 'https',
+      authority: firebaseRealtimeAuthorityURL,
+      unencodedPath: '/${sqliteTable['table_plural_name']}.json',
+      body: json.encode({'userId': '$userId', 'productId': '$productId'}),
+    );
+    return deleteResponse.statusCode == 200;
   }
 
-  Future<int> _update(FavoriteProduct favoriteProduct, Map<String, dynamic> table) async {
-    var dbClient = await dbHelper.dbPlus();
-    return await dbClient.update(table['table_plural_name'], favoriteProduct.toMap(), where: 'id = ?', whereArgs: [favoriteProduct.id]);
+  Future<dynamic> _update(FavoriteProduct favoriteProduct, Map<String, dynamic> table) async {
+    // SQLite DB:
+    // var dbClient = await dbHelper.dbPlus();
+    // return await dbClient.update(table['table_plural_name'], favoriteProduct.toMap(), where: 'id = ?', whereArgs: [favoriteProduct.id]);
+
+    // Firebase Realtime DB:
+    Response response = await firebaseRealtimeDBHelper.updateData(
+      protocol: 'https',
+      authority: firebaseRealtimeAuthorityURL,
+      unencodedPath: '/${sqliteTable['table_plural_name']}/${favoriteProduct.id}.json',
+      body: json.encode(favoriteProduct.toMap()),
+    );
+    return response.statusCode == 200;
   }
 
   // Private methods:
 
-  Future<void> _removeWhere(int userId, int productId) async {
+  Future<void> _removeWhere(dynamic userId, dynamic productId) async {
     await _destroy(userId, productId, sqliteTable);
     await refresh();
   }
@@ -130,8 +202,8 @@ class FavoriteProductsData with ChangeNotifier {
   }
 
   Future<FavoriteProduct> addFavoriteProduct({
-    int userId,
-    int productId,
+    dynamic userId,
+    dynamic productId,
   }) async {
     DateTime now = DateTime.now();
 
@@ -149,8 +221,8 @@ class FavoriteProductsData with ChangeNotifier {
 
   Future<void> updateFavoriteProduct(
     dynamic id,
-    int userId,
-    int productId,
+    dynamic userId,
+    dynamic productId,
   ) async {
     DateTime now = DateTime.now();
     FavoriteProduct updatingFavoriteProduct = _favoriteProducts.firstWhere((favoriteProduct) => id == favoriteProduct.id);
@@ -163,7 +235,7 @@ class FavoriteProductsData with ChangeNotifier {
     refresh();
   }
 
-  Future<void> deleteFavoriteProductWithConfirm(int userId, int productId, BuildContext context) {
+  Future<void> deleteFavoriteProductWithConfirm(dynamic userId, dynamic productId, BuildContext context) {
     DialogHelper.showDialogWithActionPlus(context, () => _removeWhere(userId, productId)).then((value) {
       // This commenting, fixes an exception when deleting
       // (context as Element).reassemble();
@@ -171,7 +243,7 @@ class FavoriteProductsData with ChangeNotifier {
     });
   }
 
-  Future<void> deleteFavoriteProductWithoutConfirm(int userId, int productId) {
+  Future<void> deleteFavoriteProductWithoutConfirm(dynamic userId, dynamic productId) {
     _removeWhere(userId, productId);
     refresh();
   }

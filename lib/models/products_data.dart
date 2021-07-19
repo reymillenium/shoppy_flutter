@@ -384,7 +384,7 @@ class ProductsData with ChangeNotifier {
     if (isInCart) {
       await cartItemsData.deleteCartItemWithoutConfirm(userId, productId);
     }
-    // await refresh();
+    await refresh();
     notifyListeners();
   }
 

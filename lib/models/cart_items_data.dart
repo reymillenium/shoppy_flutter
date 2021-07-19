@@ -241,15 +241,15 @@ class CartItemsData with ChangeNotifier {
   ) async {
     DateTime now = DateTime.now();
     // CartItem updatingCartItem = _cartItems.firstWhere((cartItem) => id == cartItem.id);
-    List<CartItem> cartItems = await byUserId(userId);
+    List<CartItem> cartItems = await this.byUserId(userId);
     CartItem updatingCartItem = cartItems.firstWhere((cartItem) => id == cartItem.id);
+    await _update(updatingCartItem, sqliteTable);
 
     // updatingCartItem.userId = userId;
     // updatingCartItem.productId = productId;
     updatingCartItem.quantity = quantity;
     updatingCartItem.updatedAt = now;
 
-    await _update(updatingCartItem, sqliteTable);
     refresh();
   }
 
@@ -261,8 +261,8 @@ class CartItemsData with ChangeNotifier {
     });
   }
 
-  Future<void> deleteCartItemWithoutConfirm(dynamic userId, dynamic productId) {
-    _removeWhere(userId, productId);
+  Future<void> deleteCartItemWithoutConfirm(dynamic userId, dynamic productId) async {
+    await _removeWhere(userId, productId);
     refresh();
   }
 

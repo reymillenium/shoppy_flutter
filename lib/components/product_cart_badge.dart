@@ -9,7 +9,7 @@ import '../screens/_screens.dart';
 import '../models/_models.dart';
 
 // Components:
-import '../components/_components.dart';
+// import '../components/_components.dart';
 
 // Helpers:
 import '../helpers/_helpers.dart';
@@ -79,7 +79,7 @@ class ProductCartBadge extends StatelessWidget {
                         // onPressed: onPressedGoToCart,
                       ),
                     ),
-                    value: productsInCartAmount.toString(),
+                    label: Text( productsInCartAmount.toString()),
                     // value: cartItemsAmount.toString(),
                   ),
                   onTap: onPressedGoToCart,

@@ -28,7 +28,7 @@ final double kToolBarHeight = 56.0;
 // *                        * * *  D U M M Y  D A T A  * * *                         *
 // ***********************************************************************************
 
-const String PRODUCT_PLACEHOLDER_IMAGE = 'https://lallahoriye.com/wp-content/uploads/2019/04/Product_Lg_Type.jpg';
+const String PRODUCT_PLACEHOLDER_IMAGE = 'https://davidoyebolu.com/wp-content/uploads/2021/08/Product_Lg_Type-1024x791.jpg';
 
 // ***********************************************************************************
 // *                            * * *  U R L S  * * *                                *

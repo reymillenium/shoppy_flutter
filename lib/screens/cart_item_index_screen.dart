@@ -96,19 +96,22 @@ class _CartItemIndexScreenState extends State<CartItemIndexScreen> with RouteAwa
       selectedListData: selectedFilters,
       height: 300,
       headlineText: "Show me the products:",
-      searchFieldHintText: "Search Here",
+      // searchFieldHintText: "Search Here",
       choiceChipLabel: (item) {
         return item.toCamelCase.readable;
       },
       validateSelectedItem: (list, val) {
         return list.contains(val);
       },
-      onItemSearch: (list, text) {
-        if (list.any((element) => element.toLowerCase().contains(text.toLowerCase().removeWhiteSpaces))) {
-          return list.where((element) => element.toLowerCase().contains(text.toLowerCase().removeWhiteSpaces)).toList();
-        } else {
-          return [];
-        }
+      // onItemSearch: (list, text) {
+      //   if (list.any((element) => element.toLowerCase().contains(text.toLowerCase().removeWhiteSpaces))) {
+      //     return list.where((element) => element.toLowerCase().contains(text.toLowerCase().removeWhiteSpaces)).toList();
+      //   } else {
+      //     return [];
+      //   }
+      // },
+      onItemSearch: (item, text) {
+        return item.toLowerCase() == text.toLowerCase().removeWhiteSpaces;
       },
       onApplyButtonClick: (list) {
         if (list != null) {

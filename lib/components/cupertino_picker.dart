@@ -35,8 +35,9 @@ class CupertinoPickerCustom extends StatelessWidget {
       selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
         // background: Colors.transparent,
         // background: CupertinoColors.tertiarySystemFill,
-        capLeftEdge: false,
-        capRightEdge: false,
+        capStartEdge: false,
+        capEndEdge: false,
+
       ),
       scrollController: FixedExtentScrollController(initialItem: initialIndex),
       children: cupertinoPickerChildren,
